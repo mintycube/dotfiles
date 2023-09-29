@@ -1,0 +1,124 @@
+#!/bin/bash
+
+options=("  Files" "󰉋  Directories" "  PDFs" "  Videos" "  Audio" "󰈙  Documents" "  Refresh")
+dmenu_command="dmenu -bw 2 -i -W 700 -X 333 -Y 190 -l 10"
+selected_option=$(printf "%s\n" "${options[@]}" | eval "$dmenu_command")
+case "$selected_option" in
+"  Refresh")
+	opener-files &
+	opener-dirs &
+	opener-pdfs &
+	opener-docs &
+	opener-vids &
+	opener-audio &
+	wait
+	notify-send "  Refresh Complete!"
+	;;
+"  Videos")
+	# float loop fullscreen
+	file="$HOME/.cache/opener/vids"
+	if [ ! -f "$file" ]; then
+		echo "Nothing found."
+		opener-vids
+	fi
+	paths=()
+	while IFS= read -r line; do
+		paths+=("$line")
+	done <"$file"
+	selected=$(printf "%s\n" "${paths[@]}" | eval "$dmenu_command")
+	if [ -z "$selected" ]; then
+		echo "Nothing Selected."
+		exit 0
+	fi
+	mpv "$selected"
+	;;
+"  Audio")
+	file="$HOME/.cache/opener/audio"
+	if [ ! -f "$file" ]; then
+		echo "No files found."
+		opener-audio
+	fi
+	paths=()
+	while IFS= read -r line; do
+		paths+=("$line")
+	done <"$file"
+	selected=$(printf "%s\n" "${paths[@]}" | eval "$dmenu_command")
+	if [ -z "$selected" ]; then
+		echo "None selected."
+		exit 0
+	fi
+	mpv "$selected"
+	;;
+"󰈙  Documents")
+	file="$HOME/.cache/opener/docs"
+	if [ ! -f "$file" ]; then
+		echo "No files found."
+		opener-docs
+	fi
+	paths=()
+	while IFS= read -r line; do
+		paths+=("$line")
+	done <"$file"
+	selected=$(printf "%s\n" "${paths[@]}" | eval "$dmenu_command")
+	if [ -z "$selected" ]; then
+		echo "None selected."
+		exit 0
+	fi
+	libreoffice "$selected"
+	;;
+"  PDFs")
+	# fullscreen float zathura
+	file="$HOME/.cache/opener/pdfs"
+	if [ ! -f "$file" ]; then
+		echo "No files found."
+		opener-pdfs
+	fi
+	paths=()
+	while IFS= read -r line; do
+		paths+=("$line")
+	done <"$file"
+	selected=$(printf "%s\n" "${paths[@]}" | eval "$dmenu_command")
+	if [ -z "$selected" ]; then
+		echo "None selected."
+		exit 0
+	fi
+	zathura "$selected"
+	;;
+"  Files")
+	file="$HOME/.cache/opener/files"
+	if [ ! -f "$file" ]; then
+		echo "No files found."
+		opener-files
+	fi
+	paths=()
+	while IFS= read -r line; do
+		paths+=("$line")
+	done <"$file"
+	selected=$(printf "%s\n" "${paths[@]}" | eval "$dmenu_command")
+	if [ -z "$selected" ]; then
+		echo "None selected."
+		exit 0
+	fi
+	kitty nvim "$selected"
+	;;
+"󰉋  Directories")
+	file="$HOME/.cache/opener/dirs"
+	if [ ! -f "$file" ]; then
+		echo "No files found."
+		opener-dirs
+	fi
+	paths=()
+	while IFS= read -r line; do
+		paths+=("$line")
+	done <"$file"
+	selected=$(printf "%s\n" "${paths[@]}" | eval "$dmenu_command")
+	if [ -z "$selected" ]; then
+		echo "None selected."
+		exit 0
+	fi
+	kitty lf "$selected"
+	;;
+*)
+	echo "Invalid option selected."
+	;;
+esac

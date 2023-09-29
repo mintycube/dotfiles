@@ -1,0 +1,26 @@
+#!/bin/sh
+
+preview="highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$2' || rg --ignore-case --pretty --context 10 '$2' {}"
+
+# Check if a search directory was provided, or use the current directory as default
+if [ -z "$1" ]; then
+	search_dir="."
+else
+	search_dir="$1"
+fi
+
+selected=$(rg --files-with-matches --no-messages --color=always --hidden -nS "$2" "$search_dir" 2>/dev/null |
+	fzf -d: \
+		--ansi \
+		--height=80% \
+		--multi \
+		--query="$2" \
+		--phony \
+		--info=inline \
+		--bind="change:reload:rg --files-with-matches --no-messages --color=always --hidden -nS {q} $search_dir" \
+		--preview="[[ -n {1} ]] && $preview" \
+		--preview-window=right:50%)
+
+if [ -n "$selected" ]; then
+	echo "$selected" | cut -d: -f1 | uniq | xargs nvim -p
+fi

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+recursive_search_dirs_docs=(~/vimwiki ~/Projects ~/win/usb1 ~/win/usb2 ~/win/usb3 ~/win/e/Library ~/Documents ~/Downloads ~/win/d/tutorials)
+depth_one_dirs_docs=(~)
+exclude_patterns_docs=(.git .github node_modules)
+
+fd_command_recursive_docs="fd . -e doc -e docx -e odt -e rtf -e ppt -e pptx -e odp -e xls -e xlsx -e ods -e csv -e tsv"
+for dir in "${recursive_search_dirs_docs[@]}"; do
+	fd_command_recursive_docs+=" --full-path \"$dir\""
+done
+for pattern in "${exclude_patterns_docs[@]}"; do
+	fd_command_recursive_docs+=" --exclude \"$pattern\""
+done
+
+fd_command_docs="fd . -e doc -e docx -e odt -e rtf -e ppt -e pptx -e odp -e xls -e xlsx -e ods -e csv -e tsv --max-depth 1"
+for dir in "${depth_one_dirs_docs[@]}"; do
+	fd_command_docs+=" --full-path \"$dir\""
+done
+eval "$fd_command_recursive_docs" >~/.cache/opener/docs
+eval "$fd_command_docs" >>~/.cache/opener/docs

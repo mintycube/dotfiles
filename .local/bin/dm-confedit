@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Description: Choose from a list of configuration files to edit.
+
+DMTERM="kitty"
+DMEDITOR="${DMTERM} nvim"
+
+declare -A confedit_list
+confedit_list[dmenu]="$HOME/.local/src/dmenu-flexipatch/config.def.h"
+confedit_list[bspwm]="$XDG_CONFIG_HOME/bspwm/bspwmrc"
+confedit_list[polybar]="$XDG_CONFIG_HOME/bspwm/polybar/config.ini"
+confedit_list[sxhkd]="$XDG_CONFIG_HOME/bspwm/sxhkdrc"
+confedit_list[st]="$HOME/.local/src/st/config.def.h"
+confedit_list[kitty]="$XDG_CONFIG_HOME/kitty/kitty.conf"
+confedit_list[xresources]="$XDG_CONFIG_HOME/x11/xresources"
+confedit_list[neovim]="$XDG_CONFIG_HOME/nvim/lua/custom/init.lua"
+confedit_list[zsh]="$XDG_CONFIG_HOME/zsh/.zshrc"
+confedit_list[zsh aliases]="$XDG_CONFIG_HOME/shell/aliasrc"
+confedit_list[xinitrc]="$XDG_CONFIG_HOME/x11/xinitrc"
+confedit_list[xprofile]="$HOME/.xprofile"
+confedit_list[bash]="$HOME/.bashrc"
+confedit_list[mpd]="$XDG_CONFIG_HOME/mpd/mpd.conf"
+confedit_list[ncmpcpp]="$XDG_CONFIG_HOME/ncmpcpp/config"
+confedit_list[dunst]="$XDG_CONFIG_HOME/dunst/dunstrc"
+# confedit_list[Edit this Script]="$HOME/.local/bin/dm-confedit"
+
+main() {
+  declare -A _clean_list
+  for i in "${!confedit_list[@]}"; do
+    [[ -f ${confedit_list["${i}"]} ]] && _clean_list["${i}"]=${confedit_list["${i}"]}
+  done
+  choice=$(printf '%s\n' "${!_clean_list[@]}" | sort | dmenu -bw 2 -i -p 'Edit config:' -Y 15 -X 1151 -W 200 -l 20 "$@")
+
+  if [ "$choice" ]; then
+    cfg=$(printf '%s\n' "${_clean_list["${choice}"]}")
+    $DMEDITOR "$cfg"
+  else
+      echo "Program terminated." && exit 0
+  fi
+}
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"

@@ -1,0 +1,38 @@
+# ~/.bashrc
+
+[[ $- != *i* ]] && return # If not running interactively, don't do anything
+
+bind "set completion-ignore-case on"     # Perform file completion in a case insensitive fashion
+bind "set completion-map-case on"        # Treat hyphens and underscores as equivalent
+bind "set show-all-if-ambiguous on"      # Display matches for ambiguous patterns at first tab press
+bind "set mark-symlinked-directories on" # Immediately add a trailing slash when autocompleting symlinks to directories
+
+HISTSIZE=500000 # Huge history
+HISTFILESIZE=100000
+shopt -s histappend                                    # Append to the history file, don't overwrite it
+shopt -s cmdhist                                       # Save multi-line commands as one command
+PROMPT_COMMAND='history -a'                            # Record each line as it gets issued
+HISTCONTROL="erasedups:ignoreboth"                     # Avoid duplicate entries
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear" # Don't record some commands
+HISTTIMEFORMAT='%F %T '                                # Use standard ISO 8601 timestamp
+
+export MANPAGER="nvim +Man!"
+
+bind '"\e[A": history-search-backward' # Enable incremental history search with up/down arrows (also Readline goodness)
+bind '"\e[B": history-search-forward'
+bind '"\e[C": forward-char'
+bind '"\e[D": backward-char'
+bind Space:magic-space # Enable history expansion with space e.g. typing !!<space> will replace the !! with your last command
+
+shopt -s autocd 2>/dev/null   # Prepend cd to directory names automatically
+shopt -s dirspell 2>/dev/null # Correct spelling errors during tab-completion
+shopt -s cdspell 2>/dev/null  # Correct spelling errors in arguments supplied to cd
+shopt -s expand_aliases       # expand aliases
+shopt -s checkwinsize         # checks term size when bash regains control
+
+# shopt -s cdable_vars # This allows you to bookmark your favorite places across the file system
+
+[ -f "$HOME/.config/shell/shortcutrc" ] && source "$HOME/.config/shell/shortcutrc" # shortcuts
+[ -f "$HOME/.config/shell/aliasrc" ] && source "$HOME/.config/shell/aliasrc"       # aliases
+
+PS1='\[\e[34;3m\]\w \[\e[0;32m\] \[\e[0m\]' # promt with dir in italic

@@ -1,0 +1,9 @@
+!! vim: filetype=xdefaults
+
+dwm.normfgcolor                : #a0a8cd
+dwm.normbgcolor                : #11121D
+dwm.normbordercolor            : #466369
+
+dwm.selfgcolor                 : #a0a8cd
+dwm.selbgcolor                 : #1a1b2a
+dwm.selbordercolor             : #7199ee

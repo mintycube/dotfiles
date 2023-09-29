@@ -1,0 +1,24 @@
+#!/bin/bash
+
+recursive_search_dirs_files=(~/.config ~/.local/bin ~/.local/share/larbs ~/.local/share/nvim ~/vimwiki ~/Projects ~/win/usb1 ~/win/usb2 ~/win/usb3)
+depth_one_dirs_files=(~ ~/Documents ~/Downloads)
+exclude_patterns_files=(.git GIMP libreoffice fontforge fonts scripts mpv_modules .github node_modules *.o *.pyc)
+rg_command_files='rg "text/*|application/json|inode/x-empty|application/x-subrip|application/javascript"'
+
+fd_command_recursive_files="fd . --type f --hidden --follow"
+for dir in "${recursive_search_dirs_files[@]}"; do
+	fd_command_recursive_files+=" --full-path \"$dir\""
+done
+for pattern in "${exclude_patterns_files[@]}"; do
+	fd_command_recursive_files+=" --exclude \"$pattern\""
+done
+fd_command_recursive_files+=" -x file --mime-type {}"
+
+fd_command_files="fd . --type f --hidden --follow --max-depth 1"
+for dir in "${depth_one_dirs_files[@]}"; do
+	fd_command_files+=" --full-path \"$dir\""
+done
+fd_command_files+=" -x file --mime-type {}"
+
+eval "$fd_command_recursive_files" | eval "$rg_command_files" | sed 's/:.*//' >~/.cache/opener/files
+eval "$fd_command_files" | eval "$rg_command_files" | sed 's/:.*//' >>~/.cache/opener/files

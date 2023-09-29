@@ -1,0 +1,7 @@
+!! vim: filetype=xdefaults
+
+dmenu.foreground:     #c0caf5
+dmenu.background:     #24283b
+dmenu.selforeground:  #24283b
+dmenu.selbackground:  #e0af68
+dmenu.bordercolor:    #e0af68

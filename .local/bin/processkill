@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+selected_process=$(ps -eo pid,comm,%mem --sort=-%mem | awk '{print $1, $2}' | dmenu -l 30 -bw 2 -W 300 -X 1051 -Y 15 -i | awk '{print $1}')
+[[ -z $selected_process ]] && exit 1
+if ps -p "$selected_process" >/dev/null 2>&1; then
+	choice=$(echo -e "yes\nno" | dmenu -i -l 2 -bw 2 -W 300 -X 1051 -Y 15 -p "Terminate '$(ps -o comm= -p "$selected_process")'?") &&
+		([[ $choice == "yes" ]] && kill "$selected_process") || exit 0
+else
+	notify-send "PID $selected_process not found"
+fi

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+recursive_search_dirs_dirs=(~/.config ~/.local/bin ~/.local/share/larbs ~/.local/share/fonts ~/.local/src ~/.local/share/nvim ~/Music ~/vimwiki ~/Projects ~/win/usb1 ~/win/usb2 ~/win/usb3 ~/win/e/Library)
+depth_one_dirs_dirs=(~ ~/win/c ~/win/d ~/win/e ~/win/c/Users)
+exclude_patterns_dirs=(.git GIMP libreoffice fontforge scripts mpv_modules .github node_modules)
+fd_command_recursive_dirs="fd . --type d --hidden --follow"
+for dir in "${recursive_search_dirs_dirs[@]}"; do
+	fd_command_recursive_dirs+=" --full-path \"$dir\""
+done
+for pattern in "${exclude_patterns_dirs[@]}"; do
+	fd_command_recursive_dirs+=" --exclude \"$pattern\""
+done
+
+fd_command_dirs="fd . --type d --hidden --follow --max-depth 1"
+for dir in "${depth_one_dirs_dirs[@]}"; do
+	fd_command_dirs+=" --full-path \"$dir\""
+done
+eval "$fd_command_recursive_dirs" >~/.cache/opener/dirs
+eval "$fd_command_dirs" >>~/.cache/opener/dirs

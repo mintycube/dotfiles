@@ -1,0 +1,33 @@
+Xft.antialias:    1
+Xft.hinting:      1
+Xft.autohint:     0
+Xft.hintstyle:    hintslight
+Xft.rgba:         rgb
+Xft.lcdfilter:    lcddefault
+Xcursor.theme:    Bibata-Modern-Ice
+Xcursor.size:     24
+st.font:          JetBrainsMono Nerd Font:style:medium:size=9
+dmenu.font:       JetBrainsMono Nerd Font:style:medium:size=9
+! st.fontalt0:      JetBrainsMono Nerd Font:style:medium:size=10
+st.borderpx:      10
+st.alpha:         0.95
+st.tabspaces:     2
+dwm.borderpx:     1
+dwm.snap:         32
+dwm.showbar:      1
+dwm.topbar:       0
+dwm.nmaster:	    1
+dwm.resizehints:  0
+dwm.mfact:	      0.55
+dwm.gappih:	      0
+dwm.gappiv:	      0
+dwm.gappoh:	      0
+dwm.gappov:	      0
+dwm.swallowfloating:0
+dwm.smartgaps:	  0
+! Choices: tokyonight, rosepine, ashes, catpuccin, cellia, custom-onedark, dracula, eighties, lighthuas, voilla, gruvbox-material, gruvchad, monokai-pro, nord, ocean, oxocarbon, rhxyn, tomorrow
+#include "xrdb/color/tokyodark"
+! Choices: tokyo, tokyodark, oxocarbon, nord, tomorrow, banana
+#include "xrdb/dmenu/tokyodark"
+! Choices: tokyo, tokyodark, dark
+#include "xrdb/dwm/tokyodark"

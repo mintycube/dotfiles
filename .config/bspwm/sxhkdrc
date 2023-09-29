@@ -1,0 +1,226 @@
+# █▀ ▀▄▀ █░█ █▄▀ █▀▄ █▀█ █▀▀
+# ▄█ █░█ █▀█ █░█ █▄▀ █▀▄ █▄▄
+
+# Mute volume
+XF86AudioMute
+	pulsemixer --toggle-mute
+
+# Raise volume
+XF86AudioRaiseVolume
+	pulsemixer --change-volume +5
+
+# Lower volume
+XF86AudioLowerVolume
+	pulsemixer --change-volume -5
+
+# Media {next,previous}
+XF86Audio{Next,Prev}
+	mpc {next,prev}
+
+# Media pause
+XF86Audio{Pause}
+	mpc {pause}
+
+# Select Monitor
+super + F3
+	displayselect
+
+# Clipboard
+F7
+  clipmenu -bw 2 -i -W 290 -X 1061 -Y 15 -l 15
+
+# Screenshot tool
+Print
+  maimpick
+
+# ScreenRecord tool
+super + Print
+  dmenurecord
+
+# Stop screen-recording
+super + Delete
+  dmenurecord kill
+
+# Lower brightness
+XF86MonBrightnessDown
+  brightnessctl set 500-
+
+# Raise brightness
+XF86MonBrightnessUp
+  brightnessctl set +500
+
+# Nerd Font selector
+super + grave
+  dmenunerdfont
+
+# Move window to a new workspace
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} ^{1-9,10}
+
+# System menu
+super + BackSpace
+  sysact
+
+# Toggle current/previous workspace
+super + {Tab,backslash}
+  bspc desktop last --focus
+
+# Close window
+super + {_,shift + }q
+	bspc node -{c,k}
+
+# Open Browser
+super + w
+  librewolf
+
+# Open lf
+super + r
+  kitty lf
+
+# Open htop
+super + shift + r
+  kitty htop
+
+# Toggle tiling/monocle
+super + t
+  bspc desktop -l next
+
+# Rotate windows
+super + y
+	bspc node @focused:/ -R 90
+
+# Focus {previous,next} window
+super + {i,o}
+	bspc node -f {prev,next}.local
+
+# Pause media
+super + p
+  mpc toggle
+
+# Pasue all media
+super + shift + p
+  mpc pause ; pauseallmpv
+
+# Seek -10 seconds
+super + bracketleft
+  mpc seek -10
+
+# Seek -60 seconds
+super + shift + bracketleft
+  mpc seek -60
+
+# Seek +!0 seconds
+super + bracketright
+  mpc seek +10
+
+# Seek +60 seconds
+super + shift + bracketright
+  mpc seek +60
+
+# Open dmenu_hub
+super + a
+  dmenu_hub
+
+# Open dmenu_hub
+ctrl + space
+  opener
+
+# Open dmenu_run
+super + d
+  dmenu_run -bw 2 -i -W 390 -X 961 -Y 15 -l 15 -g 3
+
+# Toggle gaps
+super + shift + d
+	bspc config window_gap {0,5}
+
+# Resize outwards
+super + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Resize inwards
+super + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Scratchpad calculator
+super + apostrophe
+  tdrop -a -w 50% -h 30% -y 4% -x 25% qalculate-gtk
+
+# Terminal
+super + Return
+  kitty
+
+# Scratchpad Terminal
+super + shift + Return
+  tdrop -a -w 65% -h 60% -y 4% -x 17% st -c spterm
+
+# Increase or decrease gaps
+super { ,+ shift }+ z
+	bspc config window_gap $(($(bspc config window_gap) {+,-} 3))
+
+# Open nmtui
+super + c
+  st -c nmtui -g=54x28 -e nmtui
+
+# Toggle polybar
+super + b
+  sh ~/.config/bspwm/polybar/scripts/toggle.sh
+
+# Add web bookmark
+super + shift + b
+  dmenu_web --add
+
+# Open VimWiki
+super + n
+  kitty nvim -c VimwikiIndex
+
+# Open Newsboat
+super + shift + n
+  kitty newsboat
+
+# Open music player
+super + m
+  tdrop -a -w 65% -h 60% -y 4% -x 17% st -c spmusic -e ncmpcpp
+
+# Mute volume
+super + shift + m
+  pulsemixer --toggle-mute
+
+# Previous song
+super + comma
+  mpc prev
+
+# Next song
+super + period
+  mpc next
+
+# Repeat song
+super + shift + period
+ mpc repeat
+
+# Swap current and largest window
+super + space
+	bspc node -s biggest.local || bspc node -s next.local
+
+# Toggle window floating
+super + shift + space
+	bspc node focused -t \~floating
+
+# Preselect ratio
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# Cancel preselection
+super + ctrl + space
+	bspc node -p cancel
+
+# Web Search
+alt + space
+	dmenu_web
+
+# Web Search
+XF86Search
+	dmenu_web
+
+# Move Floating window {left,down,up,right}
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}

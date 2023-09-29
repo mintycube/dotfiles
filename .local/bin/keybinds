@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Display keybinds in dmenu
+keybinds_file="$XDG_CONFIG_HOME/bspwm/sxhkdrc"
+dmenu_command="dmenu -bw 2 -i -W 500 -X 851 -Y 15 -l 30"
+menu_content=$(awk '/^[a-z]/ && last {print $0,"\t",last} {last=""} /^#/{last=$0}' "$keybinds_file" | column -t -s $'\t')
+selected_line=$(echo "$menu_content" | $dmenu_command)
+[[ -n "$selected_line" ]] &&
+	key_combination=$(echo "$selected_line" | awk -F ';' '{print $1}') &&
+	description=$(echo "$selected_line" | awk -F ';' '{print $2}') &&
+	notify-send "$key_combination" "$description"

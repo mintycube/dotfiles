@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# A dmenu wrapper script for system functions.
+
+window_manager=$(xprop -id "$(xprop -root -notype _NET_SUPPORTING_WM_CHECK | cut -d\  -f5)" -notype -len 100 -f _NET_WM_NAME 8t | grep '^_NET_WM_NAME' | cut -d\" -f 2)
+
+if [[ "$window_manager" = "bspwm" ]]; then
+	options=("  Lock" "  Renew bspwm" "󰍃  Leave bspwm" "  Shutdown" "  Reboot" "󰶐  Display off")
+	commands=("lock" "bspc wm -r" "bspc quit" "systemctl poweroff -i" "systemctl reboot -i" "xset dpms force off")
+
+elif [[ "$window_manager" = "dwm" ]]; then
+	options=("  Lock" "  Renew dwm" "󰍃  Leave dwm" "  Shutdown" "  Reboot" "󰶐  Display off")
+	commands=("lock" "renew-dwm" "kill -TERM $(pgrep -u "$USER" "\bdwm$")" "systemctl poweroff -i" "systemctl reboot -i" "xset dpms force off")
+fi
+
+if prompt=$(printf '%s\n' "${options[@]}" | dmenu -i -bw 2 -g 1 -l 9 -W 200 -X 1151 -Y 15); then
+	selected_index=$(printf '%s\n' "${options[@]}" | grep -xn "$prompt" | cut -d ":" -f 1)
+	${commands[$selected_index - 1]}
+fi

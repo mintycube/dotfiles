@@ -1,0 +1,20 @@
+#!/bin/bash
+
+recursive_search_dirs_audio=(~/Music ~/win/usb1 ~/win/usb2 ~/win/usb3)
+depth_one_dirs_audio=(~ ~/Downloads)
+exclude_patterns_audio=(.git .github node_modules)
+
+fd_command_recursive_audio="fd . -e mp3 -e flac -e m4a"
+for dir in "${recursive_search_dirs_audio[@]}"; do
+	fd_command_recursive_audio+=" --full-path \"$dir\""
+done
+for pattern in "${exclude_patterns_audio[@]}"; do
+	fd_command_recursive_audio+=" --exclude \"$pattern\""
+done
+
+fd_command_audio="fd . -e mp3 -e flac -e m4a --max-depth 1"
+for dir in "${depth_one_dirs_audio[@]}"; do
+	fd_command_audio+=" --full-path \"$dir\""
+done
+eval "$fd_command_recursive_audio" >~/.cache/opener/audio
+eval "$fd_command_audio" >>~/.cache/opener/audio
