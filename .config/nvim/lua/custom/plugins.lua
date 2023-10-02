@@ -121,7 +121,7 @@ local plugins = {
 		end,
 	},
 	{
-		"jose-elias-alvarez/null-ls.nvim",
+		"nvimtools/none-ls.nvim",
 		ft = { "cpp", "c", "lua", "python", "markdown", "html", "css", "javascript", "sh" },
 		-- event = "VeryLazy",
 		opts = function()
@@ -210,7 +210,7 @@ local plugins = {
 			"regex",
 			"markdown",
 			"markdown_inline",
-      "org"
+			"org",
 		},
 		opts = {
 			hightlight = { enable = true },
@@ -472,6 +472,7 @@ local plugins = {
 		{
 			"lukas-reineke/indent-blankline.nvim",
 			ft = { "c", "cpp", "python", "lua", "sh", "markdown", "html", "css", "javascript" },
+			event = { "BufReadPost", "BufNewFile" },
 			opts = {
 				filetype_exclude = { "help", "lazy", "mason", "outline" },
 				show_trailing_blankline_indent = false,
