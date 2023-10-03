@@ -1,6 +1,6 @@
 <h1 align="center"> DotFiles</h1>
 
-<img src="./pictures/screenshots/screenshot0.png" alt="img" align="right" width="400px">
+<img src="./pictures/screenshot.png" alt="screenshot" align="right" width="400px">
 
 These dotfiles are meant to be used  after installing [LARBS](https://github.com/LukeSmithxyz/LARBS).
 Here are some details about my setup:
