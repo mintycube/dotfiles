@@ -15,13 +15,15 @@ Here are some details about my setup:
 + **Cursor-theme** = [Bibata-Modern-Ice](https://github.com/ful1e5/Bibata_Cursor)
 + **Shell**: [zsh](https://wiki.archlinux.org/index.php/Zsh) + [zsh4humans](https://github.com/romkatv/zsh4humans)
 + **Terminal**: [kitty](https://github.com/kovidgoyal/kitty/) + [st](https://github.com/mintycube/st)
++ **Font**: JetBrainsMono Nerd Font
 + **Scratchpads**: [tdrop](https://github.com/noctuid/tdrop)
 + **Editor**: [Neovim](https://github.com/neovim/neovim/) + [NvChad](https://github.com/NvChad/NvChad) + custom config
-+ **File Manager**: [lf](https://github.com/gokcehan/lf)
++ **File Manager**: [lf](https://github.com/gokcehan/lf) + [cptv](https://github.com/NikitaIvanovV/ctpv)
 + **Browser**: Firefox
 + **Menu**: [dmenu-flexipatch](https://github.com/mintycube/dmenu-flexipatch)
 + **Image-viewer** = [nsxiv](https://github.com/nsxiv/nsxiv)
 + **Music-player** = [mpd](https://github.com/MusicPlayerDaemon/MPD) + [ncmpcpp](https://github.com/ncmpcpp/ncmpcpp)
 + **Pdf-viewer** = [zathura](https://github.com/pwmt/zathura)
 + **Calculator** = [qalculate-gtk](https://github.com/Qalculate/qalculate-gtk)
-+ **networkmanager** = [dmenu](https://github.com/firecat53/networkmanager-dmenu)
++ **Networkmanager** = [dmenu](https://github.com/firecat53/networkmanager-dmenu)
++ **Notification Client** = [dunst](https://github.com/dunst-project/dunst)
