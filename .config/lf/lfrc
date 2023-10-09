@@ -20,23 +20,23 @@ set cleaner ctpvclear
 cmd open ${{
   case $(file --mime-type "$(readlink -f $f)" -b) in
     application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
-    image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) devour zathura $fx >/dev/null 2>&1 ;;
+    image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
     text/html) lynx $fx;;
     text/*|application/json|inode/x-empty|application/x-subrip|application/javascript) $EDITOR $fx;;
     image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
     image/svg+xml) display -- $f ;;
     image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|avif\|tif\|ico\)\(_large\)*$" |
-     devour nsxiv -aio 2>/dev/null | while read -r file; do
+     setsid -f nsxiv -aio 2>/dev/null | while read -r file; do
         [ -z "$file" ] && continue
         lf -remote "send select \"$file\""
         lf -remote "send toggle"
         done &
       ;;
     audio/*|video/x-ms-asf) mpv --audio-display=no $f ;;
-    video/*) devour mpv --loop-file $f -quiet >/dev/null 2>&1 ;;
-    application/pdf|application/vnd.djvu|application/epub*) devour zathura $fx >/dev/null 2>&1 ;;
+    video/*) setsid -f mpv --loop-file $f -quiet >/dev/null 2>&1 ;;
+    application/pdf|application/vnd.djvu|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
     application/pgp-encrypted) $EDITOR $fx ;;
-    application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template|application/vnd.openxmlformats-officedocument.presentationml.presentation|application/vnd.oasis.opendocument.presentation-template|application/vnd.oasis.opendocument.presentation|application/vnd.ms-powerpoint|application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template|application/vnd.oasis.opendocument.formula|application/vnd.oasis.opendocument.database) devour libreoffice $fx >/dev/null 2>&1 ;;
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template|application/vnd.openxmlformats-officedocument.presentationml.presentation|application/vnd.oasis.opendocument.presentation-template|application/vnd.oasis.opendocument.presentation|application/vnd.ms-powerpoint|application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template|application/vnd.oasis.opendocument.formula|application/vnd.oasis.opendocument.database) setsid -f libreoffice $fx >/dev/null 2>&1 ;;
     # application/x-bzip*|application/x-gzip*|application/x-xz*|application/zip|application/*rar*|application/*iso*)
     #     mntdir="$f-archivemount"
     #     if [ ! -d "$mntdir" ]; then
@@ -63,7 +63,7 @@ cmd fzf_search ${{
   fi
 }}
 
-cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
+cmd ff $ff "$(echo $*)"
 
 cmd extract ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
@@ -138,7 +138,7 @@ map E extract
 map C copyto
 map M moveto
 map f :fzf_search
-map <c-n> push :mkdir<space>
+map <c-n> push :ff<space>
 map <c-r> reload
 map <c-s> set hidden!
 map <enter> shell

@@ -14,7 +14,7 @@ inactive_underline=
 separator=" "
 show="icon" # options: window_title, window_class, window_classname, icon
 forbidden_classes="Polybar Conky Gmrun"
-empty_desktop_message="Desktop"
+empty_desktop_message=""
 
 char_limit=20
 max_windows=15
@@ -182,6 +182,7 @@ generate_window_list() {
 			spwiki) w_name='󰠮 ' ;;
 			spterm) w_name=' ' ;;
 			Qalculate-gtk) w_name=' ' ;;
+			neovide) w_name=' ' ;;
 			*) w_name="$cls" ;;
 			esac
 			;;

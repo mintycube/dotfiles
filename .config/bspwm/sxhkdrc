@@ -171,7 +171,7 @@ super + shift + b
 
 # Open VimWiki
 super + n
-  kitty nvim -c VimwikiIndex
+  neovide
 
 # Open Newsboat
 super + shift + n

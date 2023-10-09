@@ -18,18 +18,12 @@ vim.cmd([[ autocmd BufWritePre * %s/\s\+$//e ]])
 vim.cmd([[ autocmd BufWritePre * %s/\n\+\%$//e ]])
 vim.cmd([[ autocmd BufWritePre * cal cursor(currPos[1], currPos[2]) ]])
 
-vim.cmd(
-	[[ let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'} ]]
-)
-
 -- Run xrdb whenever Xdefaults or Xresources are updated.
 vim.cmd([[ autocmd BufRead,BufNewFile Xresources,Xdefaults,xresources,xdefaults set filetype=xdefaults ]])
 vim.cmd([[ autocmd BufWritePost Xresources,Xdefaults,xresources,xdefaults !xrdb % ; kitty_colors ]])
 vim.cmd([[ autocmd BufWritePost ~/dotfiles/.config/bspwm/bspwmrc !bspc wm -r; notify-send "bspwm reloaded"]])
 vim.cmd([[ autocmd BufWritePost ~/dotfiles/.config/bspwm/sxhkdrc !pkill -USR1 -x sxhkd; notify-send "sxhkd reloaded" ]])
-vim.cmd(
-	[[ autocmd BufWritePost ~/dotfiles/.config/bspwm/polybar/*.ini !sh ~/.config/bspwm/polybar/scripts/launch.sh &; notify-send "ploybar reloaded" ]]
-)
+vim.cmd([[ autocmd BufWritePost ~/dotfiles/.config/bspwm/polybar/*.ini !sh ~/.config/bspwm/polybar/scripts/launch.sh &; notify-send "ploybar reloaded" ]])
 
 vim.cmd([[ highlight DiagnosticVirtualTextError cterm=italic gui=italic guifg=#858694 ]])
 vim.cmd([[ highlight DiagnosticVirtualTextInfo cterm=italic gui=italic guifg=#858694 ]])
@@ -55,9 +49,3 @@ vim.cmd([[ highlight DiagnosticError guifg=#858694 ]])
 vim.cmd([[ highlight DiagnosticWarn guifg=#858694 ]])
 vim.cmd([[ highlight DiagnosticInfo guifg=#858694 ]])
 vim.cmd([[ highlight DiagnosticHint guifg=#858694 ]])
-
-vim.cmd([[ highlight Keyword cterm=italic gui=italic ]])
-vim.cmd([[ highlight Conditional cterm=italic gui=italic ]])
-vim.cmd([[ highlight String cterm=italic gui=italic ]])
-vim.cmd([[ highlight Type cterm=bold gui=bold ]])
-vim.cmd([[ highlight MatchParen cterm=bold gui=bold ]])
