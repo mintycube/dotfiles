@@ -16,7 +16,7 @@ Here are some details about my setup:
 - **Shell**: [zsh](https://wiki.archlinux.org/index.php/Zsh) + [zsh4humans](https://github.com/romkatv/zsh4humans)
 - **Terminal**: [kitty](https://github.com/kovidgoyal/kitty/) + [st](https://github.com/mintycube/st)
 - **Scratchpads**: [tdrop](https://github.com/noctuid/tdrop)
-- **Editor**: [Neovim](https://github.com/neovim/neovim/) + [NvChad](https://github.com/NvChad/NvChad) + custom config
+- **Editor**: [Neovim](https://github.com/neovim/neovim/)
 - **File Manager**: [lf](https://github.com/gokcehan/lf)
 - **Browser**: Firefox
 - **Menu**: [dmenu-flexipatch](https://github.com/mintycube/dmenu-flexipatch)
