@@ -7,10 +7,15 @@ fd_command="fd . \
   --type file \
   --hidden \
   --follow \
+  --color always \
   --exclude .git \
+  --exclude .github \
+  --exclude *.o \
+  --exclude *.pyc \
   --full-path \"$search_dir\""
 
 fzf_command="fzf \
+  --ansi \
   --height=80% \
   --layout=reverse \
   --multi \
@@ -22,8 +27,4 @@ fzf_command="fzf \
   --marker='❱' \
   --pointer='❱'"
 
-selected=$(eval "$fd_command" | eval "$fzf_command")
-
-if [ -n "$selected" ]; then
-	echo "$selected" | xargs "$EDITOR"
-fi
+eval "$fd_command" | eval "$fzf_command"

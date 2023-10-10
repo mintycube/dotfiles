@@ -15,10 +15,10 @@ done
 unset command
 
 alias \
-	be="fzf-edit \$HOME/.local/bin" \
-	ce="fzf-edit \$HOME/.config" \
+	be="fzf-fd \$HOME/.local/bin | xargs nvim" \
+	ce="fzf-fd \$HOME/.config | xargs nvim" \
 	cg="fzf-grep \$HOME/.config" \
-	fe="fzf-edit \$(pwd)" \
+	fe="fzf-fd \$(pwd) | xargs nvim" \
 	fg="fzf-grep \$(pwd)"
 
 alias \
