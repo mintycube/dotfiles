@@ -1,6 +1,6 @@
 return {
 	"neovim/nvim-lspconfig",
-	event = { "BufReadPost", "BufNewFile" },
+	-- event = { "BufReadPost", "BufNewFile" },
 	ft = { "sh", "python", "cpp", "c", "lua", "markdown" },
 	dependencies = {
 		{

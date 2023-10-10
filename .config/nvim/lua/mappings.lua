@@ -23,6 +23,7 @@ map('n'  , "<leader>q"     , ":lua vim.diagnostic.open_float()<CR>"   , { norema
 map('n'  , "<C-w>"         , ":bd<CR>"                                , { silent = true })
 map('n'  , "<A-v>"         , ":vsplit<CR>"                            , { silent = true })
 map('n'  , "<A-h>"         , ":split<CR>"                             , { silent = true })
+map('n'  , "<leader>cx"    , ":Barbecue toggle<CR>"                   , { desc = "Toggle context winbar", silent = true })
 
 map('x'  , "p"             , 'p:let @+=@0<CR>:let @"=@0<CR>'          , { silent = true })
 map('x'  , "k"             , ":m '<-2<cr>gv=gv"                         )

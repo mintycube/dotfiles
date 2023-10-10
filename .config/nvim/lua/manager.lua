@@ -13,11 +13,23 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	import = "plugins",
-	defaults = { lazy = true },
-	install = { colorscheme = { "tokyodark" } },
-	change_detection = { notify = false },
-	ui = { border = "rounded" },
-	performance = { cache = { enabled = true, },
+}, {
+	defaults = {
+		lazy = true,
+	},
+	install = {
+    colorscheme =  { "tokyodark" }
+  },
+	change_detection = {
+    notify = false
+  },
+	ui = {
+    border = "rounded"
+  },
+	performance = {
+		cache = {
+			enabled = true,
+		},
 		reset_packpath = true,
 		rtp = {
 			disabled_plugins = {
