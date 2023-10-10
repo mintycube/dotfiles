@@ -14,10 +14,4 @@ cp ~/.local/share/cpp20/compile_flags.txt "$project_dir"/compile_flags.txt
 cp ~/.local/share/cpp20/.clang-format "$project_dir"/.clang-format
 cp ~/.local/share/cpp20/Makefile "$project_dir"/Makefile
 
-echo '#include <iostream>
-
-int main() {
-  return 0;
-}' >"$project_dir"/src/main.cpp
-
-nvim "+3" "$project_dir"/src/main.cpp
+nvim "$project_dir"/src/main.cpp
