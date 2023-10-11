@@ -6,6 +6,7 @@ set icons
 set hidden!
 set period 1
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set promptfmt "\033[32m \033[35;1m%d\033[0m\033[1m%f\033[0m"
 # set cleaner '~/.config/lf/cleaner'
 # set previewer '~/.config/lf/scope'
 set autoquit true

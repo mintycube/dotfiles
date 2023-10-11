@@ -1,12 +1,5 @@
 -- Load and configure: Comment , nvim-surround , nvim-autopairs , lightspeed , nvim-colorizer , lf.nvim , indent-blankline , zen-mode.nvim , git-signs
 return {
-	{
-		"utilyre/sentiment.nvim",
-		version = "*",
-		event = "VeryLazy",
-		opts = {
-		},
-	},
 
 	{
 		"numToStr/Comment.nvim",

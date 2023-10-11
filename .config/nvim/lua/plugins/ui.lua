@@ -1,13 +1,15 @@
 return {
 	-- Load tokyodark as colorscheme
+
 	{
-		"tiagovla/tokyodark.nvim",
+		"nyoom-engineering/oxocarbon.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.cmd.colorscheme("tokyodark")
+			vim.cmd.colorscheme("oxocarbon")
 		end,
 	},
+
 	-- experimental ui
 	{
 		"folke/noice.nvim",
@@ -29,54 +31,53 @@ return {
 			},
 		},
 	},
-  --
-  -- {
-  --   "utilyre/barbecue.nvim",
-  --   name = "barbecue",
-  --   version = "*",
-  --   dependencies = {
-  --     "SmiteshP/nvim-navic",
-  --   },
-  --   event= "LspAttach",
-  --   config  = function ()
-  --     vim.opt.updatetime = 200
-  --
-  --     require("barbecue").setup({
-  --       create_autocmd = false,
-  --     })
-  --
-  --     vim.api.nvim_create_autocmd({ "WinScrolled", "BufWinEnter", "CursorHold", "InsertLeave", "BufModifiedSet", }, {
-  --       group = vim.api.nvim_create_augroup("barbecue.updater", {}),
-  --       callback = function()
-  --       require("barbecue.ui").update()
-  --     end,
-  --     })
-  --   end,
-  -- },
-  --
+
+	{
+		"utilyre/barbecue.nvim",
+		name = "barbecue",
+		enabled = false,
+		version = "*",
+		dependencies = { "SmiteshP/nvim-navic" },
+		event = "LspAttach",
+		config = function()
+			vim.opt.updatetime = 200
+
+			require("barbecue").setup({
+				create_autocmd = false,
+			})
+
+			vim.api.nvim_create_autocmd(
+				{ "WinScrolled", "BufWinEnter", "CursorHold", "InsertLeave", "BufModifiedSet" },
+				{
+					group = vim.api.nvim_create_augroup("barbecue.updater", {}),
+					callback = function()
+						require("barbecue.ui").update()
+					end,
+				}
+			)
+		end,
+	},
+
 	{
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
 		config = function()
 			local lualine = require("lualine")
 			local colors = {
-				bg = "#161722",
-				fg = "#a0a8cd",
-				yellow = "#dfae67",
-				cyan = "#38a89d",
-				darkblue = "#081633",
-				green = "#98c379",
-				orange = "#FF8800",
-				violet = "#a9a1e1",
-				magenta = "#a485dd",
-				blue = "#7199ee",
-				red = "#ec5f67",
-				low = "#4a5057",
+				bg = "#161616",
+				fg = "#dde1e6",
+				yellow = "#ffab91",
+				cyan = "#08bdba",
+				green = "#42be65",
+				violet = "#be95ff",
+				blue = "#78a9ff",
+				red = "#ee5396",
+				low = "#37474f",
 			}
 			local conditions = {
 				buffer_not_empty = function()
 					return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-				end,
+          end,
 				hide_in_width = function()
 					return vim.fn.winwidth(0) > 80
 				end,
@@ -121,7 +122,7 @@ return {
 			end
 			ins_left({
 				function()
-					return " "
+					return " 󰣠"
 				end,
 				color = function()
 					local mode_color = {
@@ -130,11 +131,8 @@ return {
 						v = colors.blue,
 						["^V"] = colors.blue,
 						V = colors.blue,
-						c = colors.magenta,
+						c = colors.violet,
 						no = colors.red,
-						s = colors.orange,
-						S = colors.orange,
-						["^S"] = colors.orange,
 						ic = colors.yellow,
 						R = colors.violet,
 						Rv = colors.violet,
@@ -159,7 +157,7 @@ return {
 				},
 				buffers_color = {
 					-- Same values as the general color option can be used here.
-					active = { fg = colors.magenta, bg = colors.bg }, -- Color for active buffer.
+					active = { fg = colors.violet, bg = colors.bg }, -- Color for active buffer.
 					inactive = { fg = colors.low, bg = colors.bg }, -- Color for inactive buffer.
 				},
 				symbols = {
@@ -167,7 +165,7 @@ return {
 					alternate_file = "", -- Text to show to identify the alternate file
 				},
 				cond = conditions.buffer_not_empty,
-				color = { fg = colors.magenta, gui = "bold" },
+				color = { fg = colors.violet, gui = "bold" },
 			})
 			ins_right({
 				"branch",

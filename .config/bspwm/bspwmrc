@@ -26,10 +26,10 @@ bspc config gapless_monocle false
 bspc config single_monocle true
 bspc config presel_feedback true
 
-bspc config active_border_color "#7199ee"
-bspc config focused_border_color "#7199ee"
-bspc config normal_border_color "#373d41"
-bspc config presel_feedback_color "#7199ee"
+bspc config active_border_color "#be95ff"
+bspc config focused_border_color "#be95ff"
+bspc config normal_border_color "#37474f"
+bspc config presel_feedback_color "#be95ff"
 
 bspc rule -a nmtui state=floating sticky=on follow=off focus=on
 bspc rule -a spterm state=floating sticky=on follow=off focus=on
