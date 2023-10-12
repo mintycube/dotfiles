@@ -71,6 +71,10 @@ vim.opt.winblend = 0
 vim.opt.pumblend = 0
 vim.opt.pumheight = 10
 
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
 if vim.g.neovide then
 	vim.o.guifont = "JetBrainsMono NF:h10"
 end

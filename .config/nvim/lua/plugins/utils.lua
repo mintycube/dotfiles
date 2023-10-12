@@ -1,6 +1,13 @@
 -- Load and configure: Comment , nvim-surround , nvim-autopairs , lightspeed , nvim-colorizer , lf.nvim , indent-blankline , zen-mode.nvim , git-signs
 return {
 
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+    event = "VeryLazy",
+    opts = {},
+  },
+
 	{
 		"numToStr/Comment.nvim",
 		opts = {},
@@ -23,7 +30,7 @@ return {
 
 	{
 		"folke/which-key.nvim",
-		keys = { "<leader>", "<space>", " ", "'", "`", "g", "c", "v" },
+		keys = { "<leader>", "<space>", " ", "'", "`", "g", "c", "v", "z" },
 		cmd = "WhichKey",
 		opts = {},
 	},

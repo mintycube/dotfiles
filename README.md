@@ -18,7 +18,7 @@ Here are some details about my setup:
 - **Font**: JetBrainsMono Nerd Font
 - **Scratchpads**: [tdrop](https://github.com/noctuid/tdrop)
 - **Editor**: [Neovim](https://github.com/neovim/neovim/)
-- **File Manager**: [lf](https://github.com/gokcehan/lf) + [cptv](https://github.com/NikitaIvanovV/ctpv)
+- **File Manager**: [lf](https://github.com/gokcehan/lf) + [ctpv](https://github.com/NikitaIvanovV/ctpv)
 - **Browser**: Firefox
 - **Menu**: [dmenu-flexipatch](https://github.com/mintycube/dmenu-flexipatch)
 - **Image-viewer** = [nsxiv](https://github.com/nsxiv/nsxiv)
