@@ -19,4 +19,4 @@ st.tabspaces:     2
 ! monokai-pro, nord, ocean, oxocarbon, rhxyn, tomorrow, kanagawa, tokyodark
 #include "xrdb/color/oxocarbon"
 ! Choices: tokyo, tokyodark, oxocarbon, nord, tomorrow, banana
-#include "xrdb/dmenu/tokyo"
+#include "xrdb/dmenu/oxocarbon"
