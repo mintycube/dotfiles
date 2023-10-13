@@ -1,3 +1,4 @@
+-- Load and configure: fzf-lua
 return {
   'ibhagwan/fzf-lua',
   keys = {
@@ -13,22 +14,15 @@ return {
     { "<leader>cr",  function() require("fzf-lua").lsp_references() end,            desc = "LSP References" },
     { "<leader>ce",  function() require("fzf-lua").lsp_document_diagnostics() end,  desc = "LSP Diagnostics" },
     { "<leader>cwe", function() require("fzf-lua").lsp_workspace_diagnostics() end, desc = "LSP Workspace Diagnostics" },
-    {"<leader>cm",   function() require('fzf-lua').files({cwd = "~", cmd="fzflua-mfiles"}) end,desc=  "Important files" },
+    { "<leader>i",   function() require('fzf-lua').files({cwd = "~", cmd="fzflua-mfiles"}) end,desc=  "Important files" },
   },
   opts = {
     previewers = {
       builtin = {
         extensions = {
-          -- neovim terminal only supports `viu` block output
           ["png"] = { "ueberzug" },
           ["jpg"] = { "ueberzug" },
         },
-        -- When using 'ueberzug' we can also control the way images
-        -- fill the preview area with ueberzug's image scaler, set to:
-        --   false (no scaling), "crop", "distort", "fit_contain",
-        --   "contain", "forced_cover", "cover"
-        -- For more details see:
-        -- https://github.com/seebye/ueberzug
         ueberzug_scaler = "cover",
       }
     }

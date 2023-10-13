@@ -1,4 +1,4 @@
--- Load and configure: Comment , nvim-surround , nvim-autopairs , lightspeed , nvim-colorizer , lf.nvim , indent-blankline , zen-mode.nvim , git-signs
+-- Load and configure: nvim-ufo , Comment , nvim-surround , which-key , nvim-autopairs , leap.nvim + flit.nvim , nvim-colorizer , lf.nvim , indent-blankline , zen-mode.nvim , git-signs
 return {
 
   {
@@ -85,16 +85,15 @@ return {
 
 	{
 		"lmburns/lf.nvim",
-		cmd = "Lf",
 		dependencies = { "nvim-lua/plenary.nvim", "akinsho/toggleterm.nvim" },
 		opts = {
 			winblend = 0,
 			highlights = { NormalFloat = { guibg = "NONE" } },
-			border = "single",
+			border = "rounded",
 			escape_quit = true,
 		},
 		keys = {
-			{ "<leader><space>", "<cmd>Lf<cr>", desc = "Lf file manager" },
+			{ "<leader><space>", "<cmd>lua require('lf').start()<cr>", desc = "Lf file manager" },
 		},
 	},
 
@@ -127,6 +126,9 @@ return {
 				},
 			},
 		},
+    keys = {
+      { "<leader>z", ":lua require('zen-mode').toggle()<CR>", desc = "[Z]en Mode", silent = true }
+    }
 	},
 
 	{

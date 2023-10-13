@@ -1,4 +1,4 @@
--- Load and configure: nvim-treesitter , nvim-treesitter-context
+-- Load and configure: nvim-treesitter
 return
 {
   {

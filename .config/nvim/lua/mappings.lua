@@ -1,3 +1,4 @@
+-- Does not contain plugin specific keybinds
 local map = vim.keymap.set
 
 map('n'  , "k"             , "v:count == 0 ? 'gk' : 'k'"              , { expr = true, silent = true })
@@ -14,16 +15,14 @@ map('n'  , "<C-u>"         , "<C-u>zz"                                  )
 map('n'  , "n"             , "nzzzv"                                    )
 map('n'  , "N"             , "Nzzzv"                                    )
 map('n'  , "<leader>x"     , "<cmd>!chmod +x %<CR>"                   , { desc = "chmod +x" })
-map('n'  , "<leader>s"     , ":%s/<C-r><C-w>//gI<Left><Left><Left>"   , { desc = "Replace" })
+map('n'  , "<leader>cp"    ,':!compiler "%:p"<CR>'                    , { desc = "run [C]om[P]iler script"})
+map('n'  , "<leader>s"     , ":%s/<C-r><C-w>//gI<Left><Left><Left>"   , { desc = "Replace All" })
 map('n'  , "<leader>a"     , "<cmd>%yank<CR>"                         , { desc = "Yank buffer" })
 map('n'  , "<A-;>"         , "<Esc>miA;<Esc>`i"                         )
-map('n'  , "<leader>p"     , ":lua RUN_CODE()<CR>"                    , { desc = "Run [P]roject", silent = true })
-map('n'  , "<leader>z"     , ":lua require('zen-mode').toggle()<CR>"  , { desc = "[Z]en Mode", silent = true })
 map('n'  , "<leader>q"     , ":lua vim.diagnostic.open_float()<CR>"   , { noremap = true, silent = true })
 map('n'  , "<C-w>"         , ":bd<CR>"                                , { silent = true })
 map('n'  , "<A-v>"         , ":vsplit<CR>"                            , { silent = true })
 map('n'  , "<A-h>"         , ":split<CR>"                             , { silent = true })
-map('n'  , "<leader>cx"    , ":Barbecue toggle<CR>"                   , { desc = "Toggle context winbar", silent = true })
 
 map('x'  , "p"             , 'p:let @+=@0<CR>:let @"=@0<CR>'          , { silent = true })
 map('x'  , "k"             , ":m '<-2<cr>gv=gv"                         )
@@ -36,6 +35,5 @@ map('i'  , "<C-u>"         , "<Esc>viwUea"                              )
 map('i'  , "<C-t>"         , "<Esc>b~lea"                               )
 map('i'  , "<C-;>"         , "<Esc>miA;<Esc>`ii"                        )
 
--- map({'n','v'}      , "<Space>"       , "<Nop>"                        , { silent = true })
 map({'x','v','n'}  , "<A-j>"         , ":m .+1<cr>=="                   )
 map({'x','v','n'}  , "<A-k>"         , ":m .-2<cr>=="                   )

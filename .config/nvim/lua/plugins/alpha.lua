@@ -1,3 +1,4 @@
+-- Load and configure: alpha-nvim
 return {
 	"goolord/alpha-nvim",
 	lazy = false,

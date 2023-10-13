@@ -1,4 +1,4 @@
--- Load and configure: nvim-cmp , friendly-snippets,  LuaSnip , cmp_luasnip , cmp-nvim-lsp , cmp-buffer cmp-nvim-lua , cmp-path
+-- Load and configure: nvim-cmp , friendly-snippets,  LuaSnip , cmp_luasnip , cmp-nvim-lsp , cmp-buffer , cmp-path
 return {
 	{
 		"hrsh7th/nvim-cmp",

@@ -1,12 +1,21 @@
+-- Load and configure: oxocarbon.nvim , noice.nvim + nui.nvim , lualine.nvim
 return {
 	-- Load tokyodark as colorscheme
-
 	{
 		"nyoom-engineering/oxocarbon.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
 			vim.cmd.colorscheme("oxocarbon")
+			local hl = vim.api.nvim_set_hl
+			hl(0, "DiagnosticVirtualTextError", { link = "Comment" })
+			hl(0, "DiagnosticVirtualTextInfo", { link = "Comment" })
+			hl(0, "DiagnosticVirtualTextWarn", { link = "Comment" })
+			hl(0, "DiagnosticVirtualTextHint", { link = "Comment" })
+			hl(0, "DiagnosticUnderlineError", { underline = true, sp = "#858694" })
+			hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#858694" })
+			hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#858694" })
+			hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#858694" })
 		end,
 	},
 
@@ -33,32 +42,6 @@ return {
 	},
 
 	{
-		"utilyre/barbecue.nvim",
-		name = "barbecue",
-		enabled = false,
-		version = "*",
-		dependencies = { "SmiteshP/nvim-navic" },
-		event = "LspAttach",
-		config = function()
-			vim.opt.updatetime = 200
-
-			require("barbecue").setup({
-				create_autocmd = false,
-			})
-
-			vim.api.nvim_create_autocmd(
-				{ "WinScrolled", "BufWinEnter", "CursorHold", "InsertLeave", "BufModifiedSet" },
-				{
-					group = vim.api.nvim_create_augroup("barbecue.updater", {}),
-					callback = function()
-						require("barbecue.ui").update()
-					end,
-				}
-			)
-		end,
-	},
-
-	{
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
 		config = function()
@@ -77,7 +60,7 @@ return {
 			local conditions = {
 				buffer_not_empty = function()
 					return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-          end,
+				end,
 				hide_in_width = function()
 					return vim.fn.winwidth(0) > 80
 				end,

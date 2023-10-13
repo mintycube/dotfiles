@@ -1,3 +1,4 @@
+-- Load and configure LSP and diagnostic signs: nvim-lspconfig , mason.nvim, mason-lspconfig
 return {
 	"neovim/nvim-lspconfig",
 	-- event = { "BufReadPost", "BufNewFile" },

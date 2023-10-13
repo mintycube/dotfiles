@@ -52,6 +52,14 @@ local options = {
 
 	--auto change dir
 	autochdir = true,
+
+  --fold options
+  foldlevel = 99,
+  foldlevelstart = 99,
+  foldenable = true,
+
+  -- for neovim gui
+  guifont = "JetBrainsMono NF:h10",
 }
 
 for key, value in pairs(options) do
@@ -63,7 +71,7 @@ vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.shortmess:append("c")
 vim.opt.iskeyword:append("-")
 
--- -- ui modern
+-- modern ui
 vim.opt.cmdheight = 0
 vim.g.VM_set_statusline = 0
 vim.g.VM_silent_exit = 1
@@ -71,10 +79,4 @@ vim.opt.winblend = 0
 vim.opt.pumblend = 0
 vim.opt.pumheight = 10
 
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
-
-if vim.g.neovide then
-	vim.o.guifont = "JetBrainsMono NF:h10"
-end
+vim.opt.formatoptions:remove { "c", "r", "o" }

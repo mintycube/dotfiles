@@ -1,3 +1,4 @@
+-- Load and configure linting and formatting: none-ls.nvim
 return {
   "nvimtools/none-ls.nvim",
   event = "LspAttach",

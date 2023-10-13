@@ -1,3 +1,5 @@
+!! vim: filetype=xdefaults
+
 Xft.antialias:    1
 Xft.hinting:      1
 Xft.autohint:     0
@@ -17,4 +19,4 @@ st.tabspaces:     2
 ! monokai-pro, nord, ocean, oxocarbon, rhxyn, tomorrow, kanagawa, tokyodark
 #include "xrdb/color/oxocarbon"
 ! Choices: tokyo, tokyodark, oxocarbon, nord, tomorrow, banana
-#include "xrdb/dmenu/oxocarbon"
+#include "xrdb/dmenu/tokyo"
