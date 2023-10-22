@@ -14,7 +14,7 @@ autocmd("TextYankPost", {
 	pattern = "*",
 })
 
--- [[ Disable Autocomments ]]
+-- [[ Disable Autocommenting on new lines ]]
 local autocomments = augroup("DisableAutocommenting", { clear = true })
 autocmd("BufEnter", {
 	callback = function()
@@ -89,7 +89,7 @@ autocmd('BufRead', {
   end,
 })
 
--- [[ Reload xresources ]]
+-- [[ Reload xresources on wite ]]
 local reload_xresources = augroup("ReloadXresources", { clear = true })
 local xresources_path = fn.resolve(fn.expand("~/.config/x11/xresources"))
 autocmd({ "BufWritePost" }, {
@@ -100,7 +100,7 @@ autocmd({ "BufWritePost" }, {
   group = reload_xresources,
 })
 
--- [[ Reload bspwm ]]
+-- [[ Reload bspwm on write ]]
 local reload_bspwm = augroup("ReloadBspwm", { clear = true })
 local bspwmrc_path = fn.resolve(fn.expand("~/.config/bspwm/bspwmrc"))
 autocmd({ "BufWritePost" }, {
@@ -111,7 +111,7 @@ autocmd({ "BufWritePost" }, {
   group = reload_bspwm,
 })
 
--- [[ Reload sxhkd ]]
+-- [[ Reload sxhkd on write ]]
 local reload_sxhkd = augroup("ReloadSxhkd", { clear = true })
 local sxhkdrc_path = fn.resolve(fn.expand("~/.config/bspwm/sxhkdrc"))
 autocmd({ "BufWritePost" }, {

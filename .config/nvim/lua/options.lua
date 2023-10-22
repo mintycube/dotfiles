@@ -16,67 +16,70 @@ local options = {
 	incsearch = true,
 	gdefault = true,
 	showmatch = true,
+	grepformat = "%f:%l:%c:%m",
+	grepprg = "rg --vimgrep",
+	inccommand = "nosplit", -- preview incremental substitute
 
 	-- user interface
 	fillchars = { eob = " " },
 	laststatus = 3,
 	number = true,
 	numberwidth = 2,
-	relativenumber = false,
+	relativenumber = true,
 	ruler = false,
 	wrap = true,
 	termguicolors = true,
-	scrolloff = 8,
-	sidescrolloff = 8,
+	scrolloff = 4,
+	sidescrolloff = 4,
 	signcolumn = "yes",
 	cursorline = true,
 	cursorlineopt = "both",
 	conceallevel = 3,
 	list = true,
 	showmode = false,
+	colorcolumn = "80",
+	winminwidth = 5,
 
 	-- editing
-	completeopt = { "menuone", "noselect" },
+	completeopt = { "menu", "menuone", "noselect" },
 	timeoutlen = 300,
 	undofile = true,
+	autowrite = true,
+	mouse = "a",
 
 	-- window management
 	splitbelow = true,
 	splitright = true,
-	mouse = "a",
-	winblend = 0,
 
 	-- clipboard
 	clipboard = "unnamedplus",
-	pumblend = 10,
 
 	--auto change dir
 	autochdir = true,
 
-  --fold options
-  foldlevel = 99,
-  foldlevelstart = 99,
-  foldenable = true,
+	--fold options
+	foldlevel = 99,
+	foldlevelstart = 99,
+	foldenable = true,
+	shortmess = "aowOFCWstTAIcCqFS",
 
-  -- for neovim gui
-  guifont = "JetBrainsMono NF:h10",
+	-- for neovim gui
+	guifont = "JetBrainsMono NF:h9",
+
+	-- modern ui
+	winblend = 0,
+	pumblend = 0,
+	pumheight = 10,
+  cmdheight = 0
 }
 
 for key, value in pairs(options) do
 	vim.opt[key] = value
 end
 
-vim.opt.shortmess:append("sI")
 vim.opt.whichwrap:append("<,>,[,],h,l")
-vim.opt.shortmess:append("c")
 vim.opt.iskeyword:append("-")
 
 -- modern ui
-vim.opt.cmdheight = 0
 vim.g.VM_set_statusline = 0
 vim.g.VM_silent_exit = 1
-vim.opt.winblend = 0
-vim.opt.pumblend = 0
-vim.opt.pumheight = 10
-
-vim.opt.formatoptions:remove { "c", "r", "o" }
