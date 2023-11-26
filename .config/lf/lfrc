@@ -61,7 +61,7 @@ cmd fzf_search ${{
 }}
 
 cmd fzf_grep ${{
-  fzf-grep
+  fzf-grep "$f"
 }}
 
 cmd ff $ff "$(echo $*)"
@@ -138,8 +138,8 @@ cmd bulkrename ${{
 }}
 
 # Bindings
-map <c-f> :fzf_search
-map <c-g> :fzf_grep
+map / :fzf_search
+map ? :fzf_grep
 map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
 map gh
 map g top

@@ -8,6 +8,8 @@ setbg &          # set the background with the `setbg` script
 xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources &
 xrdbpid=$! # Uncomment to use Xresources colors/settings on startup
 
+conky -y 40 -c "${XDG_CONFIG_HOME:-$HOME/.config}/conky/JL-08/JL-08.conf" > /dev/null &
+
 autostart="mpd dunst unclutter remapd clipmenud"
 
 for program in $autostart; do

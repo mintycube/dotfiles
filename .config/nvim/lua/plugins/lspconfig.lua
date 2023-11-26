@@ -2,7 +2,7 @@
 return {
 	"neovim/nvim-lspconfig",
 	-- event = { "BufReadPost", "BufNewFile" },
-	ft = { "sh", "python", "cpp", "c", "lua", "markdown" },
+	ft = { "sh", "python", "cpp", "c", "lua", "markdown", "tex" },
 	dependencies = {
 		{
 			"williamboman/mason.nvim",
@@ -26,11 +26,14 @@ return {
 					"bashls",
 					"shfmt",
 					"shellcheck",
+          -- latex
+          "texlab",
+          "latexindent",
 				},
 			},
 		},
 		"williamboman/mason-lspconfig.nvim",
-		"nvim-treesitter/nvim-treesitter",
+		-- "nvim-treesitter/nvim-treesitter",
 		-- "folke/neodev.nvim",
 	},
 
@@ -141,6 +144,13 @@ return {
 					capabilities = capabilities,
 				})
 			end,
+
+      ["texlab"] = function()
+        require("lspconfig").texlab.setup({
+          on_attach = on_attach,
+          capabilities = capabilities,
+        })
+      end,
 		})
 	end,
 }

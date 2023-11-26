@@ -1,6 +1,4 @@
 # ~/.bashrc
-[[ $- != *i* ]] && return                # If not running interactively, don't do anything
-
 bind "set completion-ignore-case on"     # Perform file completion in a case insensitive fashion
 bind "set completion-map-case on"        # Treat hyphens and underscores as equivalent
 bind "set show-all-if-ambiguous on"      # Display matches for ambiguous patterns at first tab press
@@ -29,9 +27,10 @@ shopt -s cdspell 2>/dev/null  # Correct spelling errors in arguments supplied to
 shopt -s expand_aliases       # expand aliases
 shopt -s checkwinsize         # checks term size when bash regains control
 
-# shopt -s cdable_vars # This allows you to bookmark your favorite places across the file system
-
 [ -f "$HOME/.config/shell/shortcutrc" ] && source "$HOME/.config/shell/shortcutrc" # shortcuts
 [ -f "$HOME/.config/shell/aliasrc" ] && source "$HOME/.config/shell/aliasrc"       # aliases
 
 PS1='\[\e[34;3m\]\w \[\e[0;32m\] \[\e[0m\]' # promt with dir in italic
+
+source "$HOME/.local/src/fzf-tab-completion/bash/fzf-bash-completion.sh" # https://github.com/lincheney/fzf-tab-completion.git
+bind -x '"\t": fzf_bash_completion'

@@ -75,11 +75,11 @@ super + w
 
 # Open lf
 super + r
-  kitty lf
+  wezterm -e lf
 
 # Open htop
 super + shift + r
-  kitty htop
+  wezterm -e htop
 
 # Toggle tiling/monocle
 super + t
@@ -147,11 +147,11 @@ super + apostrophe
 
 # Terminal
 super + Return
-  kitty
+  wezterm
 
 # Scratchpad Terminal
 super + shift + Return
-  tdrop -a -w 65% -h 60% -y 4% -x 17% st -c spterm
+  tdrop -a -w 65% -h 60% -y 4% -x 17% kitty --class spterm
 
 # Increase or decrease gaps
 super { ,+ shift }+ z
@@ -175,7 +175,7 @@ super + n
 
 # Open Newsboat
 super + shift + n
-  kitty newsboat
+  wezterm -e newsboat
 
 # Open music player
 super + m

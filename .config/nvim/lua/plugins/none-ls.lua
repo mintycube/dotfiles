@@ -14,16 +14,18 @@ return {
         -- python
         formatting.black,
         lint.ruff,
-        -- actions.refactoring,
         -- markdown
         formatting.markdownlint,
         lint.markdownlint,
+        lint.proselint,
         -- sh
         lint.shellcheck,
         -- actions.shellcheck,
         formatting.shfmt,
         -- lua
         formatting.stylua,
+        -- latex
+        formatting.latexindent,
       },
     }
   end,

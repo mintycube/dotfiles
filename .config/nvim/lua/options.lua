@@ -35,9 +35,9 @@ local options = {
 	cursorline = true,
 	cursorlineopt = "both",
 	conceallevel = 3,
-	list = true,
+	list = false,
 	showmode = false,
-	colorcolumn = "80",
+	-- colorcolumn = "80",
 	winminwidth = 5,
 
 	-- editing
@@ -67,10 +67,10 @@ local options = {
 	guifont = "JetBrainsMono NF:h9",
 
 	-- modern ui
-	winblend = 0,
-	pumblend = 0,
-	pumheight = 10,
-  cmdheight = 0
+	-- winblend = 0,
+	-- pumblend = 0,
+	-- pumheight = 10,
+ --  cmdheight = 0
 }
 
 for key, value in pairs(options) do
@@ -81,5 +81,5 @@ vim.opt.whichwrap:append("<,>,[,],h,l")
 vim.opt.iskeyword:append("-")
 
 -- modern ui
-vim.g.VM_set_statusline = 0
-vim.g.VM_silent_exit = 1
+-- vim.g.VM_set_statusline = 0
+-- vim.g.VM_silent_exit = 1

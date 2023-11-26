@@ -28,3 +28,4 @@ fzf_command="fzf \
   --pointer='❱'"
 
 eval "$fd_command" | eval "$fzf_command"
+exit 0

@@ -4,14 +4,22 @@ return {
 	event = "VeryLazy",
 	opts = {},
 	keys = {
-		{ "<leader>t", "<cmd>ToggleTerm size=70 direction=vertical<cr>", desc = "Open terminal" },
+		{ "<leader>t", "<cmd>ToggleTerm direction=vertical<cr>", desc = "Open terminal" },
 		{ "<leader>g", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", desc = "Toggle Lazy[G]it", silent = true, noremap = true, },
-		{ "<leader>p", ":lua RUN_CODE()<CR>", desc = "Run [P]roject", silent = true, noremap = true },
+		{ "<leader>p", ":lua RUN_CODE()<CR>", desc = "Run [P]roject", silent = true, noremap = true, },
 	},
 	config = function()
-		require("toggleterm").setup()
+		require("toggleterm").setup({
+			size = function(term)
+				if term.direction == "horizontal" then
+					return 15
+				elseif term.direction == "vertical" then
+					return vim.o.columns * 0.45
+				end
+			end,
+		})
 		local run_command_table = {
-			["cpp"] = "([[ -f Makefile ]] && make run) || (cd .. && make run)",
+			["cpp"] = "([[ -f Makefile ]] && make run) || (cd .. && make all run)",
 			["c"] = "gcc -g -Wall % -o %:r && ./%:r",
 			["python"] = "python %",
 			["lua"] = "lua %",
@@ -54,7 +62,7 @@ return {
 			if run_command_table[vim.bo.filetype] then
 				local expanded_cmd = EXPAND_SYMBOL_RESOLVER(run_command_table[vim.bo.filetype])
 				local runcmd = expanded_cmd .. "; " .. extra
-				local runterm = Terminal:new({ cmd = runcmd, direction = "float" })
+				local runterm = Terminal:new({ cmd = runcmd, direction = "vertical" })
 				runterm:toggle()
 			else
 				print("\nFileType not supported\n")

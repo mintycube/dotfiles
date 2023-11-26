@@ -94,7 +94,7 @@ askrecording() {
 }
 
 asktoend() {
-	response=$(printf "No\\nYes" | dmenu -i -bw 2 -W 200 -X 1151 -Y 15 -l 2 -p "End recording?") &&
+	response=$(printf "Yes\\nNo" | dmenu -i -bw 2 -W 200 -X 1151 -Y 15 -l 2 -p "End recording?") &&
 		[ "$response" = "Yes" ] && killrecording
 }
 

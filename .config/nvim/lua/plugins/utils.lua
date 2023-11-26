@@ -50,22 +50,9 @@ return {
 		config = function()
 			require("leap").add_default_mappings()
 			vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
-			vim.api.nvim_set_hl(0, "LeapMatch", {
-				fg = "white",
-				bold = true,
-				nocombine = true,
-			})
-			vim.api.nvim_set_hl(0, "LeapLabelPrimary", {
-				fg = "#f02077",
-				bold = true,
-				nocombine = true,
-			})
-			vim.api.nvim_set_hl(0, "LeapLabelSecondary", {
-				fg = "#99ddff",
-				bold = true,
-				nocombine = true,
-			})
-			require("leap").opts.highlight_unlabeled_phase_one_targets = true
+			vim.api.nvim_set_hl(0, "LeapMatch", { fg = "white", bold = true, nocombine = true, })
+			vim.api.nvim_set_hl(0, "LeapLabelPrimary", { fg = "#f02077", bold = true, nocombine = true, })
+			vim.api.nvim_set_hl(0, "LeapLabelSecondary", { fg = "#99ddff", bold = true, nocombine = true, })
 		end,
 	},
 
@@ -157,12 +144,7 @@ return {
 				changedelete = { text = "~" },
 			},
 			on_attach = function(bufnr)
-				vim.keymap.set(
-					"n",
-					"<leader>hp",
-					require("gitsigns").preview_hunk,
-					{ buffer = bufnr, desc = "Preview git hunk" }
-				)
+				vim.keymap.set( "n", "<leader>hp", require("gitsigns").preview_hunk, { buffer = bufnr, desc = "Preview git hunk" })
 				local gs = package.loaded.gitsigns
 				vim.keymap.set({ "n", "v" }, "]c", function()
 					if vim.wo.diff then
