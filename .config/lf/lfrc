@@ -1,0 +1,210 @@
+# Basic vars
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 8
+set icons
+set hidden!
+set period 1
+set sortby ext
+set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set promptfmt "\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[0m"
+# set cleaner '~/.config/lf/cleaner'
+# set previewer '~/.config/lf/scope'
+set autoquit true
+set cursorpreviewfmt "\033[7m"
+
+set previewer ctpv
+set cleaner ctpvclear
+&ctpv -s $id
+&ctpvquit $id
+
+# cmds/functions
+cmd open ${{
+  case $(file --mime-type "$(readlink -f $f)" -b) in
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
+    image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+    text/html) $EDITOR $fx;;
+    text/*|application/json|inode/x-empty|application/x-subrip|application/javascript) $EDITOR $fx;;
+    image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
+    image/svg+xml) display -- $f ;;
+    image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|avif\|tif\|ico\)\(_large\)*$" |
+     setsid -f nsxiv -aio 2>/dev/null | while read -r file; do
+        [ -z "$file" ] && continue
+        lf -remote "send select \"$file\""
+        lf -remote "send toggle"
+        done &
+      ;;
+    audio/*|video/x-ms-asf) setsid -f mpv --loop-file --audio-display=no $f ;;
+    video/*) setsid -f mpv --loop-file $f -quiet >/dev/null 2>&1 ;;
+    application/pdf|application/vnd.djvu|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
+    application/pgp-encrypted) $EDITOR $fx ;;
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template|application/vnd.openxmlformats-officedocument.presentationml.presentation|application/vnd.oasis.opendocument.presentation-template|application/vnd.oasis.opendocument.presentation|application/vnd.ms-powerpoint|application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template|application/vnd.oasis.opendocument.formula|application/vnd.oasis.opendocument.database) setsid -f libreoffice $fx >/dev/null 2>&1 ;;
+    *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
+  esac
+}}
+
+cmd on-cd &{{
+	# display repository status in your prompt
+	if [ -d .git ] || [ -f .git ]; then
+		branch=$(git branch --show-current 2>/dev/null) || true
+		remote=$(git config --get branch.$branch.remote 2>/dev/null) || true
+		url=$(git remote get-url $remote 2>/dev/null) || true
+    # "\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[0m"
+		fmt="\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[32m  $branch 󰄾 $url\033[0m"
+	elif [ -d .hg ]; then
+		hg=$(hg branch 2>/dev/null) || true
+		fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m [HG BRANCH:> $hg]\033[0m"
+	elif [ -d .svn ]; then
+		svn=$(svn info 2>/dev/null | awk '/^URL: /{print $2}') || true
+		fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m [SVN URL:> $svn]\033[0m"
+	else
+		fmt="\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[0m"
+	fi
+	lf -remote "send $id set promptfmt \"$fmt\""
+}}
+
+
+cmd fzf_search ${{
+  selected=$(fzf-fd)
+  if [ -n "$selected" ]; then
+    lf "$selected"
+  fi
+}}
+
+cmd fzf_grep ${{
+  fzf-grep "$f"
+}}
+
+cmd live_sever ${{
+  killall live-server; setsid -f live-server "$f"
+}}
+
+cmd ff $ff "$(echo $*)"
+
+cmd extract ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "extract?[y/N]"
+	read ans
+	[ $ans = "y" ] && {
+		case $fx in
+			*.tar.bz2)   tar xjf $fx     ;;
+			*.tar.gz)    tar xzf $fx     ;;
+			*.bz2)       bunzip2 $fx     ;;
+			*.rar)       unrar e $fx     ;;
+			*.gz)        gunzip $fx      ;;
+			*.tar)       tar xf $fx      ;;
+			*.tbz2)      tar xjf $fx     ;;
+			*.tgz)       tar xzf $fx     ;;
+			*.zip)       unzip $fx       ;;
+			*.Z)         uncompress $fx  ;;
+			*.7z)        7z x $fx        ;;
+			*.tar.xz)    tar xf $fx      ;;
+		esac
+	}
+}}
+
+cmd delete ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "delete?[y/N]"
+	read ans
+	[ $ans = "y" ] && rm -rf -- $fx
+}}
+
+cmd moveto ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	clear; echo "Move to where?"
+	dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+	for x in $fx; do
+		eval mv -iv \"$x\" \"$dest\"
+	done &&
+	notify-send "🚚 File(s) moved." "File(s) moved to $dest."
+}}
+
+cmd copyto ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	clear; echo "Copy to where?"
+	dest="$(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf | sed 's|~|$HOME|')" &&
+	for x in $fx; do
+		eval cp -ivr \"$x\" \"$dest\"
+	done &&
+	notify-send "📋 File(s) copied." "File(s) copies to $dest."
+}}
+
+cmd setbg "$1"
+
+cmd bulkrename ${{
+    tmpfile_old="$(mktemp)"
+    tmpfile_new="$(mktemp)"
+
+    [ -n "$fs" ] && fs=$(basename -a $fs) || fs=$(ls)
+
+    echo "$fs" > "$tmpfile_old"
+    echo "$fs" > "$tmpfile_new"
+    $EDITOR "$tmpfile_new"
+
+    [ "$(wc -l < "$tmpfile_old")" -eq "$(wc -l < "$tmpfile_new")" ] || { rm -f "$tmpfile_old" "$tmpfile_new"; exit 1; }
+
+    paste "$tmpfile_old" "$tmpfile_new" | while IFS="$(printf '\t')" read -r src dst
+    do
+        [ "$src" = "$dst" ] || [ -e "$dst" ] || mv -- "$src" "$dst"
+    done
+
+    rm -f "$tmpfile_old" "$tmpfile_new"
+    lf -remote "send $id unselect"
+}}
+
+cmd git_branch ${{
+    git branch | fzf | xargs git checkout
+    pwd_shell=$(pwd | sed 's/\\/\\\\/g;s/"/\\"/g')
+    lf -remote "send $id updir"
+    lf -remote "send $id cd \"$pwd_shell\""
+}}
+map gb :git_branch
+map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
+map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
+map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
+
+# Bindings
+map / :fzf_search
+map ? :fzf_grep
+map S live_server
+map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
+map gh
+map gg top
+map D delete
+map E extract
+map C copyto
+map M moveto
+map <c-n> push :ff<space>
+map <c-r> reload
+map <c-s> set hidden!
+map <enter> shell
+map x $$f
+map X !$f
+map o &mimeopen "$f"
+map O $mimeopen --ask "$f"
+
+map A :rename; cmd-end # at the very end
+map c push A<c-u> # new rename
+map I :rename; cmd-home # at the very beginning
+map i :rename # before extension
+map a :rename; cmd-right # after extension
+map B bulkrename
+map b $setbg $f
+
+map <c-e> down
+map <c-y> up
+map V push :!nvim<space>
+
+map W $setsid -f $TERMINAL >/dev/null 2>&1
+
+map Y $printf "%s" "$fx" | xclip -selection clipboard
+
+# Source Bookmarks
+source "~/.config/lf/shortcutrc"

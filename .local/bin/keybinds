@@ -1,0 +1,14 @@
+#!/bin/bash
+
+keybinds_file="$HOME/.local/share/script-data/keybinds"
+dmenu_cmd="dmenu -bw 2 -i -W 340 -X 1011 -Y 15 -l 29"
+selected=$(awk -F, '{
+    gsub(/^ +| +$/,"",$1);
+    gsub(/^ +| +$/,"",$2);
+    gsub(/^ +| +$/,"",$3);
+    printf "%-15s%25s\t%s\n", $1, $2, $3;
+  }' "$keybinds_file" | $dmenu_cmd)
+
+bind="$(echo "$selected" | awk '{print $1}')"
+action="$(echo "$selected" | awk -F'[[:space:]]{2,}|\t' '{print $2}')"
+notify-send "$bind" "$action"

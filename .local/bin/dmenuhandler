@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Feed this script a link and it will give dmenu
+# some choice programs to use to open it.
+feed="${1:-$(true | dmenu -p 'Paste URL or file path')}"
+
+case "$(printf "Search in Browser\\nOpen in Browser\\nCopy URL\\nQueue Video\\nQueue Audio\\nQueue Download\\nPlay\\nPlay (loop)\\nView Image\\nSet Background\\nOpen PDF\\nOpen in Vim" | dmenu -i -l 16 -W 200 -Y 15 -X 1151 -bw 2)" in
+	"Copy URL") echo "$feed" | xclip -selection clipboard ;;
+	"Play") setsid -f mpv -quiet "$feed" >/dev/null 2>&1 ;;
+  "Play (loop)") setsid -f mpv -quiet --loop "$feed" >/dev/null 2>&1 ;;
+	"Queue Video") qndl "$feed" >/dev/null 2>&1 ;;
+	"Queue Audio") qndl "$feed" 'yt-dlp -o "%(title)s.%(ext)s" -f bestaudio --embed-metadata --restrict-filenames' ;;
+	"Queue Download") qndl "$feed" 'curl -LO' >/dev/null 2>&1 ;;
+	"Open PDF") curl -sL "$feed" > "/tmp/$(echo "$feed" | sed "s|.*/||;s/%20/ /g")" && zathura "/tmp/$(echo "$feed" | sed "s|.*/||;s/%20/ /g")"  >/dev/null 2>&1 ;;
+	"Open Image") curl -sL "$feed" > "/tmp/$(echo "$feed" | sed "s|.*/||;s/%20/ /g")" && nsxiv -a "/tmp/$(echo "$feed" | sed "s|.*/||;s/%20/ /g")"  >/dev/null 2>&1 ;;
+	"Open in Vim") curl -sL "$feed" > "/tmp/$(echo "$feed" | sed "s|.*/||;s/%20/ /g")" && setsid -f "$TERMINAL" -e "$EDITOR" "/tmp/$(echo "$feed" | sed "s|.*/||;s/%20/ /g")"  >/dev/null 2>&1 ;;
+	"Set Background") curl -L "$feed" > $XDG_CACHE_HOME/pic ; xwallpaper --zoom $XDG_CACHE_HOME/pic >/dev/null 2>&1 ;;
+	"Search in Browser") setsid -f "$BROWSER" -search "$feed" >/dev/null 2>&1 ;;
+	"Open in Browser") setsid -f "$BROWSER" "$feed" >/dev/null 2>&1 ;;
+esac

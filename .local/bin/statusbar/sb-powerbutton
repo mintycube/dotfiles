@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# The clickable help menu. Middle click to restart wm.
+
+case $BLOCK_BUTTON in
+	1) sysact ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac;
+if [ ! -e ~/.cache/bar_color ]; then
+  echo " "
+else
+  echo "^C1^ ^d^"
+fi

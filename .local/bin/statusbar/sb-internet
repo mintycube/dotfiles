@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# Show wifi 󰤪  and percent strength or 󰤭  if none.
+# Show 󰈁  if connected to ethernet or 󰈂  if none.
+# Show 󰖂  if a vpn connection is active
+
+case $BLOCK_BUTTON in
+	1) networkmanager_dmenu && pkill -RTMIN+4 dwmblocks ;;
+	3) notify-send "󰖟  Internet module" "\-  Click to connect
+󰇨 : wifi disabled
+󰤭 : no wifi connection
+󰤪 : wifi connected
+󰈂 : no ethernet
+󰈁 : ethernet working
+󰖂 : vpn is active
+" ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# Wifi
+if [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'up' ] ; then
+  if [ ! -e ~/.cache/bar_color ]; then
+    wifiicon="$(awk '/^\s*w/ { cmd="nmcli -t -f active,ssid dev wifi | grep yes | cut -d: -f2"; cmd | getline output; close(cmd); print "󰤪 ", output }' /proc/net/wireless)"
+  else
+    wifiicon="$(awk '/^\s*w/ { cmd="nmcli -t -f active,ssid dev wifi | grep yes | cut -d: -f2"; cmd | getline output; close(cmd); print "^C2^󰤪 ^d^", output }' /proc/net/wireless)"
+  fi
+elif [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'down' ] ; then
+  if [ ! -e ~/.cache/bar_color ]; then
+    [ "$(cat /sys/class/net/w*/flags 2>/dev/null)" = '0x1003' ] && wifiicon="󰤭 " || wifiicon="󰇨 "
+  else
+    [ "$(cat /sys/class/net/w*/flags 2>/dev/null)" = '0x1003' ] && wifiicon="^C1^󰤭 ^d^" || wifiicon="^C3^󰇨 ^d^"
+  fi
+fi
+
+# Ethernet
+# [ "$(cat /sys/class/net/e*/operstate 2>/dev/null)" = 'up' ] && ethericon="󰈁 " || ethericon="󰈂 "
+
+# TUN
+# [ -n "$(cat /sys/class/net/tun*/operstate 2>/dev/null)" ] && tunicon="󰖂 "
+
+# printf "%s%s%s\n" "$wifiicon" "$ethericon" "$tunicon"
+printf "%s%s%s\n" "$wifiicon"

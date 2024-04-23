@@ -1,0 +1,12 @@
+#!/bin/sh
+
+case $BLOCK_BUTTON in
+	1) keybinds ;;
+	3) notify-send "󰌌  Help module" "\- Left click to open keybinds guide." ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac;
+if [ ! -e ~/.cache/bar_color ]; then
+  echo "󰌌 "
+else
+  echo "^C3^󰌌 ^d^"
+fi

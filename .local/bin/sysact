@@ -1,0 +1,24 @@
+#!/bin/bash
+
+options=(
+  "  Lock"
+  "  Renew dwm"
+  "󰍃  Leave dwm"
+  "  Shutdown"
+  "  Reboot"
+  "󰶐  Display off"
+)
+
+commands=(
+  "lock"
+  "renew-dwm"
+  "kill -TERM $(pidof -s dwm)"
+  "systemctl poweroff -i"
+  "systemctl reboot -i"
+  "xset dpms force off"
+)
+
+if prompt=$(printf '%s\n' "${options[@]}" | dmenu -i -bw 2 -g 1 -l 9 -W 200 -X 1151 -Y 15); then
+  selected_index=$(printf '%s\n' "${options[@]}" | grep -xn "$prompt" | cut -d ":" -f 1)
+  ${commands[$selected_index - 1]}
+fi

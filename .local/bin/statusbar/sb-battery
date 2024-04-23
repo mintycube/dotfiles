@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# Prints all batteries, their percentage remaining and an emoji corresponding
+# to charge status (󱐋  for plugged up,   for discharging on battery, etc.).
+
+case $BLOCK_BUTTON in
+	1) notify-send "  Battery module" " : discharging
+󰅙 : not charging
+ : stagnant charge
+󱐋 : charging
+ : charged
+ : battery very low!
+
+- Scroll to adjust brightness" ;;
+	3) notify-send "  Battery module" " : discharging
+󰅙 : not charging
+ : stagnant charge
+󱐋 : charging
+ : charged
+ : battery very low!
+
+- Scroll to adjust brightness" ;;
+	4) xbacklight -inc 15 ;;
+	5) xbacklight -dec 15 ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# Loop through all attached batteries and format the info
+for battery in /sys/class/power_supply/BAT?*; do
+	# If non-first battery, print a space separator.
+	[ -n "${capacity+x}" ] && printf " "
+  # Sets up the status and capacity
+  if [ ! -e ~/.cache/bar_color ]; then
+    case "$(cat "$battery/status" 2>&1)" in
+      "Full") status="  " ;;
+      "Discharging") status="  " ;;
+      "Charging") status="󱐋 " ;;
+      "Not charging") status="󱐋 " ;;
+      "Unknown") status=" " ;;
+      *) exit 1 ;;
+    esac
+  else
+    case "$(cat "$battery/status" 2>&1)" in
+      "Full") status="^C2^  ^d^" ;;
+      "Discharging") status="^C5^  ^d^" ;;
+      "Charging") status="^C3^󱐋 ^d^" ;;
+      "Not charging") status="^C1^󱐋 ^d^" ;;
+      "Unknown") status="^C6^ ^d^" ;;
+      *) exit 1 ;;
+    esac
+  fi
+  capacity="$(cat "$battery/capacity" 2>&1)"
+  # Will make a warn variable if discharging and low
+  if [ ! -e ~/.cache/bar_color ]; then
+    [ "$status" = "  " ] && [ "$capacity" -le 25 ] && warn=" "
+  else
+    [ "$status" = "^C1^  ^d^" ] && [ "$capacity" -le 25 ] && warn="^C3^ ^d^"
+  fi
+  # Prints the info
+  printf "%s%s%d%%" "$status" "$warn" "$capacity"; unset warn
+done && printf "\\n"

@@ -1,0 +1,58 @@
+w,               firefox,                    browser google chrome web empty internet
+return,          st,                         shell command prompt st empty enter
+r,               lf,                         file manager empty
+d,               dmenu_run,                  empty apps rofi programs
+a,               dmenu_hub,                  empty scripts mount color picker edit config kill
+n,               nvim,                       editor text empty
+space,           dmenu_web,                  websearch bookmarks internet empty
+backspace,       systerm action,             empty sysact reboot restart renew reload lock leave dwm
+mod-w,           firefox,                    browser google chrome web
+mod-return,      open terminal,              shell command prompt st
+mod-backspace,   system actions,             sysact reboot restart renew reload lock leave dwm
+mod-r,           lf,                         file manager
+mod-d,           dmenu_run,                  apps rofi programs
+mod-a,           dmenu_hub,                  scripts mount color picker edit config kill
+mod-space,       dmenu_web,                  websearch bookmarks internet
+mod-n,           nvim,                       editor text
+mute,            mute volume,                sound
+raisevolume,     increase volume,            sound
+lowervolume,     lower volume,               sound
+prev,            previous media,             song
+next,            next media,                 song
+pause,           pause media,                song
+play,            play media,                 song
+brightnessUp,    increase brightness,        backlight
+brightnessDown,  decrease brightness,        backlight
+print_scr,       screenshot tool,            capture
+mod-print_scr,   recording tool,             capture video cast
+mod-shift-del,   kill dwm,                   leave log out
+mod-del,         renew dwm,                  refresh wm
+mod-q,           close window,               kill client
+mod-shift-r,     gui file manager,           thunar files
+mod-t,           tile layout,                tiling
+mod-y,           monocle layout,             layout
+mod-u,           floating layout,            no layout
+mod-o,           increase master windows,    master
+mod-shift-o,     decrease master windows,    master
+mod-f,           fake fullscreen,            maximize
+mod-h,           adjust master/stack ratio,  resize
+mod-l,           adjust master/stack ratio,  resize
+mod-',           calculator,                 apostrophe qalculate math
+mod-b,           toggle statusbar,           dwmblocks hide
+mod-shift-n,     newsboat,                   rss
+mod-m,           music,                      ncmpcpp mpd songs mp3
+mod-left,        focus left window,          activate client
+mod-right,       focus right window,         activate client
+mod-up,          focus upper window,         activate client
+mod-down,        focus lower window,         activate client
+mod-ctrl-up,     rotate windows CW,          move clients clockwise
+mod-ctrl-down,   rotate windows CCW,         move clients anti counter clockwise
+mod-alt-left,    shift window and tag,       move change workspaces tags
+mod-alt-right,   shift window and tag,       move change workspaces tags
+mod-ctrl-left,   switch to adjacent tag,     change workspaces tags
+mod-ctrl-right,  switch to adjacent tag,     change workspaces tags
+mod-shift-space, toggle window floating,     client
+mod-[1-9],       change tag,                 switch workspaces 123456789
+mod-0,           toggle all-tag,             all workspaces
+mod-scroll,      resize floating windows,    client
+F7,              clipboard manager,          clipmenu copy paste

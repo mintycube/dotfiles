@@ -1,0 +1,27 @@
+#!/bin/sh
+
+preview='bat -p --color=always --style=header,numbers -H {2} {1} | grep -C4 {q}'
+
+([ -z "$1" ] && search_dir=".") || search_dir="$1"
+
+selected=$(rg --color=always --hidden -nS "$2" "$search_dir" 2>/dev/null |
+  fzf -d: \
+    --ansi \
+    --height=80% \
+    --multi \
+    --query="$2" \
+    --phony \
+    --info=inline \
+    --scroll-off=5 \
+    --scrollbar='▐' \
+    --ellipsis='…' \
+    --marker='❱' \
+    --pointer='❱' \
+    --bind="change:reload:rg --hidden -nS --color=always {q} $search_dir" \
+    --preview="[[ -n {1} ]] && $preview" \
+    --preview-window=right:50%)
+
+if [ -n "$selected" ]; then
+  line_number=$(echo "$selected" | awk -F ':' '{print $2}')
+  echo "$selected" | cut -d: -f1 | uniq | xargs nvim +"$line_number"
+fi

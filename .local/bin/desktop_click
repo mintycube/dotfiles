@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Check if dmenu is running
+dunstctl close-all
+if pgrep -x "dmenu" > /dev/null; then
+  killall dmenu;
+else
+  dmenu_hub
+fi

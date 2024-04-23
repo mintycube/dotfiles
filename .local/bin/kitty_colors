@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Scrpt for generating a colors.conf file using the xresources file to use as a kitty-colorscheme
+
+# Colors from xresources
+xresources_colors=("*.background" "*.foreground" "*.cursorColor" "*.color0" "*.color1" "*.color2" "*.color3" "*.color4" "*.color5" "*.color6" "*.color7" "*.color8" "*.color9" "*.color10" ".*color11" "*.color12" "*.color13" "*.color14" "*.color15")
+
+# Colors for kitty
+kitty_colors=("background" "foreground" "cursor" "color0" "color1" "color2" "color3" "color4" "color5" "color6" "color7" "color8" "color9" "color10" "color11" "color12" "color13" "color14" "color15")
+
+# Loop through the xresources_colors and kitty_colors, and write them to the colors.conf file
+cat <<EOF >~/.config/kitty/colors.conf
+# Colors generated from xresources file using the kitty_colors script
+EOF
+
+for i in "${!xresources_colors[@]}"; do
+	color_value=$(xrdb -query | grep "${xresources_colors[$i]}:" | awk '{print $NF}')
+	echo "${kitty_colors[$i]}      $color_value" >>~/.config/kitty/colors.conf
+done

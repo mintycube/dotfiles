@@ -1,0 +1,13 @@
+[git_branch]
+symbol = ' '
+
+[git_metrics]
+disabled = false
+added_style = 'bold blue'
+format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
+
+[gcloud]
+disabled = true
+
+[battery]
+disabled = true

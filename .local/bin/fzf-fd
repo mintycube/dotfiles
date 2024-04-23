@@ -1,0 +1,30 @@
+#!/bin/sh
+
+search_dir="${1:-.}"
+preview='bat --style=header,numbers --color=always {}'
+
+fd_command="fd . \
+  --type file \
+  --hidden \
+  --follow \
+  --color always \
+  --exclude .git \
+  --exclude .github \
+  --exclude *.o \
+  --exclude *.pyc \
+  --full-path \"$search_dir\""
+
+fzf_command="fzf \
+  --ansi \
+  --height=80% \
+  --layout=reverse \
+  --multi \
+  --preview=\"[[ -n {1} ]] && $preview\" \
+  --scroll-off=5 \
+  --scrollbar='▐' \
+  --ellipsis='…' \
+  --marker='❱' \
+  --pointer='❱'"
+
+eval "$fd_command" | eval "$fzf_command"
+exit 0

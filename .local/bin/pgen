@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Description: Creates a project for c++
+
+[[ -z "$1" ]] && echo "Error: Project name not provided" >&2 && exit 1
+[[ ! $1 =~ ^[a-zA-Z0-9_-]+$ ]] && echo "Error: Invalid project name. Chars allowed: [a-zA-Z0-9_-]" >&2 && exit 1
+
+project_dir="$HOME/Projects/cpp20/$1"
+
+[[ -d "$project_dir" ]] && cd "$project_dir" && nvim main.cpp && exit 1
+
+ff "$project_dir"/{main.cpp,include/}
+
+cp ~/.local/share/script-data/cpp20/compile_flags.txt "$project_dir"/compile_flags.txt
+cp ~/.local/share/script-data/cpp20/.clang-format "$project_dir"/.clang-format
+cp ~/.local/share/script-data/cpp20/Makefile "$project_dir"/Makefile
+
+nvim "$project_dir"/main.cpp

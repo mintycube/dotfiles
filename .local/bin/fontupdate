@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+curl -o "$HOME/.local/share/fonts/JetBrainsMono" -LJO https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/JetBrainsMono/Ligatures/Bold/JetBrainsMonoNerdFont-Bold.ttf
+curl -o "$HOME/.local/share/fonts/JetBrainsMono" -LJO https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/JetBrainsMono/Ligatures/Bold/JetBrainsMonoNerdFont-Italic.ttf
+curl -o "$HOME/.local/share/fonts/JetBrainsMono" -LJO https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/JetBrainsMono/Ligatures/Bold/JetBrainsMonoNerdFont-Medium.ttf
+curl -o "$HOME/.local/share/fonts/JetBrainsMono" -LJO https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/JetBrainsMono/Ligatures/Bold/JetBrainsMonoNerdFont-Regular.ttf
+curl -o "$HOME/.local/share/fonts/JetBrainsMono" -LJO https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/JetBrainsMono/Ligatures/Bold/JetBrainsMonoNerdFont-SemiBold.ttf

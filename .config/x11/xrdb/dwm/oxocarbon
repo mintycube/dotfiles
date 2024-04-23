@@ -1,0 +1,15 @@
+! vim: filetype=xdefaults
+
+dwm.normbordercolor:  #262626
+dwm.normbgcolor:      #161616
+dwm.normfgcolor:      #a2a9b0
+
+dwm.selbordercolor:   #666666
+dwm.selbgcolor:       #262626
+dwm.selfgcolor:       #a2a9b0
+
+dwm.tagsnormfgcolor:  #a2a9b0
+dwm.tagsnormbgcolor:  #161616
+
+dwm.tagsselfgcolor:   #eeeeee
+dwm.tagsselbgcolor:   #303030

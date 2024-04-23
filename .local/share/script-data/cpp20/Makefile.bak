@@ -1,0 +1,29 @@
+CXX = clang++
+CXXFLAGS = -std=c++20 --debug -I$(INCLUDE_DIR)
+INCLUDE_DIR = include
+BUILD_DIR = build
+TARGET_DIR = $(BUILD_DIR)
+OBJ_DIR = $(BUILD_DIR)/obj
+TARGET = $(TARGET_DIR)/$(notdir $(CURDIR))
+SRCS = $(wildcard src/*.cpp)
+OBJS = $(patsubst src/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
+all:
+	@echo -e "\e[33m󱁤 Build:\n\e[0m"
+	$(MAKE) $(TARGET)
+$(TARGET): $(OBJS) | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+$(OBJ_DIR)/%.o: src/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+	@$(CXX) -MM $(CXXFLAGS) src/$*.cpp | sed 's|^|$(OBJ_DIR)/|' > $(OBJ_DIR)/$*.d
+-include $(OBJS:.o=.d)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+run: $(TARGET)
+	@echo -e "\n\e[33m󱓞 Run:\n\e[0m"
+	./$(TARGET)
+.PHONY: all clean run
+clean:
+	@echo -e "\n\e[33m󰃢 Clean:\n\e[0m"
+	rm -rf $(BUILD_DIR)

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+configs=(
+  "$XDG_CONFIG_HOME/suckless/dmenu/config.h"
+  "$XDG_CONFIG_HOME/suckless/dwm/config.h"
+  "$XDG_CONFIG_HOME/suckless/dwmblocks/config.h"
+  "$XDG_CONFIG_HOME/suckless/st/config.h"
+  "$XDG_CONFIG_HOME/x11/xresources"
+  "$XDG_CONFIG_HOME/nvim/lua"
+  "$XDG_CONFIG_HOME/zsh/.zshrc"
+  "$XDG_CONFIG_HOME/shell/aliasrc"
+  "$XDG_CONFIG_HOME/x11/xinitrc"
+  "$XDG_CONFIG_HOME/x11/xprofile"
+  "$HOME/.bashrc"
+  "$XDG_CONFIG_HOME/mpd/mpd.conf"
+  "$XDG_CONFIG_HOME/ncmpcpp/config"
+  "$XDG_CONFIG_HOME/dunst/dunstrc"
+  "$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
+  "$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
+  "$XDG_CONFIG_HOME/lf/lfrc"
+  "$XDG_CONFIG_HOME/newsboat/config"
+  "$XDG_CONFIG_HOME/newsboat/urls"
+  "$XDG_CONFIG_HOME/zathura/zathurarc"
+  "$XDG_DATA_HOME/script-data/keybinds"
+  "$XDG_CONFIG_HOME/dmenu_web"
+)
+
+fzf_command="fzfp --ansi --layout=reverse -m --marker='󰄾' --pointer=' 󰶻'"
+
+selected=$(printf '%s\n' "${configs[@]}" | eval "$fzf_command")
+if [ -n "$selected" ]; then
+	nvim "$selected"
+fi

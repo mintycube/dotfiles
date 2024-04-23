@@ -1,0 +1,38 @@
+#! /usr/bin/env bash
+BROWSER="firefox"
+SEARCH_ENGINE="https://encrypted.google.com/search?hl=en&safe=off&num=50&pws=0&q="
+BOOKMARKS_FILE="$HOME/.config/dmenu_web/bookmarks"
+SITES_FILE="$HOME/.config/dmenu_web/search_urls"
+NOTIFICAION_FILE="$HOME/.config/dmenu_web/notification"
+DMENU_COMMAND="dmenu -i -bw 2 -W 290 -X 810 -Y 19 -l 17 -g 2 -p \" \""
+DMENU_COMMAND_FOR_ADD_BOOKMARK="dmenu -bw 2 -W 800 -X 283 -Y 190 -p \"󰃅 Add Bookmark: \""
+declare -A SEARCH_URLS
+while IFS=',' read -r site url; do
+	SEARCH_URLS["$site"]="$url"
+done <"$SITES_FILE"
+if [ "$1" == "--add" ]; then
+	bookmark="$(xclip -o)"
+	[ -z "$bookmark" ] || [ -z "${bookmark// /}" ] && notify-send "Bookmark not saved: Nothing to save" && exit 0
+	echo "$bookmark" | grep -Eq '\.[a-zA-Z]{2,}$' || {
+		notify-send "Not a valid URL"
+		exit 0
+	}
+	grep -qF "$bookmark" "$BOOKMARKS_FILE" && notify-send "Already bookmarked!" && exit 0
+	user_input=$(eval "$DMENU_COMMAND_FOR_ADD_BOOKMARK" <&-)
+	[ -z "$user_input" ] || [ -z "${user_input// /}" ] && notify-send "Bookmark not saved: Empty Name" && exit 0
+	bookmark_entry="${user_input},${bookmark}"
+	echo "$bookmark_entry" >>"$BOOKMARKS_FILE"
+	notify-send "Bookmark: $user_input" "$bookmark"
+	exit 0
+fi
+descriptions=$(cut -d ',' -f 1 "$BOOKMARKS_FILE")
+notify-send -t 30000 "$(cat "$NOTIFICAION_FILE")" && query=$(echo "$descriptions" | eval "$DMENU_COMMAND")
+dunstctl close-all
+[ -z "$query" ] || [ -z "${query// /}" ] && exit 0
+url=$(grep "^$query," "$BOOKMARKS_FILE" | cut -d ',' -f 2)
+[ -n "$url" ] && "$BROWSER" "$url" && exit 0
+site=$(echo "$query" | cut -d ' ' -f 1) && search_url="${SEARCH_URLS[$site]}"
+[ "$site" == "1337" ] && [ -n "$search_url" ] && search_query="${query//$site /}" && "$BROWSER" "$search_url$search_query/1/" && exit 0
+[ -n "$search_url" ] && search_query="${query//$site /}" && "$BROWSER" "$search_url$search_query" && exit 0
+echo "$query" | grep -Eq '\.[a-zA-Z]{2,}$' && "$BROWSER" "$query" && exit 0
+"$BROWSER" "$SEARCH_ENGINE$query" && exit 0

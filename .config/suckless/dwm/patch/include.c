@@ -1,0 +1,35 @@
+/* Bar functionality */
+#include "bar_indicators.c"
+#include "bar_tagicons.c"
+#include "bar.c"
+
+#include "bar_dwmblocks.c"
+#include "bar_ltsymbol.c"
+#include "bar_status.c"
+#include "bar_status2d.c"
+#include "bar_statusbutton.c"
+#include "bar_statuscmd.c"
+#include "bar_tags.c"
+
+/* Other patches */
+#include "attachx.c"
+#include "cool_autostart.c"
+#include "fakefullscreenclient.c"
+#include "focusdir.c"
+#include "focusfollowmouse.c"
+#include "pertag.c"
+#include "restartsig.c"
+#include "rotatestack.c"
+#include "scratchpad.c"
+#include "shift.c"
+#include "shiftboth.c"
+#include "shiftviewclients.c"
+#include "tapresize.c"
+#include "transfer.c"
+#include "xrdb.c"
+#include "seamless_restart.c"
+/* Layouts */
+#include "layout_facts.c"
+#include "layout_monocle.c"
+#include "layout_tile.c"
+

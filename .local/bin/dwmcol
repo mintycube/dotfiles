@@ -1,0 +1,11 @@
+#!/bin/bash
+
+file_path="$HOME/.cache/dwm_bar_color"
+
+if [ -e "$file_path" ]; then
+    rm "$file_path"
+    echo "File '$file_path' deleted."
+else
+    touch "$file_path"
+    echo "File '$file_path' created."
+fi

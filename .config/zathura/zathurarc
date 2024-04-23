@@ -1,0 +1,57 @@
+# vim: filetype=zathurarc
+
+set notification-error-bg       "#ee5396"
+set notification-error-fg       "#1a1b26"
+set notification-warning-bg     "#ee5396"
+set notification-warning-fg     "#1a1b26"
+set notification-bg             "#ffab91"
+set notification-fg             "#1a1b26"
+
+set completion-bg               "#1a1b26"
+set completion-fg               "#42be65"
+set completion-group-bg         "#1a1b26"
+set completion-group-fg         "#ffab91"
+set completion-highlight-bg     "#ffab91"
+set completion-highlight-fg     "#1a1b26"
+
+set index-bg                    "#1a1b26"
+set index-fg                    "#A0A8CD"
+set index-active-bg             "#1a1b26"
+set index-active-fg             "#ffab91"
+
+set inputbar-bg                 "#1a1b26"
+set inputbar-fg                 "#A0A8CD"
+set statusbar-bg                "#1a1b26"
+set statusbar-fg                "#A0A8CD"
+
+set highlight-color             "#ffab91"
+set highlight-active-color      "#EE6d85"
+
+set default-bg                  "#1a1b26"
+set default-fg                  "#A0A8CD"
+
+set render-loading-fg           "#A0A8CD"
+set render-loading-bg           "#1a1b26"
+
+set recolor-lightcolor          "#1a1b26"
+set recolor-darkcolor           "#A0A8CD"
+
+set statusbar-h-padding         0
+set statusbar-v-padding         0
+set page-padding                1
+set selection-clipboard         clipboard
+set adjust-open                 width
+set recolor                     false
+set recolor-keephue             true
+set render-loading              true
+
+map   u   scroll half-up
+map   d   scroll half-down
+map   D   toggle_page_mode
+map   r   reload
+map   R   rotate
+map   K   zoom in
+map   J   zoom out
+map   i   recolor
+map   p   print
+map   g   goto top

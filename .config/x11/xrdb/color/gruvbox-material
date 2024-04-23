@@ -1,0 +1,21 @@
+!! vim: filetype=xdefaults
+
+*.background:  #282828
+*.foreground:  #d4be98
+*.cursorColor: #abb2bf
+*.color0:      #232526
+*.color8:      #5a5a5a
+*.color1:      #bf616a
+*.color9:      #bf616a
+*.color2:      #a9b665
+*.color10:     #a9b665
+*.color3:      #d8a657
+*.color11:     #e78a4e
+*.color4:      #6f8faf
+*.color12:     #7daea3
+*.color5:      #d3869b
+*.color13:     #d3869b
+*.color6:      #89b482
+*.color14:     #89b482
+*.color7:      #8FBCBB
+*.color15:     #d4be98

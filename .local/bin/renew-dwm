@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+export WM="dwm"
+
+wmpid(){
+	tree="$(pstree -ps $$)"
+	tree="${tree#*$WM(}"
+	echo "${tree%%)*}"
+}
+
+kill -HUP "$(wmpid)"
