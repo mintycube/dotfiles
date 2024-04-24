@@ -60,7 +60,7 @@ int allowwindowops = 0;
  * near minlatency, but it waits longer for slow updates to avoid partial draw.
  * low minlatency will tear/flicker more, as it can "detect" idle too early.
  */
-static double minlatency = 8;
+static double minlatency = 2;
 static double maxlatency = 33;
 
 /*
@@ -73,6 +73,9 @@ static unsigned int blinktimeout = 800;
  * thickness of underline and bar cursors
  */
 static unsigned int cursorthickness = 2;
+
+/* Hide the X cursor whenever a key is pressed. 0: off, 1: on */
+int hidecursor = 1;
 
 /*
  * 1: render most of the lines/blocks characters without using the font for
@@ -155,7 +158,7 @@ unsigned int defaultrcs = 257;
  * 7: Blinking st cursor
  * 8: Steady st cursor
  */
-static unsigned int cursorstyle = 3;
+static unsigned int cursorstyle = 1;
 static Rune stcursor = 0x2603; /* snowman (U+2603) */
 
 /*
@@ -242,9 +245,16 @@ static MouseShortcut mshortcuts[] = {
 #define MODKEY Mod1Mask
 #define TERMMOD (ControlMask | ShiftMask)
 
-static char *openurlcmd[] = {"/bin/sh", "-c",
-                             "xurls | dmenu -l 10 -w $WINDOWID | xargs -r open",
+// static char *openurlcmd[] = { "/bin/sh", "-c",
+// "xurls | dmenu -l 10 -w $WINDOWID | xargs -r open",
+// "externalpipe", NULL };
+
+static char *openurlcmd[] = {"/bin/sh", "-c", "st-urlhandler -o",
                              "externalpipe", NULL};
+static char *copyurlcmd[] = {"/bin/sh", "-c", "st-urlhandler -c",
+                             "externalpipe", NULL};
+static char *copyoutput[] = {"/bin/sh", "-c", "st-copyout", "externalpipe",
+                             NULL};
 
 static char *setbgcolorcmd[] = {"/bin/sh", "-c", "printf '\033]11;#008000\007'",
                                 "externalpipein", NULL};
@@ -261,21 +271,20 @@ static Shortcut shortcuts[] = {
     {TERMMOD, XK_Home, zoomreset, {.f = 0}},
     {TERMMOD, XK_C, clipcopy, {.i = 0}},
     {TERMMOD, XK_V, clippaste, {.i = 0}},
-    {TERMMOD, XK_O, changealpha, {.f = +0.05}},
-    {TERMMOD, XK_P, changealpha, {.f = -0.05}},
+    {TERMMOD, XK_A, changealpha, {.f = +0.05}},
+    {TERMMOD, XK_S, changealpha, {.f = -0.05}},
     {ShiftMask, XK_Page_Up, kscrollup, {.i = -1}, S_PRI},
     {ShiftMask, XK_Page_Down, kscrolldown, {.i = -1}, S_PRI},
     {TERMMOD, XK_Y, clippaste, {.i = 0}},
     {ShiftMask, XK_Insert, clippaste, {.i = 0}},
     {TERMMOD, XK_Num_Lock, numlock, {.i = 0}},
-    {MODKEY, XK_l, copyurl, {.i = 0}},
     {TERMMOD, XK_Return, newterm, {.i = 0}},
+    {TERMMOD, XK_U, externalpipe, {.v = openurlcmd}},
+    {MODKEY, XK_l, externalpipe, {.v = openurlcmd}},
+    {MODKEY, XK_y, externalpipe, {.v = copyurlcmd}},
+    {MODKEY, XK_o, externalpipe, {.v = copyoutput}},
     {TERMMOD, XK_I, iso14755, {.i = 0}},
     {TERMMOD, XK_X, invert, {0}},
-    {TERMMOD, XK_Up, zoom, {.f = +1}},
-    {TERMMOD, XK_Down, zoom, {.f = -1}},
-    {TERMMOD, XK_K, zoom, {.f = +1}},
-    {TERMMOD, XK_J, zoom, {.f = -1}},
 };
 
 /*

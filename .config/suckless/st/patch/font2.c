@@ -72,7 +72,6 @@ xloadsparefonts(void)
 
 		FcPatternAddBool(pattern, FC_SCALABLE, 1);
 
-
 		if (xloadsparefont(pattern, FRC_NORMAL))
 			die("can't open spare font %s\n", *fp);
 
