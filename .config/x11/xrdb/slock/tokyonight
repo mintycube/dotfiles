@@ -1,0 +1,5 @@
+! vim: filetype=xdefaults
+
+slock.locked:    #414868
+slock.input:     #7aa2f7
+slock.failed:    #f7768e

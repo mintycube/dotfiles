@@ -367,27 +367,6 @@ return {
     },
   },
 
-  {
-    "mikavilpas/yazi.nvim",
-    enabled = false,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    event = "VeryLazy",
-    keys = {
-      {
-        "<leader><space>",
-        function()
-          require("yazi").yazi()
-        end,
-        { desc = "Open the file manager" },
-      },
-    },
-    opts = {
-      open_for_directories = true,
-    },
-  },
-
   -- gitsigns
   {
     "lewis6991/gitsigns.nvim",

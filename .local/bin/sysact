@@ -10,7 +10,7 @@ options=(
 )
 
 commands=(
-  "lock"
+  "slock"
   "renew-dwm"
   "kill -TERM $(pidof -s dwm)"
   "systemctl poweroff -i"

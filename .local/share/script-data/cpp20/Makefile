@@ -9,9 +9,9 @@ DEPS := $(OBJS:.o=.d)
 EXEC := main
 all: compile_msg build
 compile_msg:
-	@echo -e "\e[33m Compile: $(SRCS)\e[0m"
+	@echo -e "\e[34m Compile: $(SRCS)\e[0m"
 $(EXEC): $(OBJS)
-	@echo -e "\n\e[33m Link: $(EXEC)\e[0m"
+	@echo -e "\n\e[34m Link: $(EXEC)\e[0m"
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(EXEC)
 build: $(EXEC)
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
@@ -19,7 +19,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCDIR) -MMD -MP -c $< -o $@
 -include $(DEPS)
 run: $(EXEC)
-	@echo -e "\n\e[33m󱓞 Execute : $(EXEC)\e[0m"
+	@echo -e "\n\e[34m󱓞 Execute : $(EXEC)\e[0m"
 	./$(EXEC)
 clean:
 	rm -rf $(BUILDDIR) $(EXEC)

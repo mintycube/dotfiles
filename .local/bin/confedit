@@ -5,6 +5,7 @@ configs=(
   "$XDG_CONFIG_HOME/suckless/dwm/config.h"
   "$XDG_CONFIG_HOME/suckless/dwmblocks/config.h"
   "$XDG_CONFIG_HOME/suckless/st/config.h"
+  "$XDG_CONFIG_HOME/suckless/slock/config.h"
   "$XDG_CONFIG_HOME/x11/xresources"
   "$XDG_CONFIG_HOME/nvim/lua"
   "$XDG_CONFIG_HOME/zsh/.zshrc"

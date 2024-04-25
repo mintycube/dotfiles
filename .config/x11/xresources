@@ -39,5 +39,10 @@ dmenu.font: JetBrainsMono Nerd Font:style:medium:size=10
 !   █
 ! ███▄█▄█▀█▀█
 
-! Choices: oxocarbon
+! Choices: oxocarbon, tokyonight
 #include "xrdb/dwm/tokyonight"
+
+!  ▄▄█ ▄▄ ▄▄ █ ▄
+! ▄█ █▄██▄█▄▄█▀▄
+! Choices: tokyonight, ashes
+#include "xrdb/slock/ashes"

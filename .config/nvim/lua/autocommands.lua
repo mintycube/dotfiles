@@ -91,6 +91,7 @@ recompile("~/.config/suckless/dwm/config.h")
 recompile("~/.config/suckless/dmenu/config.h")
 recompile("~/.config/suckless/st/config.h")
 recompile("~/.config/suckless/dwmblocks/config.h")
+recompile("~/.config/suckless/slock/config.h")
 
 --[[ Close nvim if toggleterm or Outline is the last buffer ]]
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
