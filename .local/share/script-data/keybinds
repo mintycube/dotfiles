@@ -30,8 +30,8 @@ mod-del,         renew dwm,                  refresh wm
 mod-q,           close window,               kill client
 mod-shift-r,     gui file manager,           thunar files
 mod-t,           tile layout,                tiling
-mod-y,           monocle layout,             layout
-mod-u,           floating layout,            no layout
+mod-u,           monocle layout,             layout
+mod-y,           floating layout,            no layout
 mod-o,           increase master windows,    master
 mod-shift-o,     decrease master windows,    master
 mod-f,           fake fullscreen,            maximize
@@ -39,6 +39,7 @@ mod-h,           adjust master/stack ratio,  resize
 mod-l,           adjust master/stack ratio,  resize
 mod-',           calculator,                 apostrophe qalculate math
 mod-b,           toggle statusbar,           dwmblocks hide
+mod-shift-b,     add bookmark,               dmenuweb
 mod-shift-n,     newsboat,                   rss
 mod-m,           music,                      ncmpcpp mpd songs mp3
 mod-left,        focus left window,          activate client
