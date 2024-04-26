@@ -4,7 +4,7 @@ SEARCH_ENGINE="https://encrypted.google.com/search?hl=en&safe=off&num=50&pws=0&q
 BOOKMARKS_FILE="$HOME/.config/dmenu_web/bookmarks"
 SITES_FILE="$HOME/.config/dmenu_web/search_urls"
 NOTIFICAION_FILE="$HOME/.config/dmenu_web/notification"
-DMENU_COMMAND="dmenu -i -bw 2 -W 290 -X 810 -Y 19 -l 17 -g 2 -p \" \""
+DMENU_COMMAND="dmenu -i -bw 2 -W 290 -X 850 -Y 19 -l 15 -g 2 -p \" \""
 DMENU_COMMAND_FOR_ADD_BOOKMARK="dmenu -bw 2 -W 800 -X 283 -Y 190 -p \"󰃅 Add Bookmark: \""
 declare -A SEARCH_URLS
 while IFS=',' read -r site url; do
