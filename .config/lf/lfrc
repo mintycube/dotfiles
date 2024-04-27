@@ -58,17 +58,15 @@ cmd fzf_search ${{
 }}
 
 cmd fzf_grep ${{
-  fzf-grep "$f"
+  fzf-grep "$PWD"
 }}
 
 cmd lazygit ${{
   lazygit
 }}
 
-
 cmd live_server ${{
-  killall live-server
-  setsid -f live-server "$f"
+  setsid -f live-server "$PWD"
 }}
 
 cmd ff $ff "$(echo $*)"
