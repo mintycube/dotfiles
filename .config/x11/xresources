@@ -8,19 +8,13 @@ Xcursor.size:  24
 
 ! Choices: tokyonight, rosepine, cellia, custom-onedark, ashes
 ! dracula, eighties, lighthaus, violla,, gruvchad, evergarden,
-! gruvbox-material, monokai-pro, nord, ocean, oxocarbon, tomorrow,
+! gruvbox, monokai, nord, ocean, oxocarbon, tomorrow, mountain
 ! catpuccin, kanagawa, tokyodark, terafox, duskfox, nordfox, rhxyn
 #include "xrdb/color/tokyonight"
 
 ! ▄█▀▀█▀
 
-! st.font:       Berkeley Mono:style=Regular:size=11
-! st.font:       MonoLisa:style:Regular:size=10
 ! st.font:       CaskaydiaCove Nerd Font:style:Regular:size=10
-! st.font:       Iosevka NF:style:Regular:size=11
-! st.font:       MesloLGS Nerd Font:style:Regular:size=10
-! st.font:       Comic Code:style:Regular:size=11
-! st.font:       Source Code Pro:style:Regular:size=11
 st.font:       JetBrainsMono Nerd Font:style:Medium:size=10
 st.borderpx:   10
 st.alpha:      1.0

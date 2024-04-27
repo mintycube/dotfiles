@@ -1,5 +1,3 @@
--- local vim.api.nvim_create_augroup = vim.api.nvim_create_augroup
-
 -- [[ Highlight on yank ]]
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()

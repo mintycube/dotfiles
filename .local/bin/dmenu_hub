@@ -16,6 +16,7 @@ options = {
     f"󰉦  Bar colors": bar_colors_toggle,
     f"  Edit Configs": "st -e confedit",
     f"  Web Search": "dmenu_web",
+    f"󰌹  Handler": "dmenuhandler",
     f"󰌌  Keybinds": "keybinds",
     f"󰋊  Mount": "mounter",
     f"󱁌  Unmount": "unmounter",
