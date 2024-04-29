@@ -29,6 +29,18 @@ return {
           hl.DiagnosticVirtualTextWarn = {
             fg = colors.comment
           }
+          hl.DiagnosticSignError = {
+            fg = colors.comment
+          }
+          hl.DiagnosticSignHint = {
+            fg = colors.comment
+          }
+          hl.DiagnosticSignInfo = {
+            fg = colors.comment
+          }
+          hl.DiagnosticSignWarn = {
+            fg = colors.comment
+          }
         end,
       })
       vim.cmd.colorscheme("tokyonight")
@@ -349,14 +361,14 @@ return {
                 end,
               },
               winopts = {
-                height = 0.3,
+                height = 0.4,
                 width = 0.5,
               },
             })
           end),
 
-        dashboard.button("f", "  Find file", ":lua require('fzf-lua').files()<CR>"),
-        dashboard.button("t", "󱎸  Find text", ":lua require('fzf-lua').live_grep_native()<CR>"),
+        -- dashboard.button("f", "  Find file", ":lua require('fzf-lua').files()<CR>"),
+        -- dashboard.button("t", "󱎸  Find text", ":lua require('fzf-lua').live_grep_native()<CR>"),
         dashboard.button("s", "  Restore Session", ":lua require('persistence').load()<CR>"),
         dashboard.button("n", "󰠮  Notes", ":lua require('fzf-lua').files({cwd =[[~/notes]]})<CR>"),
         dashboard.button("c", "  Configuration", ":e $MYVIMRC <CR>"),

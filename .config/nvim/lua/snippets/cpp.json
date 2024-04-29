@@ -1,0 +1,14 @@
+{
+  "Hello World": {
+    "prefix": "hello",
+    "body": [
+      "#include <iostream>",
+      "",
+      "int main () {",
+      "\t$1",
+      "\treturn 0;",
+      "}"
+    ],
+    "description": "starter template"
+  }
+}
