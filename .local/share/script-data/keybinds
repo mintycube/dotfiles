@@ -36,7 +36,9 @@ mod-o,           increase master windows,    master
 mod-shift-o,     decrease master windows,    master
 mod-f,           fake fullscreen,            maximize
 mod-h,           adjust master/stack ratio,  resize
+alt-h,           dmenuhandler,               link
 mod-l,           adjust master/stack ratio,  resize
+alt-l,           dictionary,                 define meaning thesaurus, synonym
 mod-',           calculator,                 apostrophe qalculate math
 mod-b,           toggle statusbar,           dwmblocks hide
 mod-shift-b,     add bookmark,               dmenuweb
@@ -57,3 +59,4 @@ mod-[1-9],       change tag,                 switch workspaces 123456789
 mod-0,           toggle all-tag,             all workspaces
 mod-scroll,      resize floating windows,    client
 F7,              clipboard manager,          clipmenu copy paste
+3-f-tap,         dictionary,                 define, meaning, thesaurus, synonym

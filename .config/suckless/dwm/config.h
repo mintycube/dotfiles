@@ -111,6 +111,7 @@ static const Rule rules[] = {
 	RULE(.class = "Qalculate-gtk", .tags = SPTAG(2), .isfloating = 1)
 	RULE(.instance = "spmusic", .tags = SPTAG(3), .isfloating = 1)
 	RULE(.instance = "spnotes", .tags = SPTAG(4), .isfloating = 1)
+	RULE(.instance = "dictionary", .isfloating = 1)
 	RULE(.class = "volume-ui", .isfloating = 1)
 };
 
@@ -221,6 +222,7 @@ static const Key keys[] = {
 	{ MODKEY,             XK_h,         setmfact,       {.f = -0.05} },
 	{ ALTKEY,             XK_h,         spawn,          {.v = (const char*[]){ "dmenuhandler", NULL } } },
 	{ MODKEY,             XK_l,         setmfact,       {.f = +0.05} },
+	{ ALTKEY,             XK_l,         spawn,          {.v = (const char*[]){"dictionary", NULL } } },
 	{ MODKEY|ShiftMask,  XK_apostrophe, togglescratch,	{.ui = 2 } },
 	{ MODKEY,            XK_apostrophe, togglescratch,  {.ui = 1 } },
 	{ MODKEY,             XK_Return,    spawn,          {.v = termcmd } },
@@ -263,6 +265,7 @@ static const Button buttons[] = {
 	{ ClkStatusText,  0,         Button4,  sigstatusbar,      {.i = 4} },
 	{ ClkStatusText,  0,         Button5,  sigstatusbar,      {.i = 5} },
 	{ ClkStatusText,  ShiftMask, Button1,  sigstatusbar,      {.i = 6} },
+	{ ClkClientWin,   0,         Button2,  spawn,             {.v = (const char*[]){ "dictionary", NULL } } },
 	{ ClkClientWin,   MODKEY,    Button1,  movemouse,         {0} },
 	{ ClkClientWin,   MODKEY,    Button2,  togglefloating,    {0} },
 	{ ClkClientWin,   MODKEY,    Button3,  resizemouse,       {0} },

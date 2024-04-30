@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+word=$(xclip -o -selection "clipboard")
+
+if [ -z "$word" ]; then
+    notify-send "No query."
+    exit 1
+fi
+
+st                                     \
+  -n "dictionary"                      \
+  -g 74x20+800                         \
+  -f "JetBrainsMono Nerd Font:size=12" \
+  sh -c "dict -d wn \"$word\" | colorit | sed -e '1,3d' -e 's/\[34;47m/[34m/g' | bat --style=plain --paging=always";
