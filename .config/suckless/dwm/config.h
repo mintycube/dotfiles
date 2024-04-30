@@ -146,6 +146,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
+#define ALTKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,  view,         {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,  toggleview,   {.ui = 1 << TAG} }, \
@@ -218,6 +219,7 @@ static const Key keys[] = {
 	{ MODKEY,             XK_d,         spawn,          {.v = dmenu_run_cmd } },
 	{ MODKEY,             XK_f,   togglefakefullscreen, {0} },
 	{ MODKEY,             XK_h,         setmfact,       {.f = -0.05} },
+	{ ALTKEY,             XK_h,         spawn,          {.v = (const char*[]){ "dmenuhandler", NULL } } },
 	{ MODKEY,             XK_l,         setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,  XK_apostrophe, togglescratch,	{.ui = 2 } },
 	{ MODKEY,            XK_apostrophe, togglescratch,  {.ui = 1 } },
