@@ -24,18 +24,18 @@ return {
       { "<leader>cqy", "<cmd>QalcYank<CR>",   desc = "Yank Result" },
     },
     opts = {
-      cmd_args = {},                 -- table
-      bufname = '',                  -- string
-      set_ft = 'config',             -- string
-      attach_extension = '*.qalc',   -- string
-      sign = ' ==> ',   -- string
-      show_sign = true,   -- boolean
-      right_align = true,   -- boolean
+      cmd_args = {},               -- table
+      bufname = '',                -- string
+      set_ft = 'config',           -- string
+      attach_extension = '*.qalc', -- string
+      sign = ' ==> ',              -- string
+      show_sign = true,            -- boolean
+      right_align = true,          -- boolean
       highlights = {
-        sign   = '@comment',     -- sign before result
-        result = '@string',      -- result in virtual text
+        sign   = '@comment',       -- sign before result
+        result = '@string',        -- result in virtual text
       },
-      diagnostics = {   -- table
+      diagnostics = {              -- table
         underline = false,
         virtual_text = false,
         signs = true,
@@ -72,6 +72,36 @@ return {
       vim.g.vimtex_quickfix_mode = 0
       vim.g.vimtex_compiler_method = "tectonic"
       -- vim.cmd("call vimtex#init()")
+    end,
+  },
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000,
+    config = true,
+  },
+  {
+    "nvim-neorg/neorg",
+    dependencies = { "luarocks.nvim" },
+    lazy = false,  -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = "*", -- Pin Neorg to the latest stable release
+    config = function()
+      require("neorg").setup {
+        load = {
+          ["core.defaults"] = {},
+          ["core.concealer"] = {},
+          ["core.dirman"] = {
+            config = {
+              workspaces = {
+                notes = "~/notes",
+              },
+              default_workspace = "notes",
+            },
+          },
+        },
+      }
+
+      vim.wo.foldlevel = 99
+      vim.wo.conceallevel = 2
     end,
   },
 }
