@@ -22,7 +22,7 @@ case $BLOCK_BUTTON in
 - Scroll to adjust brightness" ;;
 	4) xbacklight -inc 15 ;;
 	5) xbacklight -dec 15 ;;
-	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
 # Loop through all attached batteries and format the info

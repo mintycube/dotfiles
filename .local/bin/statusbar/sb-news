@@ -11,7 +11,7 @@ case $BLOCK_BUTTON in
 - Left click opens newsboat
 - Middle click syncs RSS feeds
 <b>Note:</b> Only one instance of newsboat (including updates) may be running at a time." ;;
-	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
 if [ ! -e ~/.cache/bar_color ]; then
