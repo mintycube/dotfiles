@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
-selected_process=$(ps -eo pid,comm,%mem --sort=-%mem | awk '{print $1, $2}' | dmenu -l 30 -bw 2 -W 300 -X 1051 -Y 15 -i | awk '{print $1}')
-[[ -z $selected_process ]] && exit 1
-if ps -p "$selected_process" >/dev/null 2>&1; then
-	choice=$(echo -e "yes\nno" | dmenu -i -l 2 -bw 2 -W 300 -X 1051 -Y 15 -p "Terminate '$(ps -o comm= -p "$selected_process")'?") &&
-		([[ $choice == "yes" ]] && kill "$selected_process") || exit 0
+ps_command="ps -eo comm:25,pid --sort=-%mem" # 25 char command name and pids sorted by memory usage
+dmenu_command="dmenu -l 30 -bw 2 -W 220 -X 1131 -Y 15 -i"
+
+# tab separated list for dmenu to ignore showing the pid
+process_list=$(eval "$ps_command" | sed -E '1d; s/[[:space:]]{2,}/\t/g')
+
+selected_process=$(echo "$process_list" | eval "$dmenu_command")
+
+process_name=$(echo "$selected_process" | awk '{$NF=""; print}')
+process_pid=$(echo "$selected_process" | awk '{print $NF}')
+
+[[ -z $process_pid ]] && exit 1
+if ps -p "$process_pid" >/dev/null 2>&1; then
+	choice=$(echo -e "yes\nno" | dmenu -i -l 2 -bw 2 -W 300 -X 1051 -Y 15 -p "Terminate '$(ps -o comm= -p "$process_pid")'?") &&
+		([[ $choice == "yes" ]] && kill "$process_pid") || exit 0
 else
-	notify-send "PID $selected_process not found"
+	notify-send "Process: $process_name not found"
 fi
