@@ -6,7 +6,7 @@ options=(
   "󰍃  Leave dwm"
   "  Shutdown"
   "  Reboot"
-  "󰶐  Display off"
+  "󰶐  Suspend"
 )
 
 commands=(
@@ -15,7 +15,7 @@ commands=(
   "kill -TERM $(pidof -s dwm)"
   "systemctl poweroff -i"
   "systemctl reboot -i"
-  "xset dpms force off"
+  "xset dpms force suspend"
 )
 
 if prompt=$(printf '%s\n' "${options[@]}" | dmenu -i -bw 2 -g 1 -l 9 -W 200 -X 1151 -Y 15); then
