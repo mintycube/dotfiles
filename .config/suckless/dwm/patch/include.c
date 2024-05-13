@@ -4,19 +4,22 @@
 #include "bar.c"
 
 #include "bar_dwmblocks.c"
+#include "bar_ewmhtags.c"
 #include "bar_ltsymbol.c"
 #include "bar_status.c"
 #include "bar_status2d.c"
 #include "bar_statusbutton.c"
 #include "bar_statuscmd.c"
 #include "bar_tags.c"
+#include "bar_holdbar.c"
 
 /* Other patches */
 #include "attachx.c"
 #include "cool_autostart.c"
+#include "dwmc.c"
 #include "fakefullscreenclient.c"
 #include "focusdir.c"
-#include "focusfollowmouse.c"
+#include "killunsel.c"
 #include "pertag.c"
 #include "restartsig.c"
 #include "rotatestack.c"

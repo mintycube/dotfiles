@@ -4,6 +4,8 @@
 #include "bar.h"
 
 #include "bar_dwmblocks.h"
+#include "bar_ewmhtags.h"
+#include "bar_holdbar.h"
 #include "bar_ltsymbol.h"
 #include "bar_status.h"
 #include "bar_status2d.h"
@@ -14,9 +16,10 @@
 /* Other patches */
 #include "attachx.h"
 #include "cool_autostart.h"
+#include "dwmc.h"
 #include "fakefullscreenclient.h"
 #include "focusdir.h"
-#include "focusfollowmouse.h"
+#include "killunsel.h"
 #include "pertag.h"
 #include "restartsig.h"
 #include "rotatestack.h"

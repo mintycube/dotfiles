@@ -27,14 +27,11 @@ width_status2d(Bar *bar, BarArg *a)
 	return width ? width + lrpad : 0;
 }
 
-
 int
 draw_status2d(Bar *bar, BarArg *a)
 {
 	return drawstatusbar(a, rawstext);
 }
-
-
 
 int
 drawstatusbar(BarArg *a, char* stext)

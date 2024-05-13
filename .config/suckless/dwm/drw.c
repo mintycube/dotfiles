@@ -8,7 +8,6 @@
 #include "drw.h"
 #include "util.h"
 
-
 #define UTF_INVALID 0xFFFD
 #define UTF_SIZ     4
 
@@ -16,7 +15,6 @@ static const unsigned char utfbyte[UTF_SIZ + 1] = {0x80,    0, 0xC0, 0xE0, 0xF0}
 static const unsigned char utfmask[UTF_SIZ + 1] = {0xC0, 0x80, 0xE0, 0xF0, 0xF8};
 static const long utfmin[UTF_SIZ + 1] = {       0,    0,  0x80,  0x800,  0x10000};
 static const long utfmax[UTF_SIZ + 1] = {0x10FFFF, 0x7F, 0x7FF, 0xFFFF, 0x10FFFF};
-
 
 static long
 utf8decodebyte(const char c, size_t *i)
@@ -136,7 +134,6 @@ xfont_create(Drw *drw, const char *fontname, FcPattern *fontpattern)
 		die("no font specified.");
 	}
 
-
 	font = ecalloc(1, sizeof(Fnt));
 	font->xfont = xfont;
 	font->pattern = pattern;
@@ -234,7 +231,6 @@ drw_setscheme(Drw *drw, Clr *scm)
 	if (drw)
 		drw->scheme = scm;
 }
-
 
 void
 drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, int filled, int invert)
@@ -377,8 +373,6 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 
 	return x + (render ? w : 0);
 }
-
-
 
 void
 drw_map(Drw *drw, Window win, int x, int y, unsigned int w, unsigned int h)

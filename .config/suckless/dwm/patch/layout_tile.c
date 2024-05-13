@@ -8,7 +8,6 @@ tile(Monitor *m)
 	int mrest, srest;
 	Client *c;
 
-
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
 
 	if (n == 0)
