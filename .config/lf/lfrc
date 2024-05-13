@@ -160,11 +160,20 @@ map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
 map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
 map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
 
+cmd sanitize ${{
+	set -f
+  # Only renames selected files.
+	sanitizefs ${fx}
+  # renames Recursively.
+	# sanitizefs ${PWD}
+}}
+
 # Bindings
 map / :fzf_search
 map ? :fzf_grep
 map <c-l> live_server
 map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
+map r sanitize
 map gh lazygit
 map gg top
 map D delete
@@ -180,11 +189,11 @@ map X !$f
 map o &mimeopen "$f"
 map O $mimeopen --ask "$f"
 
-map A :rename; cmd-end # at the very end
+map a :rename; cmd-end # at the very end
 map c push A<c-u> # new rename
 map I :rename; cmd-home # at the very beginning
 map i :rename # before extension
-map a :rename; cmd-right # after extension
+map A :rename; cmd-right # after extension
 map B bulkrename
 map b $setbg $f
 
