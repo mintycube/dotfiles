@@ -23,7 +23,6 @@
   X("sb-internet", 5, 4)                                                       \
   X("sb-volume", 0, 8)                                                         \
   X("sb-battery", 5, 21)                                                       \
-  X("sb-clock", 60, 1)                                                         \
-  X("sb-powerbutton", 0, 17)
+  X("sb-clock", 60, 1)
 
 #endif // CONFIG_H
