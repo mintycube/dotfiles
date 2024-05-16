@@ -165,13 +165,14 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
-	// RULE(.class = "Gimp", .tags = 1 << 4)
-	RULE(.instance = "st",.class = "St", .title = "~",  .tags = 1, .switchtag = 3)
-	RULE(.class = "firefox", .tags = 1 << 1, .switchtag = 3)
-  RULE(.title = "nvim", .tags = 1 << 2, .switchtag = 3)
-	RULE(.title = "lf", .tags = 1 << 3, .switchtag = 3)
+	RULE(.class = "st-terminal", .tags = 1 << 0, .switchtag = 1)
+	RULE(.class = "firefox", .tags = 1 << 1, .switchtag = 1)
+  RULE(.title = "nvim", .tags = 1 << 2, .switchtag = 1)
+	RULE(.title = "lf", .tags = 1 << 3, .switchtag = 1)
   RULE(.class = "mpv", .tags = 1 << 4, .switchtag = 3)
   RULE(.title = "newsboat", .tags = 1 << 5, .switchtag = 3)
+  RULE(.class = "Zathura", .tags = 1 << 6, .switchtag = 3)
+  RULE(.title = "nsxiv", .tags = 1 << 7, .switchtag = 3)
 	RULE(.class = "Gimp", .tags = 1 << 8, .switchtag = 3)
 	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
 	RULE(.instance = "spcalc", .tags = SPTAG(1), .isfloating = 1)
@@ -244,7 +245,7 @@ static const Layout layouts[] = {
 /* commands */
 
 static const char* dmenu_run_cmd[] = { "dmenu_run", "-bw", "2", "-i", "-W", "390", "-X", "961", "-Y", "15", "-l", "15", "-g", "3", NULL };
-static const char* clipmenu_cmd[] = { "clipmenu", "-bw", "2", "-i", "-W", "290", "-X", "1061", "-Y", "15", "-l", "15", NULL };
+static const char* clipmenu_cmd[]  = { "clipmenu", "-bw", "2", "-i", "-W", "290", "-X", "1061", "-Y", "15", "-l", "15", NULL };
 static const char* volume_ui_cmd[] = { "st", "-c", "volume-ui", "-g=80x15+353+20", "-e", "pulsemixer", NULL } ;
 
 /* This defines the name of the executable that handles the bar (used for signalling purposes) */
@@ -252,15 +253,17 @@ static const char* volume_ui_cmd[] = { "st", "-c", "volume-ui", "-g=80x15+353+20
 
 static const Key on_empty_keys[] = {
 	/* modifier key            function                argument */
-  {0, XK_w,         spawn,   {.v = (const char *[]){"firefox", NULL}}},
-  {0, XK_grave,     spawn,   {.v = (const char *[]){"dmenunerdsymbols", NULL}}},
-  {0, XK_BackSpace, spawn,   {.v = (const char *[]){"sysact", NULL}}},
-  {0, XK_r,         spawn,   {.v = (const char *[]){"st", "-e", "lf", NULL}}},
-  {0, XK_Return,    spawn,   {.v = (const char *[]){"st", NULL}}},
-  {0, XK_d,         spawn,   {.v = dmenu_run_cmd}},
-  {0, XK_a,         spawn,   {.v = (const char *[]){"dmenu_hub", NULL}}},
-  {0, XK_space,     spawn,   {.v = (const char *[]){"dmenu_web", NULL}}},
-  {0, XK_n,         spawn,   {.v = (const char *[]){"st", "-e", "nvim", NULL}}},
+  {0, XK_w,         spawn,   {.v = (const char*[]){"firefox", NULL } } },
+	{0, XK_e,         spawn,   {.v = (const char*[]){"st","bash","-c", "fuz", "-lf", NULL } } },
+  {0, XK_grave,     spawn,   {.v = (const char*[]){"dmenunerdsymbols", NULL } } },
+  {0, XK_BackSpace, spawn,   {.v = (const char*[]){"sysact", NULL } } },
+  {0, XK_r,         spawn,   {.v = (const char*[]){"st", "-e", "lf", NULL } } },
+  {0, XK_Return,    spawn,   {.v = (const char*[]){"st", "-c", "st-terminal", NULL } } },
+  {0, XK_d,         spawn,   {.v = dmenu_run_cmd } },
+  {0, XK_a,         spawn,   {.v = (const char*[]){"dmenu_hub", NULL } } },
+	{0, XK_f,         spawn,   {.v = (const char*[]){"st","bash","-c", "fuz", NULL } } },
+  {0, XK_space,     spawn,   {.v = (const char*[]){"dmenu_web", NULL } } },
+  {0, XK_n,         spawn,   {.v = (const char*[]){"st", "-e", "nvim", NULL } } },
 };
 
 static const Key keys[] = {
@@ -301,7 +304,8 @@ static const Key keys[] = {
 	{ MODKEY,             XK_q,         killclient,     {0} },
   { MODKEY|ShiftMask,   XK_q,         killunsel,      {0} },
 	{ MODKEY,			        XK_w,       	spawn,		      {.v = (const char*[]){ "firefox", NULL } } },
-  { MODKEY,             XK_e,          spawn,          {.v = (const char*[]){ "networkmanager_dmenu", NULL } } },
+	{ MODKEY,             XK_e,         spawn,          {.v = (const char*[]){ "st","bash","-c", "fuz", "-lf", NULL } } },
+  { ALTKEY,             XK_e,         spawn,          {.v = (const char*[]){ "networkmanager_dmenu", NULL } } },
 	{ MODKEY,			        XK_r,       	spawn,		      {.v = (const char*[]){ "st", "-e", "lf", NULL } } },
 	{ MODKEY|ShiftMask,		XK_r,       	spawn,		      {.v = (const char*[]){ "thunar", NULL } } },
 	{ MODKEY,             XK_t,         setlayout,      {.v = &layouts[0]} },
@@ -312,7 +316,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_o,         incnmaster,     {.i = -1 } },
 	{ MODKEY,			        XK_a,       	spawn,		      {.v = (const char*[]){ "dmenu_hub", NULL } } },
 	{ MODKEY,             XK_d,         spawn,          {.v = dmenu_run_cmd } },
-	{ MODKEY,             XK_f,         togglefakefullscreen,   {0} },
+	{ MODKEY,             XK_f,         spawn,          {.v = (const char*[]){ "st","bash","-c", "fuz", NULL } } },
+	{ ALTKEY,             XK_f,         togglefakefullscreen,   {0} },
 	{ MODKEY,             XK_h,         setmfact,       {.f = -0.05} },
 	{ MODKEY,             XK_j,         focusstack,     {.i = +1 } },
 	{ MODKEY,             XK_k,         focusstack,     {.i = -1 } },
@@ -320,8 +325,8 @@ static const Key keys[] = {
 	{ ALTKEY,             XK_l,         spawn,          {.v = (const char*[]){"dictionary", NULL } } },
 	{ MODKEY|ShiftMask,  XK_apostrophe, togglescratch,	{.ui = 2 } },
 	{ MODKEY,            XK_apostrophe, togglescratch,  {.ui = 1 } },
-  { MODKEY,             XK_Return,    spawn,          {.v = (const char *[]){"st", NULL}}},
-  { ALTKEY,             XK_Return,    spawn,          {.v = (const char *[]){"st", "-c", "st", NULL}}},
+  { MODKEY,             XK_Return,    spawn,          {.v = (const char *[]){"st", "-c", "st-terminal", NULL}}},
+  { ALTKEY,             XK_Return,    spawn,          {.v = (const char *[]){"st", NULL}}},
 	{ MODKEY|ShiftMask,   XK_Return,    togglescratch,  {.ui = 0 } },
 	{ MODKEY,             XK_x,         transfer,       {0} },
 	{ MODKEY,             XK_b,         togglebar,      {0} },
@@ -368,6 +373,12 @@ static const Button buttons[] = {
 	{ ClkStatusText,  0,         Button4,  sigstatusbar,      {.i = 4} },
 	{ ClkStatusText,  0,         Button5,  sigstatusbar,      {.i = 5} },
 	{ ClkStatusText,  ShiftMask, Button1,  sigstatusbar,      {.i = 6} },
+	{ ClkStatusText,  MODKEY,    Button1,  sigstatusbar,      {.i = 1 } },
+	{ ClkStatusText,  MODKEY,    Button2,  sigstatusbar,      {.i = 2 } },
+	{ ClkStatusText,  MODKEY,    Button3,  sigstatusbar,      {.i = 3 } },
+	{ ClkStatusText,  MODKEY,    Button4,  sigstatusbar,      {.i = 4} },
+	{ ClkStatusText,  MODKEY,    Button5,  sigstatusbar,      {.i = 5} },
+	{ ClkStatusText,  MODKEY|ShiftMask, Button1,  sigstatusbar, {.i = 6} },
 	{ ClkClientWin,   0,         Button2,  spawn,             {.v = (const char*[]){ "dictionary", NULL } } },
 	{ ClkClientWin,   MODKEY,    Button1,  movemouse,         {0} },
 	{ ClkClientWin,   MODKEY,    Button2,  togglefloating,    {0} },
