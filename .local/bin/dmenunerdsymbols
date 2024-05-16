@@ -4,25 +4,27 @@ json_url="https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/glyphnam
 local_file="$HOME/.local/share/script-data/chars/nerd-glyphs.json"
 
 function needs_update() {
-  local local_date
-  local current_date
-  local_date=$(stat -c %Y "$local_file" 2>/dev/null || echo 0)
-  current_date=$(date +%s)
-  [ "$((current_date - local_date))" -ge "$((14 * 24 * 3600))" ]
+	local local_date
+	local current_date
+	local_date=$(stat -c %Y "$local_file" 2>/dev/null || echo 0)
+	current_date=$(date +%s)
+	[ "$((current_date - local_date))" -ge "$((14 * 24 * 3600))" ]
 }
 
-if needs_update; then
-  remote_date=$(curl -sI "$json_url" | grep -i '^Last-Modified:' | sed 's/Last-Modified: //')
-  if [ "$remote_date" != "$(stat -c %y "$local_file" 2>/dev/null)" ]; then
-    curl -s "$json_url" -o "$local_file"
-  fi
+if [ ! -f "$local_file" ]; then
+	curl -s "$json_url" -o "$local_file"
+elif needs_update; then
+	remote_date=$(curl -sI "$json_url" | grep -i '^Last-Modified:' | sed 's/Last-Modified: //')
+	if [ "$remote_date" != "$(stat -c %y "$local_file" 2>/dev/null)" ]; then
+		curl -s "$json_url" -o "$local_file"
+	fi
 fi
 
 selected=$(jq -r '. as $input | to_entries[] | select(.key != "METADATA") | "\(.value.char)  \(.key)"' "$local_file" | dmenu -bw 2 -i -W 290 -X 1061 -Y 15 -l 30 | sed "s/ .*//")
 [ -z "$selected" ] && exit
 if [ -n "$1" ]; then
-  xdotool type "$selected"
+	xdotool type "$selected"
 else
-  printf "%s" "$selected" | xclip -selection clipboard
-  notify-send "$selected  - copied to clipboard." &
+	printf "%s" "$selected" | xclip -selection clipboard
+	notify-send "$selected  - copied to clipboard." &
 fi
