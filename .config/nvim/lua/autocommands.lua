@@ -72,6 +72,15 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   group = vim.api.nvim_create_augroup("ReloadXresources", { clear = true }),
 })
 
+-- [[ Restore cursor shape on exit]]
+vim.api.nvim_create_autocmd({ "VimLeave" }, {
+  pattern = "*",
+  callback = function()
+    vim.cmd("set guicursor=a:hor20-blinkon500-blinkoff500-blinkwait700")
+  end,
+  group = vim.api.nvim_create_augroup("RestoreCursor", { clear = true }),
+})
+
 -- [[ Recompile suckless software on write and show notification ]]
 local function recompile(path)
   vim.api.nvim_create_augroup("RecompileGroup_" .. path, { clear = true })
@@ -79,7 +88,7 @@ local function recompile(path)
     pattern = vim.fn.resolve(vim.fn.expand(path)),
     callback = function()
       local dir = vim.fn.fnamemodify(path, ":h")
-      local shell_cmd = string.format("cd %s && sudo make install && renew-dwm", dir)
+      local shell_cmd = string.format("cd %s && sudo make install && renew-dwm && notify-send '  refresh complete'", dir)
       vim.cmd("!" .. shell_cmd)
     end,
   })
