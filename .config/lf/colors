@@ -41,7 +41,7 @@
 # fi      00      # FILE
 
 # file types (with matching order)
-ln      01;36   # LINK
+ln      01;35   # LINK
 or      31;01   # ORPHAN
 tw      34      # STICKY_OTHER_WRITABLE
 ow      34      # OTHER_WRITABLE
@@ -130,6 +130,7 @@ fi      49;68      # FILE
 *.m2v   01;33
 *.mkv   01;33
 *.webm  01;33
+*.webp  01;33
 *.ogm   01;33
 *.mp4   01;33
 *.m4v   01;33

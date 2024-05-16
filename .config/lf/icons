@@ -336,5 +336,13 @@ Vagrantfile             
 *.spx   󰝚
 *.xspf  󰝚
 
-# other formats
-*.pdf   
+# custom rules
+*.pdf           
+dotfiles/       󱁿
+downloads/      󱧨
+music/          󱍙
+docs/           󱧶
+notes/          󰲂
+pics/           󰉏
+projects/       󱧼
+me/             󰉌
