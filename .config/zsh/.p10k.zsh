@@ -106,11 +106,11 @@
     # proxy                   # system-wide http/https/ftp proxy
     # battery                 # internal battery
     # wifi                    # wifi speed
-    # vcs                     # git status
+    vcs                     # git status
     # example                 # example user-defined segment (see prompt_example function below)
   )
 
-  typeset -g POWERLEVEL9K_DISABLE_GITSTATUS=true
+  typeset -g POWERLEVEL9K_DISABLE_GITSTATUS=false
 
 
   # Defines character set used by powerlevel10k. It's best to let `p10k configure` set it for you.
