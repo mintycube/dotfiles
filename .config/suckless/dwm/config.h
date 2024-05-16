@@ -243,7 +243,6 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-
 static const char* dmenu_run_cmd[] = { "dmenu_run", "-bw", "2", "-i", "-W", "390", "-X", "961", "-Y", "15", "-l", "15", "-g", "3", NULL };
 static const char* clipmenu_cmd[]  = { "clipmenu", "-bw", "2", "-i", "-W", "290", "-X", "1061", "-Y", "15", "-l", "15", NULL };
 static const char* volume_ui_cmd[] = { "st", "-c", "volume-ui", "-g=80x15+353+20", "-e", "pulsemixer", NULL } ;
@@ -252,145 +251,144 @@ static const char* volume_ui_cmd[] = { "st", "-c", "volume-ui", "-g=80x15+353+20
 #define STATUSBAR "dwmblocks"
 
 static const Key on_empty_keys[] = {
-	/* modifier key            function                argument */
-  {0, XK_w,         spawn,   {.v = (const char*[]){"firefox", NULL } } },
-	{0, XK_e,         spawn,   {.v = (const char*[]){"st","bash","-c", "fuz", "-lf", NULL } } },
-  {0, XK_grave,     spawn,   {.v = (const char*[]){"dmenunerdsymbols", NULL } } },
-  {0, XK_BackSpace, spawn,   {.v = (const char*[]){"sysact", NULL } } },
-  {0, XK_r,         spawn,   {.v = (const char*[]){"st", "-e", "lf", NULL } } },
-  {0, XK_Return,    spawn,   {.v = (const char*[]){"st", "-c", "st-terminal", NULL } } },
-  {0, XK_d,         spawn,   {.v = dmenu_run_cmd } },
-  {0, XK_a,         spawn,   {.v = (const char*[]){"dmenu_hub", NULL } } },
-	{0, XK_f,         spawn,   {.v = (const char*[]){"st","bash","-c", "fuz", NULL } } },
-  {0, XK_space,     spawn,   {.v = (const char*[]){"dmenu_web", NULL } } },
-  {0, XK_n,         spawn,   {.v = (const char*[]){"st", "-e", "nvim", NULL } } },
+	/* modifier key            function          argument */
+	{0,         XK_e,          spawn,            SHCMD("st fuz -lf") },
+	{0,         XK_f,          spawn,            SHCMD("st fuz") },
+  {0,         XK_w,          spawn,            {.v = (const char*[]){"firefox", NULL } } },
+  {0,         XK_grave,      spawn,            {.v = (const char*[]){"dmenunerdsymbols", NULL } } },
+  {0,         XK_BackSpace,  spawn,            {.v = (const char*[]){"sysact", NULL } } },
+  {0,         XK_r,          spawn,            {.v = (const char*[]){"st", "-e", "lf", NULL } } },
+  {0,         XK_Return,     spawn,            {.v = (const char*[]){"st", "-c", "st-terminal", NULL } } },
+  {0,         XK_d,          spawn,            {.v = dmenu_run_cmd } },
+  {0,         XK_a,          spawn,            {.v = (const char*[]){"dmenu_hub", NULL } } },
+  {0,         XK_space,      spawn,            {.v = (const char*[]){"dmenu_web", NULL } } },
+  {0,         XK_n,          spawn,            {.v = (const char*[]){"st", "-e", "nvim", NULL } } },
 };
 
 static const Key keys[] = {
-	/* modifier                     key            function                argument */
-  { 0,XF86XK_AudioMute,       spawn,SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+8 dwmblocks") },
-  { 0,XF86XK_AudioRaiseVolume,spawn,SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%- && wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%+; pkill -RTMIN+8 dwmblocks") },
-  { 0,XF86XK_AudioLowerVolume,spawn,SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%+ && wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%-; pkill -RTMIN+8 dwmblocks") },
-  { 0,XF86XK_AudioPrev,		       spawn,		{.v = (const char*[]){ "mpc", "prev", NULL } } },
-  { 0,XF86XK_AudioNext,		       spawn,		{.v = (const char*[]){ "mpc",  "next", NULL } } },
-  { 0,XF86XK_AudioPause,		     spawn,		{.v = (const char*[]){ "mpc", "pause", NULL } } },
-  { 0,XF86XK_AudioPlay,		       spawn,		{.v = (const char*[]){ "mpc", "play", NULL } } },
-	{ MODKEY|ShiftMask,   XK_F5,   xrdb,    {.v = NULL } },
-  { 0,XK_F7,                     spawn,   {.v = clipmenu_cmd } },
-  { 0,XF86XK_MonBrightnessUp,	   spawn,		{.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } },
-  { 0,XF86XK_MonBrightnessDown,	 spawn,		{.v = (const char*[]){ "xbacklight", "-dec", "15", NULL } } },
-  { 0,    			        XK_Print,	    spawn,		      {.v = (const char*[]){ "maimpick", NULL } } },
-  { MODKEY,             XK_Print,	    spawn,		      {.v = (const char*[]){ "dmenurecord", NULL } } },
-  { MODKEY|ShiftMask,   XK_Delete,    quit,           {0} },
-  { MODKEY,             XK_Delete,    quit,           {1} },
-  { MODKEY,             XK_grave,     togglescratch,  {.ui = 0 } },
-  { MODKEY|ControlMask, XK_grave,     setscratch,     {.ui = 0 } },
-  { MODKEY|ShiftMask,   XK_grave,     removescratch,  {.ui = 0 } },
-  { MODKEY,             XK_0,         view,           {.ui = ~SPTAGMASK } },
-  { MODKEY|ShiftMask,   XK_0,         tag,            {.ui = ~SPTAGMASK } },
-  TAGKEYS(              XK_1,                         0)
-  TAGKEYS(              XK_2,                         1)
-  TAGKEYS(              XK_3,                         2)
-  TAGKEYS(              XK_4,                         3)
-  TAGKEYS(              XK_5,                         4)
-  TAGKEYS(              XK_6,                         5)
-  TAGKEYS(              XK_7,                         6)
-  TAGKEYS(              XK_8,                         7)
-  TAGKEYS(              XK_9,                         8)
-  { MODKEY,			        XK_equal,	    spawn,		      {.v = volume_ui_cmd } },
-  { MODKEY,			        XK_minus,	    spawn,		      {.v = volume_ui_cmd } },
-	{ MODKEY,			        XK_BackSpace,	spawn,		      {.v = (const char*[]){ "sysact", NULL } } },
-	{ MODKEY,             XK_Tab,       view,           {0} },
-	{ MODKEY,             XK_q,         killclient,     {0} },
-  { MODKEY|ShiftMask,   XK_q,         killunsel,      {0} },
-	{ MODKEY,			        XK_w,       	spawn,		      {.v = (const char*[]){ "firefox", NULL } } },
-	{ MODKEY,             XK_e,         spawn,          {.v = (const char*[]){ "st","bash","-c", "fuz", "-lf", NULL } } },
-  { ALTKEY,             XK_e,         spawn,          {.v = (const char*[]){ "networkmanager_dmenu", NULL } } },
-	{ MODKEY,			        XK_r,       	spawn,		      {.v = (const char*[]){ "st", "-e", "lf", NULL } } },
-	{ MODKEY|ShiftMask,		XK_r,       	spawn,		      {.v = (const char*[]){ "thunar", NULL } } },
-	{ MODKEY,             XK_t,         setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,             XK_u,         setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,             XK_y,         setlayout,      {.v = &layouts[2]} },
-  { MODKEY,             XK_i,         setlayout,      {0} },
-	{ MODKEY,             XK_o,         incnmaster,     {.i = +1 } },
-	{ MODKEY|ShiftMask,   XK_o,         incnmaster,     {.i = -1 } },
-	{ MODKEY,			        XK_a,       	spawn,		      {.v = (const char*[]){ "dmenu_hub", NULL } } },
-	{ MODKEY,             XK_d,         spawn,          {.v = dmenu_run_cmd } },
-	{ MODKEY,             XK_f,         spawn,          {.v = (const char*[]){ "st","bash","-c", "fuz", NULL } } },
-	{ ALTKEY,             XK_f,         togglefakefullscreen,   {0} },
-	{ MODKEY,             XK_h,         setmfact,       {.f = -0.05} },
-	{ MODKEY,             XK_j,         focusstack,     {.i = +1 } },
-	{ MODKEY,             XK_k,         focusstack,     {.i = -1 } },
-	{ MODKEY,             XK_l,         setmfact,       {.f = +0.05} },
-	{ ALTKEY,             XK_l,         spawn,          {.v = (const char*[]){"dictionary", NULL } } },
-	{ MODKEY|ShiftMask,  XK_apostrophe, togglescratch,	{.ui = 2 } },
-	{ MODKEY,            XK_apostrophe, togglescratch,  {.ui = 1 } },
-  { MODKEY,             XK_Return,    spawn,          {.v = (const char *[]){"st", "-c", "st-terminal", NULL}}},
-  { ALTKEY,             XK_Return,    spawn,          {.v = (const char *[]){"st", NULL}}},
-	{ MODKEY|ShiftMask,   XK_Return,    togglescratch,  {.ui = 0 } },
-	{ MODKEY,             XK_x,         transfer,       {0} },
-	{ MODKEY,             XK_b,         togglebar,      {0} },
-	{ MODKEY|ShiftMask,	  XK_b,       	spawn,		      {.v = (const char*[]){ "dmenu_web", "--add" , NULL } } },
-	{ MODKEY,			        XK_n,       	spawn,		      {.v = (const char*[]){ "st", "-e", "nvim", NULL } } },
-	{ MODKEY|ShiftMask,		XK_n,       	spawn,		      {.v = (const char*[]){ "st", "-e", "newsboat", NULL } } },
-	{ MODKEY,             XK_m,         togglescratch,  {.ui = 3 } },
-	{ MODKEY,             XK_comma,     togglescratch,  {.ui = 4 } },
-	// { MODKEY,             XK_comma,     focusmon,       {.i = -1 } },
-	// { MODKEY,             XK_period,    focusmon,       {.i = +1 } },
-	// { MODKEY|ShiftMask,   XK_comma,     tagmon,         {.i = -1 } },
-	// { MODKEY|ShiftMask,   XK_period,    tagmon,         {.i = +1 } },
-	{ MODKEY,             XK_slash,     zoom,           {0} },
-	{ 0,                  HOLDKEY,       holdbar,                {0} },
-	{ MODKEY,             XK_space,     spawn,          {.v = (const char*[]){ "dmenu_web", NULL } } },
-	{ MODKEY|ShiftMask,   XK_space,     togglefloating, {0} },
-	{ MODKEY,             XK_Left,      focusdir,       {.i = 0 } }, // left
-	{ MODKEY,             XK_Right,     focusdir,       {.i = 1 } }, // right
-	{ MODKEY,             XK_Up,        focusdir,       {.i = 2 } }, // up
-	{ MODKEY,             XK_Down,      focusdir,       {.i = 3 } }, // down
-	{ MODKEY|ControlMask, XK_Up,        rotatestack,    {.i = +1 } },
-	{ MODKEY|ControlMask, XK_Down,      rotatestack,    {.i = -1 } },
-	{ MODKEY|Mod1Mask,    XK_Left,      shiftboth,      { .i = -1 } },
-	{ MODKEY|Mod1Mask,    XK_Right,     shiftboth,      { .i = +1 } },
-	{ MODKEY|ControlMask, XK_Left,   shiftviewclients,  { .i = -1 } },
-	{ MODKEY|ControlMask, XK_Right,  shiftviewclients,  { .i = +1 } },
-
+	/* modifier           key                       function              argument */
+  { 0,                  XF86XK_AudioMute,         spawn,                SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+8 dwmblocks") },
+  { 0,                  XF86XK_AudioRaiseVolume,  spawn,                SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%- && wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%+; pkill -RTMIN+8 dwmblocks") },
+  { 0,                  XF86XK_AudioLowerVolume,  spawn,                SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%+ && wpctl set-volume @DEFAULT_AUDIO_SINK@ 3%-; pkill -RTMIN+8 dwmblocks") },
+  { 0,                  XF86XK_AudioPrev,		      spawn,                {.v = (const char*[]){ "mpc", "prev", NULL } } },
+  { 0,                  XF86XK_AudioNext,		      spawn,                {.v = (const char*[]){ "mpc",  "next", NULL } } },
+  { 0,                  XF86XK_AudioPause,		    spawn,                {.v = (const char*[]){ "mpc", "pause", NULL } } },
+  { 0,                  XF86XK_AudioPlay,		      spawn,                {.v = (const char*[]){ "mpc", "play", NULL } } },
+	{ MODKEY|ShiftMask,   XK_F5,                    xrdb,                 {.v = NULL } },
+  { 0,                  XK_F7,                    spawn,                {.v = clipmenu_cmd } },
+  { 0,                  XF86XK_MonBrightnessUp,	  spawn,                {.v = (const char*[]){ "xbacklight", "-inc", "15", NULL } } },
+  { 0,                  XF86XK_MonBrightnessDown,	spawn,                {.v = (const char*[]){ "xbacklight", "-dec", "15", NULL } } },
+  { 0,    			        XK_Print,	                spawn,		            {.v = (const char*[]){ "maimpick", NULL } } },
+  { MODKEY,             XK_Print,	                spawn,		            {.v = (const char*[]){ "dmenurecord", NULL } } },
+  { MODKEY|ShiftMask,   XK_Delete,                quit,                 {0} },
+  { MODKEY,             XK_Delete,                quit,                 {1} },
+  { MODKEY,             XK_grave,                 togglescratch,        {.ui = 0 } },
+  { MODKEY|ControlMask, XK_grave,                 setscratch,           {.ui = 0 } },
+  { MODKEY|ShiftMask,   XK_grave,                 removescratch,        {.ui = 0 } },
+  { MODKEY,             XK_0,                     view,                 {.ui = ~SPTAGMASK } },
+  { MODKEY|ShiftMask,   XK_0,                     tag,                  {.ui = ~SPTAGMASK } },
+  TAGKEYS(              XK_1,                                           0)
+  TAGKEYS(              XK_2,                                           1)
+  TAGKEYS(              XK_3,                                           2)
+  TAGKEYS(              XK_4,                                           3)
+  TAGKEYS(              XK_5,                                           4)
+  TAGKEYS(              XK_6,                                           5)
+  TAGKEYS(              XK_7,                                           6)
+  TAGKEYS(              XK_8,                                           7)
+  TAGKEYS(              XK_9,                                           8)
+  { MODKEY,			        XK_equal,	                spawn,		            {.v = volume_ui_cmd } },
+  { MODKEY,			        XK_minus,	                spawn,		            {.v = volume_ui_cmd } },
+	{ MODKEY,			        XK_BackSpace,             spawn,		            {.v = (const char*[]){ "sysact", NULL } } },
+	{ MODKEY,             XK_Tab,                   view,                 {0} },
+	{ MODKEY,             XK_q,                     killclient,           {0} },
+  { MODKEY|ShiftMask,   XK_q,                     killunsel,            {0} },
+	{ MODKEY,			        XK_w,                     spawn,		            {.v = (const char*[]){ "firefox", NULL } } },
+	{ MODKEY,             XK_e,                     spawn,                SHCMD("st fuz -lf") },
+  { ALTKEY,             XK_e,                     spawn,                {.v = (const char*[]){ "networkmanager_dmenu", NULL } } },
+	{ MODKEY,			        XK_r,                     spawn,		            {.v = (const char*[]){ "st", "-e", "lf", NULL } } },
+	{ MODKEY|ShiftMask,	  XK_r,                     spawn,		            {.v = (const char*[]){ "thunar", NULL } } },
+	{ MODKEY,             XK_t,                     setlayout,            {.v = &layouts[0]} },
+	{ MODKEY,             XK_u,                     setlayout,            {.v = &layouts[1]} },
+	{ MODKEY,             XK_y,                     setlayout,            {.v = &layouts[2]} },
+  { MODKEY,             XK_i,                     setlayout,            {0} },
+	{ MODKEY,             XK_o,                     incnmaster,           {.i = +1 } },
+	{ MODKEY|ShiftMask,   XK_o,                     incnmaster,           {.i = -1 } },
+	{ MODKEY,			        XK_a,                     spawn,		            {.v = (const char*[]){ "dmenu_hub", NULL } } },
+	{ MODKEY,             XK_d,                     spawn,                {.v = dmenu_run_cmd } },
+	{ MODKEY,             XK_f,                     spawn,                SHCMD("st fuz") },
+	{ ALTKEY,             XK_f,                     togglefakefullscreen, {0} },
+	{ MODKEY,             XK_h,                     setmfact,             {.f = -0.05} },
+	{ MODKEY,             XK_j,                     focusstack,           {.i = +1 } },
+	{ MODKEY,             XK_k,                     focusstack,           {.i = -1 } },
+	{ MODKEY,             XK_l,                     setmfact,             {.f = +0.05} },
+	{ ALTKEY,             XK_l,                     spawn,                {.v = (const char*[]){"dictionary", NULL } } },
+	{ MODKEY|ShiftMask,   XK_apostrophe,            togglescratch,        {.ui = 2 } },
+	{ MODKEY,             XK_apostrophe,            togglescratch,        {.ui = 1 } },
+  { MODKEY,             XK_Return,                spawn,                {.v = (const char *[]){"st", "-c", "st-terminal", NULL}}},
+  { ALTKEY,             XK_Return,                spawn,                {.v = (const char *[]){"st", NULL}}},
+	{ MODKEY|ShiftMask,   XK_Return,                togglescratch,        {.ui = 0 } },
+	{ MODKEY,             XK_x,                     transfer,             {0} },
+	{ MODKEY,             XK_b,                     togglebar,            {0} },
+	{ MODKEY|ShiftMask,	  XK_b,                     spawn,		            {.v = (const char*[]){ "dmenu_web", "--add" , NULL } } },
+	{ MODKEY,			        XK_n,                     spawn,		            {.v = (const char*[]){ "st", "-e", "nvim", NULL } } },
+	{ MODKEY|ShiftMask,	  XK_n,                     spawn,		            {.v = (const char*[]){ "st", "-e", "newsboat", NULL } } },
+	{ MODKEY,             XK_m,                     togglescratch,        {.ui = 3 } },
+	{ MODKEY,             XK_comma,                 togglescratch,        {.ui = 4 } },
+	{ MODKEY,             XK_comma,                 focusmon,             {.i = -1 } },
+	{ MODKEY,             XK_period,                focusmon,             {.i = +1 } },
+	{ MODKEY|ShiftMask,   XK_comma,                 tagmon,               {.i = -1 } },
+	{ MODKEY|ShiftMask,   XK_period,                tagmon,               {.i = +1 } },
+  { MODKEY,             XK_slash,                 zoom,                 {0} },
+  { 0,                  HOLDKEY,                  holdbar,              {0} },
+  { MODKEY,             XK_space,                 spawn,                {.v = (const char*[]){ "dmenu_web", NULL } } },
+  { MODKEY|ShiftMask,   XK_space,                 togglefloating,       {0} },
+  { MODKEY,             XK_Left,                  focusdir,             {.i = 0 } }, // left
+  { MODKEY,             XK_Right,                 focusdir,             {.i = 1 } }, // right
+  { MODKEY,             XK_Up,                    focusdir,             {.i = 2 } }, // up
+  { MODKEY,             XK_Down,                  focusdir,             {.i = 3 } }, // down
+  { MODKEY|ControlMask, XK_Up,                    rotatestack,          {.i = +1 } },
+  { MODKEY|ControlMask, XK_Down,                  rotatestack,          {.i = -1 } },
+  { MODKEY|Mod1Mask,    XK_Left,                  shiftboth,            { .i = -1 } },
+  { MODKEY|Mod1Mask,    XK_Right,                 shiftboth,            { .i = +1 } },
+  { MODKEY|ControlMask, XK_Left,                  shiftviewclients,     { .i = -1 } },
+  { MODKEY|ControlMask, XK_Right,                 shiftviewclients,     { .i = +1 } },
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask           button          function        argument */
-	{ ClkRootWin,     0,         Button1,  spawn,  SHCMD("dunstctl close-all; killall dmenu") },
-	{ ClkRootWin,     0,         Button3,  spawn,  SHCMD("dunstctl close-all; pgrep -x 'dmenu' > /dev/null && killall dmenu || dmenu_hub") },
-	{ ClkButton,      0,         Button1,  spawn,             {.v = dmenu_run_cmd } },
-	{ ClkButton,      0,         Button3,  spawn,             {.v = (const char*[]){ "dmenu_hub", NULL } } },
-	{ ClkLtSymbol,    0,         Button1,  setlayout,         {0} },
-	{ ClkLtSymbol,    0,         Button3,  setlayout,         {.v = &layouts[2]} },
-	{ ClkWinTitle,    0,         Button2,  zoom,              {0} },
-	{ ClkStatusText,  0,         Button1,  sigstatusbar,      {.i = 1 } },
-	{ ClkStatusText,  0,         Button2,  sigstatusbar,      {.i = 2 } },
-	{ ClkStatusText,  0,         Button3,  sigstatusbar,      {.i = 3 } },
-	{ ClkStatusText,  0,         Button4,  sigstatusbar,      {.i = 4} },
-	{ ClkStatusText,  0,         Button5,  sigstatusbar,      {.i = 5} },
-	{ ClkStatusText,  ShiftMask, Button1,  sigstatusbar,      {.i = 6} },
-	{ ClkStatusText,  MODKEY,    Button1,  sigstatusbar,      {.i = 1 } },
-	{ ClkStatusText,  MODKEY,    Button2,  sigstatusbar,      {.i = 2 } },
-	{ ClkStatusText,  MODKEY,    Button3,  sigstatusbar,      {.i = 3 } },
-	{ ClkStatusText,  MODKEY,    Button4,  sigstatusbar,      {.i = 4} },
-	{ ClkStatusText,  MODKEY,    Button5,  sigstatusbar,      {.i = 5} },
-	{ ClkStatusText,  MODKEY|ShiftMask, Button1,  sigstatusbar, {.i = 6} },
-	{ ClkClientWin,   0,         Button2,  spawn,             {.v = (const char*[]){ "dictionary", NULL } } },
-	{ ClkClientWin,   MODKEY,    Button1,  movemouse,         {0} },
-	{ ClkClientWin,   MODKEY,    Button2,  togglefloating,    {0} },
-	{ ClkClientWin,   MODKEY,    Button3,  resizemouse,       {0} },
-	{ ClkClientWin,   MODKEY,    Button4,  resizemousescroll, {.v = &scrollargs[0]} },
-	{ ClkClientWin,   MODKEY,    Button5,  resizemousescroll, {.v = &scrollargs[1]} },
-	{ ClkClientWin,   MODKEY,    Button6,  resizemousescroll, {.v = &scrollargs[2]} },
-	{ ClkClientWin,   MODKEY,    Button7,  resizemousescroll, {.v = &scrollargs[3]} },
-	{ ClkTagBar,      0,         Button1,  view,              {0} },
-	{ ClkTagBar,      0,         Button3,  toggleview,        {0} },
-	{ ClkTagBar,      MODKEY,    Button1,  tag,               {0} },
-	{ ClkTagBar,      MODKEY,    Button3,  toggletag,         {0} },
+	/* click          event|mask        button    function           argument */
+	{ ClkRootWin,     0,                Button1,  spawn,             SHCMD("dunstctl close-all; killall dmenu") },
+	{ ClkRootWin,     0,                Button3,  spawn,             SHCMD("dunstctl close-all; pgrep -x 'dmenu' > /dev/null && killall dmenu || dmenu_hub") },
+	{ ClkButton,      0,                Button1,  spawn,             {.v = dmenu_run_cmd } },
+	{ ClkButton,      0,                Button3,  spawn,             {.v = (const char*[]){ "dmenu_hub", NULL } } },
+	{ ClkLtSymbol,    0,                Button1,  setlayout,         {0} },
+	{ ClkLtSymbol,    0,                Button3,  setlayout,         {.v = &layouts[2]} },
+	{ ClkWinTitle,    0,                Button2,  zoom,              {0} },
+	{ ClkStatusText,  0,                Button1,  sigstatusbar,      {.i = 1 } },
+	{ ClkStatusText,  0,                Button2,  sigstatusbar,      {.i = 2 } },
+	{ ClkStatusText,  0,                Button3,  sigstatusbar,      {.i = 3 } },
+	{ ClkStatusText,  0,                Button4,  sigstatusbar,      {.i = 4} },
+	{ ClkStatusText,  0,                Button5,  sigstatusbar,      {.i = 5} },
+	{ ClkStatusText,  ShiftMask,        Button1,  sigstatusbar,      {.i = 6} },
+	{ ClkStatusText,  MODKEY,           Button1,  sigstatusbar,      {.i = 1 } },
+	{ ClkStatusText,  MODKEY,           Button2,  sigstatusbar,      {.i = 2 } },
+	{ ClkStatusText,  MODKEY,           Button3,  sigstatusbar,      {.i = 3 } },
+	{ ClkStatusText,  MODKEY,           Button4,  sigstatusbar,      {.i = 4} },
+	{ ClkStatusText,  MODKEY,           Button5,  sigstatusbar,      {.i = 5} },
+	{ ClkStatusText,  MODKEY|ShiftMask, Button1,  sigstatusbar,      {.i = 6} },
+	{ ClkClientWin,   0,                Button2,  spawn,             {.v = (const char*[]){ "dictionary", NULL } } },
+	{ ClkClientWin,   MODKEY,           Button1,  movemouse,         {0} },
+	{ ClkClientWin,   MODKEY,           Button2,  togglefloating,    {0} },
+	{ ClkClientWin,   MODKEY,           Button3,  resizemouse,       {0} },
+	{ ClkClientWin,   MODKEY,           Button4,  resizemousescroll, {.v = &scrollargs[0]} },
+	{ ClkClientWin,   MODKEY,           Button5,  resizemousescroll, {.v = &scrollargs[1]} },
+	{ ClkClientWin,   MODKEY,           Button6,  resizemousescroll, {.v = &scrollargs[2]} },
+	{ ClkClientWin,   MODKEY,           Button7,  resizemousescroll, {.v = &scrollargs[3]} },
+	{ ClkTagBar,      0,                Button1,  view,              {0} },
+	{ ClkTagBar,      0,                Button3,  toggleview,        {0} },
+	{ ClkTagBar,      MODKEY,           Button1,  tag,               {0} },
+	{ ClkTagBar,      MODKEY,           Button3,  toggletag,         {0} },
 };
 
 /* signal definitions */
