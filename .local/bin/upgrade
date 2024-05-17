@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+function check_keyring() {
+	echo -e "\e[34m::\e[0m Checking Arch Linux PGP Keyring..."
+	local installedver
+	installedver="$(LANG='' sudo pacman -Qi archlinux-keyring | grep -Po '(?<=Version         : ).*')"
+	local currentver
+	currentver="$(LANG='' sudo pacman -Si archlinux-keyring | grep -Po '(?<=Version         : ).*')"
+	if [ "$installedver" != "$currentver" ]; then
+		echo -e "\e[31m==> Arch Linux PGP Keyring is out of date.\e[0m"
+		return 1
+	else
+		echo -e "\e[32m==> Arch Linux PGP Keyring is up to date.\e[0m"
+		return 0
+	fi
+}
+
+function update_keyring() {
+	echo -e "\e[34m::\e[0m Updating Arch Linux PGP Keyring..."
+	sudo pacman -Sy --needed archlinux-keyring
+  # echo -e "keyring updating ..."
+	echo -e "\e[32m==> Keyring updated.\e[0m"
+}
+
+function perform_full_upgrade() {
+	local package_manager=$1
+	if [ "$package_manager" == "1" ]; then
+		echo -e "\e[34m::\e[0m Performing full system upgrade with pacman..."
+		sudo pacman -Syu
+    # echo -e "pacman updating ..."
+		echo -e "\e[32m==> System upgraded.\e[0m"
+	elif [ "$package_manager" == "2" ]; then
+		echo -e "\e[34m::\e[0m Performing full system upgrade with yay..."
+		yay -Syu
+    # echo -e "yay updating ..."
+		echo -e "\e[32m==> System upgraded.\e[0m"
+	else
+		echo "Invalid package manager selected. Exiting..."
+		exit 1
+	fi
+}
+
+function main() {
+	check_keyring
+	if [ $? -eq 1 ]; then
+		read -rp "Do you want to update the keyring? (y/n): " update_keyring
+		if [ "$update_keyring" != "y" ]; then
+			echo "Exiting..."
+			exit 0
+		else
+			update_keyring
+			read -rp "Do you want to perform a full system upgrade? (y/n): " full_upgrade
+			if [ "$full_upgrade" != "y" ]; then
+				echo "Exiting..."
+				exit 0
+			else
+				read -rp "Choose package manager (1:pacman/2:yay): " package_manager
+				perform_full_upgrade "$package_manager"
+			fi
+		fi
+	fi
+}
+
+main
