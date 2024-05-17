@@ -161,27 +161,30 @@ static const Rule rules[] = {
 	 *	WM_WINDOW_ROLE(STRING) = role
 	 *	_NET_WM_WINDOW_TYPE(ATOM) = wintype
 	 */
-	RULE(.wintype = WTYPE "DIALOG", .isfloating = 1)
-	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
-	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
-	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
-	RULE(.class = "st-terminal", .tags = 1 << 0, .switchtag = 1)
-	RULE(.class = "firefox", .tags = 1 << 1, .switchtag = 1)
-  RULE(.title = "nvim", .tags = 1 << 2, .switchtag = 1)
-	RULE(.title = "lf", .tags = 1 << 3, .switchtag = 1)
-  RULE(.class = "mpv", .tags = 1 << 4, .switchtag = 3)
-  RULE(.title = "newsboat", .tags = 1 << 5, .switchtag = 3)
-  RULE(.class = "Zathura", .tags = 1 << 6, .switchtag = 3)
-  RULE(.title = "nsxiv", .tags = 1 << 7, .switchtag = 3)
-	RULE(.class = "Gimp", .tags = 1 << 8, .switchtag = 3)
-	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
-	RULE(.instance = "spcalc", .tags = SPTAG(1), .isfloating = 1)
-	RULE(.class = "Qalculate-gtk", .tags = SPTAG(2), .isfloating = 1)
-	RULE(.instance = "spmusic", .tags = SPTAG(3), .isfloating = 1)
-	RULE(.instance = "spnotes", .tags = SPTAG(4), .isfloating = 1)
-	RULE(.instance = "dictionary", .isfloating = 1)
-	RULE(.class = "volume-ui", .isfloating = 1)
-	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
+	RULE(.wintype  = WTYPE "DIALOG",                    .isfloating = 1)
+	RULE(.wintype  = WTYPE "UTILITY",                   .isfloating = 1)
+	RULE(.wintype  = WTYPE "TOOLBAR",                   .isfloating = 1)
+	RULE(.wintype  = WTYPE "SPLASH",                    .isfloating = 1)
+
+	RULE(.class    = "st-terminal",   .tags = 1 << 0,   .switchtag = 1)
+	RULE(.class    = "firefox",       .tags = 1 << 1,   .switchtag = 1)
+  RULE(.title    = "nvim",          .tags = 1 << 2,   .switchtag = 1)
+	RULE(.title    = "lf",            .tags = 1 << 3,   .switchtag = 1)
+  RULE(.class    = "mpv",           .tags = 1 << 4,   .switchtag = 3)
+  RULE(.title    = "newsboat",      .tags = 1 << 5,   .switchtag = 3)
+  RULE(.class    = "Zathura",       .tags = 1 << 6,   .switchtag = 3)
+  RULE(.title    = "nsxiv",         .tags = 1 << 7,   .switchtag = 3)
+	RULE(.class    = "Gimp",          .tags = 1 << 8,   .switchtag = 3)
+
+	RULE(.instance = "spterm",        .tags = SPTAG(0), .isfloating = 1)
+	RULE(.instance = "spcalc",        .tags = SPTAG(1), .isfloating = 1)
+	RULE(.class    = "Qalculate-gtk", .tags = SPTAG(2), .isfloating = 1)
+	RULE(.instance = "spmusic",       .tags = SPTAG(3), .isfloating = 1)
+	RULE(.instance = "spnotes",       .tags = SPTAG(4), .isfloating = 1)
+	RULE(.instance = "spterm",        .tags = SPTAG(0), .isfloating = 1)
+
+	RULE(.instance = "dictionary",                      .isfloating = 1)
+	RULE(.class    = "volume-ui",                       .isfloating = 1)
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
