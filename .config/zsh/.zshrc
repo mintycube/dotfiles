@@ -53,7 +53,13 @@ export TERMINAL_PROG="st"
 export BROWSER="firefox"
 export MANPAGER="nvim +Man!"
 export XDG_SESSION_TYPE="x11"
-export FZF_DEFAULT_OPTS="--height=70% --reverse --info=inline"
+export FZF_DEFAULT_OPTS="--height=50% --reverse --info=inline \
+--color=fg:#c0caf5,bg:#1a1b26,hl:#ff9e64 \
+--color=fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64 \
+--color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff \
+--height=100% --prompt='  ' --pointer=' ' --ellipsis='' --border=horizontal \
+--color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a"
+
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
