@@ -6,7 +6,7 @@ DIRNAME_CMD="/usr/bin/dirname"
 DISPLAY_CMD="/usr/bin/display"
 FD_CMD="/usr/bin/fd"
 FILE_CMD="/usr/bin/file"
-FZFP_CMD="/usr/bin/fzfp" # comes from aur (stpv-git)
+FZFP_CMD="/usr/bin/fzfp" # comes from AUR (stpv-git)
 GIMP_CMD="/usr/bin/gimp"
 LF_CMD="/usr/bin/lf"
 LIBREOFFICE_CMD="/usr/bin/zaread"
@@ -15,7 +15,7 @@ NSXIV_CMD="/usr/bin/nsxiv"
 NVIM_CMD="/usr/bin/nvim"
 READLINK_CMD="/usr/bin/readlink"
 ZATHURA_CMD="/usr/bin/zathura"
-ZSH_CMD="/usr/bin/zsh"
+# ZSH_CMD="/usr/bin/zsh"
 
 echo -ne '\e[3 q' # Use underline shape cursor on startup.
 eval "$($DIRCOLORS_CMD --sh)" # Setup correct colors
@@ -27,6 +27,7 @@ FD_COMMAND=(
 	"-E" "*.github"
 	"-E" "*.local/state"
 	"-E" "*.ssh"
+	"-E" "*.android"
 	"-E" "*GIMP"
 	"-E" "*Thunar"
 	"-E" "*config/blender"
@@ -47,7 +48,8 @@ FD_COMMAND=(
 FZF_COMMAND=(
 	"$FZFP_CMD"
 	"--scheme=path" "--algo=v2"
-	"--height=100%" "--prompt=  " "--pointer= " "--ellipsis=" "--border=horizontal"
+	"--height=100%" "--prompt=  " "--pointer= " "--ellipsis="
+  "--border=horizontal" "--margin=5%,10%,5%,10%"  "--scrollbar=▐" "--preview-window=border-vertical"
 	"--color=fg:#c0caf5,bg:#1a1b26,hl:#ff9e64"
 	"--color=fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64"
 	"--color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff"
@@ -60,31 +62,31 @@ case "$1" in
 	# FZF_COMMAND+=("--query=pdf$ | epub$ | djvu$ ")
 	FD_COMMAND+=("-e" "pdf" "-e" "epub" "-e" "djvu")
 	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	export selection
+	# export selection
 	[ -n "$selection" ] && $ZATHURA_CMD "$selection"
 	;;
 "-lf")
 	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	export selection
+	# export selection
 	[ -n "$selection" ] && $LF_CMD -command "set hidden" "$selection"
 	;;
 "-video")
 	# FZF_COMMAND+=("--query=mp4$ | mkv$ | webm$ | avi$ ")
 	FD_COMMAND+=("-e" "mp4" "-e" "mkv" "-e" "webm" "-e" "avi")
 	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	export selection
+	# export selection
 	[ -n "$selection" ] && "$MPV_CMD" --loop-file "$selection" -quiet
 	;;
 "-image")
 	# FZF_COMMAND+=("--query=jpg$ | jpeg$ | png$ | webp$ | bmp$ | tiff$ | tif$ | raw$ | ico$ | exif$ | heic$ | heif$ | gif$ | avif$ | jxl$ | JPG$ | PNG$ ")
 	FD_COMMAND+=("jpg" "-e" "jpeg" "-e" "png" "-e" "webp" "-e" "bmp" "-e" "tiff" "-e" "tif" "-e" "raw" "-e" "ico" "-e" "exif" "-e" "heic" "-e" "heif" "-e" "gif" "-e" "avif" "-e" "jxl" "-e" "JPG" "-e" "PNG")
 	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	export selection
+	# export selection
 	[ -n "$selection" ] && "$MPV_CMD" --loop-file "$selection" -quiet
 	;;
 *)
 	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	export selection
+	# export selection
 	[ -n "$selection" ] &&
 		case $($FILE_CMD --mime-type "$($READLINK_CMD -f "$selection")" -b) in
 		image/vnd.djvu | application/pdf | application/postscript | application/epub*) "$ZATHURA_CMD" "$selection" >/dev/null 2>&1 ;;
@@ -111,7 +113,7 @@ case "$1" in
 				}
 			done
 			;;
-		audio/* | video/x-ms-asf) "$MPV_CMD" --loop-file --audio-display=no "$selection" ;;
+		audio/* | video/x-ms-asf) "$MPV_CMD" --loop-file --profile=builtin-pseudo-gui "$selection" ;;
 		video/*) "$MPV_CMD" --loop-file "$selection" -quiet >/dev/null 2>&1 ;;
 		application/pgp-encrypted) "$NVIM_CMD" "$selection" ;;
 		application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/vnd.oasis.opendocument.text | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | application/vnd.oasis.opendocument.spreadsheet | application/vnd.oasis.opendocument.spreadsheet-template | application/vnd.openxmlformats-officedocument.presentationml.presentation | application/vnd.oasis.opendocument.presentation-template | application/vnd.oasis.opendocument.presentation | application/vnd.ms-powerpoint | application/vnd.oasis.opendocument.graphics | application/vnd.oasis.opendocument.graphics-template | application/vnd.oasis.opendocument.formula | application/vnd.oasis.opendocument.database) "$LIBREOFFICE_CMD" "$selection" >/dev/null 2>&1 ;;
@@ -120,15 +122,16 @@ case "$1" in
 			ts) "$MPV_CMD" "$selection" -quiet >/dev/null 2>&1 ;;
 			*) "$ZATHURA_CMD" "$selection" >/dev/null 2>&1 ;;
 			esac ;;
-		*) for selection in $selection; do $LF_CMD -command "set hidden" "$selection" >/dev/null 2>&1; done ;;
+		*) $LF_CMD -command "set hidden" "$selection" ;;
 		esac
 	;;
 esac
 
-if [ -d "$selection" ]; then
-	cd "$selection" && exec $ZSH_CMD
-elif [ -f "$selection" ]; then
-	cd "$($DIRNAME_CMD "$selection")" && exec $ZSH_CMD
-else
-	exec $ZSH_CMD
-fi
+
+# if [ -d "$selection" ]; then
+# 	cd "$selection" && exec $ZSH_CMD
+# elif [ -f "$selection" ]; then
+# 	cd "$($DIRNAME_CMD "$selection")" && exec $ZSH_CMD
+# else
+# 	exec $ZSH_CMD
+# fi

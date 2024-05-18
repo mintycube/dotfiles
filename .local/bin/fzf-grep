@@ -1,27 +1,26 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-preview='bat -p --color=always --style=header,numbers -H {2} {1} | grep -C4 {q}'
+rm -f /tmp/rg-fzf-{r,f}
 
-([ -z "$1" ] && search_dir=".") || search_dir="$1"
+[ -d "$1" ] && SEARCH_DIR="$1" && shift || SEARCH_DIR="."
 
-selected=$(rg --color=always --hidden -nS "$2" "$search_dir" 2>/dev/null |
-  fzf -d: \
-    --ansi \
-    --height=80% \
-    --multi \
-    --query="$2" \
-    --phony \
-    --info=inline \
-    --scroll-off=5 \
-    --scrollbar='▐' \
-    --ellipsis='…' \
-    --marker='❱' \
-    --pointer='❱' \
-    --bind="change:reload:rg --hidden -nS --color=always {q} $search_dir" \
-    --preview="[[ -n {1} ]] && $preview" \
-    --preview-window=right:50%)
+RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case \
+  --glob '!/.ssh' --glob '!/.android' --glob '!/.gnupg'"
+INITIAL_QUERY="${*:-}"
 
-if [ -n "$selected" ]; then
-  line_number=$(echo "$selected" | awk -F ':' '{print $2}')
-  echo "$selected" | cut -d: -f1 | uniq | xargs nvim +"$line_number"
-fi
+: | fzf --ansi --disabled --query "$INITIAL_QUERY" \
+	--bind "start:reload:$RG_PREFIX {q} $SEARCH_DIR" \
+	--bind "change:reload:sleep 0.1; $RG_PREFIX {q} $SEARCH_DIR || true" \
+	--bind "ctrl-t:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] &&
+  echo \"rebind(change)+change-prompt(ripgrep  )+disable-search+transform-query:echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" ||
+  echo \"unbind(change)+change-prompt(fzf  )+enable-search+transform-query:echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"" \
+	--margin=5%,10%,5%,10% --height=100% --reverse \
+	--scrollbar=▐ --keep-right --info=hidden --border=none --ellipsis= \
+	--prompt 'ripgrep  ' \
+	--delimiter : \
+	--header 'CTRL-T: Switch between ripgrep/fzf' \
+	--preview 'bat --style=header,numbers --color=always {1} --highlight-line {2}' \
+	--preview-window 'bottom,60%,border-top,+{2}+3/3,~1' \
+	--bind 'enter:become(nvim {1} +{2})'
+
+# --color "hl:-1:underline,hl+:-1:underline:reverse" \

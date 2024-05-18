@@ -16,15 +16,16 @@ fd_command="fd . \
 
 fzf_command="fzf \
   --ansi \
-  --height=80% \
+  --height=100% \
+  --keep-right \
   --layout=reverse \
+  --scheme=path \
   --multi \
   --preview=\"[[ -n {1} ]] && $preview\" \
-  --scroll-off=5 \
-  --scrollbar='▐' \
-  --ellipsis='…' \
-  --marker='❱' \
-  --pointer='❱'"
+  --preview-window='bottom,60%,border-top' \
+  --scrollbar='▐' --info=hidden \
+  --margin=5%,10%,5%,10% --border=none \
+  --prompt='  ' --pointer=' ' --ellipsis='' "
 
 eval "$fd_command" | eval "$fzf_command"
 exit 0
