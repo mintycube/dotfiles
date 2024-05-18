@@ -85,6 +85,7 @@ static char *colors[][ColCount] = {
 static const char *const autostart[] = {
 	// "st", NULL,
 	"dwmblocks", NULL,
+	"pipewire", NULL,
 	NULL /* terminate */
 };
 
@@ -257,6 +258,7 @@ static const Key on_empty_keys[] = {
 	/* modifier key            function          argument */
 	{0,         XK_e,          spawn,            SHCMD("st fuz -lf") },
 	{0,         XK_f,          spawn,            SHCMD("st fuz") },
+	{0,         XK_t,          spawn,            SHCMD("st fuz-test") },
   {0,         XK_w,          spawn,            {.v = (const char*[]){"firefox", NULL } } },
   {0,         XK_grave,      spawn,            {.v = (const char*[]){"dmenunerdsymbols", NULL } } },
   {0,         XK_BackSpace,  spawn,            {.v = (const char*[]){"sysact", NULL } } },
