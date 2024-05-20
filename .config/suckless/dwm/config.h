@@ -86,6 +86,7 @@ static const char *const autostart[] = {
 	// "st", NULL,
 	"dwmblocks", NULL,
 	"pipewire", NULL,
+	"picom", NULL,
 	NULL /* terminate */
 };
 
