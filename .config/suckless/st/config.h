@@ -30,7 +30,10 @@ char *scroll = NULL;
 char *stty_args = "stty raw pass8 nl -echo -iexten -cstopb 38400";
 
 /* identification sequence returned in DA and DECID */
-char *vtiden = "\033[?6c";
+char *vtiden = "\033[?62;4c"; /* VT200 family (62) with sixel (4) */
+
+/* sixel rgb byte order: LSBFirst or MSBFirst */
+int const sixelbyteorder = LSBFirst;
 
 /* Kerning / character bounding-box multipliers */
 static float cwscale = 1.0;
@@ -158,7 +161,7 @@ unsigned int defaultrcs = 257;
  * 7: Blinking st cursor
  * 8: Steady st cursor
  */
-static unsigned int cursorstyle = 1;
+static unsigned int cursorstyle = 3;
 static Rune stcursor = 0x2603; /* snowman (U+2603) */
 
 /*
@@ -266,10 +269,8 @@ static Shortcut shortcuts[] = {
     {ControlMask, XK_Print, toggleprinter, {.i = 0}},
     {ShiftMask, XK_Print, printscreen, {.i = 0}},
     {XK_ANY_MOD, XK_Print, printsel, {.i = 0}},
-    {TERMMOD, XK_Up, zoom, {.f = +2}},
-    {TERMMOD, XK_Down, zoom, {.f = -2}},
-    // {MODKEY, XK_equal, zoom, {.f = +2}},
-    // {MODKEY, XK_minus, zoom, {.f = -2}},
+    {TERMMOD, XK_Up, zoom, {.f = +1}},
+    {TERMMOD, XK_Down, zoom, {.f = -1}},
     {TERMMOD, XK_Home, zoomreset, {.f = 0}},
     {TERMMOD, XK_C, clipcopy, {.i = 0}},
     {TERMMOD, XK_V, clippaste, {.i = 0}},

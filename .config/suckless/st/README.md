@@ -23,6 +23,7 @@ The patches used are listed below:
 - rightclicktoplumb [link](https://st.suckless.org/patches/right_click_to_plumb)
 - scrollback [link](https://st.suckless.org/patches/scrollback)
 - scrollback mouse altscreen [link](https://st.suckless.org/patches/scrollback)
+- sixel [link](https://gist.github.com/saitoha/70e0fdf22e3e8f63ce937c7f7da71809)
 - swapmouse [link](https://st.suckless.org/patches/swapmouse)
 - use xftfontmatch [link](https://git.suckless.org/st/commit/528241aa3835e2f1f052abeeaf891737712955a0.html)
 - wide glyphs [link](https://github.com/Dreomite/st/commit/e3b821dcb3511d60341dec35ee05a4a0abfef7f2) [link](https://www.reddit.com/r/suckless/comments/jt90ai/update_support_for_proper_glyph_rendering_in_st)

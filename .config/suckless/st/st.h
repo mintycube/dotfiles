@@ -45,8 +45,25 @@ enum glyph_attribute {
 	ATTR_WDUMMY         = 1 << 11,
 	ATTR_BOXDRAW        = 1 << 13,
 	ATTR_LIGA           = 1 << 15,
+	ATTR_SIXEL          = 1 << 16,
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
 };
+
+typedef struct _ImageList {
+	struct _ImageList *next, *prev;
+	unsigned char *pixels;
+	void *pixmap;
+	void *clipmask;
+	int width;
+	int height;
+	int x;
+	int y;
+	int reflow_y;
+	int cols;
+	int cw;
+	int ch;
+	int transparent;
+} ImageList;
 
 enum drawing_mode {
 	DRAW_NONE = 0,
@@ -135,6 +152,8 @@ typedef struct {
 	int charset;  /* current charset */
 	int icharset; /* selected charset for sequence */
 	int *tabs;
+	ImageList *images;     /* sixel images */
+	ImageList *images_alt; /* sixel images for alternate screen */
 	Rune lastc;   /* last printed char outside of sequence, 0 if control */
 } Term;
 

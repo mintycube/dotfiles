@@ -6,6 +6,7 @@ tloaddefscreen(int clear, int loadcursor)
 	if (alt) {
 		if (clear) {
 			tclearregion(0, 0, term.col-1, term.row-1, 1);
+			tdeleteimages();
 		}
 		col = term.col, row = term.row;
 		tswapscreen();
@@ -31,6 +32,7 @@ tloadaltscreen(int clear, int savecursor)
 	}
 	if (clear) {
 		tclearregion(0, 0, term.col-1, term.row-1, 1);
+		tdeleteimages();
 	}
 }
 
@@ -56,6 +58,17 @@ tclearglyph(Glyph *gp, int usecurattr)
 }
 
 void
+treflow_moveimages(int oldy, int newy)
+{
+	ImageList *im;
+
+	for (im = term.images; im; im = im->next) {
+		if (im->y == oldy)
+			im->reflow_y = newy;
+	}
+}
+
+void
 treflow(int col, int row)
 {
 	int i, j, x, x2;
@@ -64,6 +77,10 @@ treflow(int col, int row)
 	int cy = -1; /* proxy for new y coordinate of cursor */
 	int buflen, nlines;
 	Line *buf, bufline, line;
+	ImageList *im, *next;
+
+	for (im = term.images; im; im = im->next)
+		im->reflow_y = INT_MIN; /* unset reflow_y */
 
 	/* y coordinate of cursor line end */
 	for (oce = term.c.y; oce < term.row - 1 &&
@@ -95,6 +112,7 @@ treflow(int col, int row)
 			if (len == 0 || !(line[len - 1].mode & ATTR_WRAP)) {
 				for (j = nx; j < col; j++)
 					tclearglyph(&bufline[j], 0);
+				treflow_moveimages(oy+term.scr, ny);
 				nx = 0;
 			} else if (nx > 0) {
 				bufline[nx - 1].mode &= ~ATTR_WRAP;
@@ -102,6 +120,7 @@ treflow(int col, int row)
 			ox = 0, oy++;
 		} else if (col - nx == len - ox) {
 			memcpy(&bufline[nx], &line[ox], (col-nx) * sizeof(Glyph));
+			treflow_moveimages(oy+term.scr, ny);
 			ox = 0, oy++, nx = 0;
 		} else/* if (col - nx < len - ox) */ {
 			memcpy(&bufline[nx], &line[ox], (col-nx) * sizeof(Glyph));
@@ -112,6 +131,7 @@ treflow(int col, int row)
 			} else {
 				bufline[col - 1].mode |= ATTR_WRAP;
 			}
+			treflow_moveimages(oy+term.scr, ny);
 			ox += col - nx;
 			nx = 0;
 		}
@@ -172,6 +192,29 @@ treflow(int col, int row)
 		term.hist[j] = xrealloc(term.hist[j], col * sizeof(Glyph));
 	}
 
+	/* move images to the final position */
+	for (im = term.images; im; im = next) {
+		next = im->next;
+		if (im->reflow_y == INT_MIN) {
+			delete_image(im);
+		} else {
+			im->y = im->reflow_y - term.histf + term.scr - (ny + 1);
+			if (im->y - term.scr < -HISTSIZE || im->y - term.scr >= row)
+				delete_image(im);
+		}
+	}
+
+	/* expand images into new text cells */
+	for (im = term.images; im; im = next) {
+		next = im->next;
+		if (im->x < col) {
+			line = TLINE(im->y);
+			x2 = MIN(im->x + im->cols, col);
+			for (x = im->x; x < x2; x++)
+				line[x].mode |= ATTR_SIXEL;
+		}
+	}
+
 	for (; buflen > 0; ny--, buflen--)
 		free(buf[ny % nlines]);
 	free(buf);
@@ -206,6 +249,7 @@ rscrolldown(int n)
 	if ((i = term.scr - n) >= 0) {
 		term.scr = i;
 	} else {
+		scroll_images(n - term.scr);
 		term.scr = 0;
 		if (sel.ob.x != -1 && !sel.alt)
 			selmove(-i);
@@ -258,6 +302,7 @@ void
 tresizealt(int col, int row)
 {
 	int i, j;
+	ImageList *im, *next;
 
 	/* return if dimensions haven't changed */
 	if (term.col == col && term.row == row) {
@@ -272,6 +317,7 @@ tresizealt(int col, int row)
 	if (i > 0) {
 		/* ensure that both src and dst are not NULL */
 		memmove(term.line, term.line + i, row * sizeof(Line));
+		scroll_images(-i);
 		term.c.y = row - 1;
 	}
 	for (i += row; i < term.row; i++)
@@ -302,6 +348,17 @@ tresizealt(int col, int row)
 	/* reset scrolling region */
 	term.top = 0, term.bot = row - 1;
 
+	/* delete or clip images if they are not inside the screen */
+	for (im = term.images; im; im = next) {
+		next = im->next;
+		if (im->x >= term.col || im->y >= term.row || im->y < 0) {
+			delete_image(im);
+		} else {
+			if ((im->cols = MIN(im->x + im->cols, term.col) - im->x) <= 0)
+				delete_image(im);
+		}
+	}
+
 	/* dirty all lines */
 	tfulldirt();
 }
@@ -328,6 +385,8 @@ kscrolldown(const Arg* a)
 		selmove(-n); /* negate change in term.scr */
 	tfulldirt();
 
+	scroll_images(-1*n);
+
 }
 
 void
@@ -352,6 +411,8 @@ kscrollup(const Arg* a)
 		selmove(n); /* negate change in term.scr */
 	tfulldirt();
 
+	scroll_images(n);
+
 }
 
 void
@@ -363,6 +424,8 @@ tscrollup(int top, int bot, int n, int mode)
 	int alt = IS_SET(MODE_ALTSCREEN);
 	int savehist = !alt && top == 0 && mode != SCROLL_NOSAVEHIST;
 	int scr = alt ? 0 : term.scr;
+	int itop = top + scr, ibot = bot + scr;
+	ImageList *im, *next;
 
 	if (n <= 0)
 		return;
@@ -397,6 +460,35 @@ tscrollup(int top, int bot, int n, int mode)
 		term.line[i+n] = temp;
 	}
 
+	if (alt || !savehist) {
+		/* move images, if they are inside the scrolling region */
+		for (im = term.images; im; im = next) {
+			next = im->next;
+			if (im->y >= itop && im->y <= ibot) {
+				im->y -= n;
+				if (im->y < itop)
+					delete_image(im);
+			}
+		}
+	} else {
+		/* move images, if they are inside the scrolling region or scrollback */
+		for (im = term.images; im; im = next) {
+			next = im->next;
+			im->y -= scr;
+			if (im->y < 0) {
+				im->y -= n;
+			} else if (im->y >= top && im->y <= bot) {
+				im->y -= n;
+				if (im->y < top)
+					im->y -= top; // move to scrollback
+			}
+			if (im->y < -HISTSIZE)
+				delete_image(im);
+			else
+				im->y += term.scr;
+		}
+	}
+
 	if (sel.ob.x != -1 && sel.alt == alt) {
 		if (!savehist) {
 			selscroll(top, bot, -n);
@@ -416,6 +508,7 @@ tscrolldown(int top, int n)
 	int scr = IS_SET(MODE_ALTSCREEN) ? 0 : term.scr;
 	int itop = top + scr, ibot = bot + scr;
 	Line temp;
+	ImageList *im, *next;
 
 	if (n <= 0)
 		return;
@@ -428,6 +521,16 @@ tscrolldown(int top, int n)
 		temp = term.line[i];
 		term.line[i] = term.line[i-n];
 		term.line[i-n] = temp;
+	}
+
+	/* move images, if they are inside the scrolling region */
+	for (im = term.images; im; im = next) {
+		next = im->next;
+		if (im->y >= itop && im->y <= ibot) {
+			im->y += n;
+			if (im->y > ibot)
+				delete_image(im);
+		}
 	}
 
 	if (sel.ob.x != -1 && sel.alt == IS_SET(MODE_ALTSCREEN))
@@ -692,6 +795,7 @@ tswapscreen(void)
 	static int altcol, altrow;
 	Line *tmpline = term.line;
 	int tmpcol = term.col, tmprow = term.row;
+	ImageList *im = term.images;
 
 	term.line = altline;
 	term.col = altcol, term.row = altrow;
@@ -699,6 +803,8 @@ tswapscreen(void)
 	altcol = tmpcol, altrow = tmprow;
 	term.mode ^= MODE_ALTSCREEN;
 
+	term.images = term.images_alt;
+	term.images_alt = im;
 }
 
 char *
