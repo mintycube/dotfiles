@@ -117,17 +117,17 @@ return {
         })
       end)
 
-      lsp_zero.set_sign_icons({
-        error = "",
-        warn = "",
-        hint = "󰌵",
-        info = "",
-      })
-
       vim.diagnostic.config({
         underline = false,
         virtual_text = false,
-        signs = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN]  = "",
+            [vim.diagnostic.severity.HINT]  = "󰌵",
+            [vim.diagnostic.severity.INFO]  = ""
+          }
+        },
         update_in_insert = false,
         severity_sort = true,
       })
@@ -153,6 +153,9 @@ return {
                 Lua = {
                   workspace = { checkThirdParty = false },
                   telemetry = { enable = false },
+                },
+                completion = {
+                  callSnippet = 'Replace',
                 },
               },
             })

@@ -17,7 +17,7 @@ vim.opt.gdefault = true
 vim.opt.showmatch = true
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.grepprg = "rg --vimgrep"
-vim.opt.inccommand = "nosplit"
+vim.opt.inccommand = "split"
 
 -- user interface
 vim.opt.fillchars = { eob = " " }
@@ -28,20 +28,21 @@ vim.opt.relativenumber = true
 vim.opt.ruler = false
 vim.opt.wrap = true
 vim.opt.termguicolors = true
-vim.opt.scrolloff = 4
-vim.opt.sidescrolloff = 4
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "both"
 vim.opt.conceallevel = 2
-vim.opt.list = false
--- vim.opt.listchars = {eol = "󰌑" }
+vim.opt.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.opt.showmode = false
 -- vim.opt.colorcolumn = "80"
 vim.opt.winminwidth = 5
 
 -- editing
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 vim.opt.undofile = true
 vim.opt.autowrite = true
