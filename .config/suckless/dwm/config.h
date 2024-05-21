@@ -257,9 +257,8 @@ static const char* volume_ui_cmd[] = { "st", "-c", "volume-ui", "-g=80x15+353+20
 
 static const Key on_empty_keys[] = {
 	/* modifier key            function          argument */
-	{0,         XK_e,          spawn,            SHCMD("st fuz -lf") },
+	{0,         XK_e,          spawn,            SHCMD("st fuz") },
 	{0,         XK_f,          spawn,            SHCMD("st fuz") },
-	{0,         XK_t,          spawn,            SHCMD("st fuz-test") },
   {0,         XK_w,          spawn,            {.v = (const char*[]){"firefox", NULL } } },
   {0,         XK_grave,      spawn,            {.v = (const char*[]){"dmenunerdsymbols", NULL } } },
   {0,         XK_BackSpace,  spawn,            {.v = (const char*[]){"sysact", NULL } } },
@@ -309,7 +308,7 @@ static const Key keys[] = {
 	{ MODKEY,             XK_q,                     killclient,           {0} },
   { MODKEY|ShiftMask,   XK_q,                     killunsel,            {0} },
 	{ MODKEY,			        XK_w,                     spawn,		            {.v = (const char*[]){ "firefox", NULL } } },
-	{ MODKEY,             XK_e,                     spawn,                SHCMD("st fuz -lf") },
+	{ MODKEY,             XK_e,                     spawn,                SHCMD("st fuz") },
   { ALTKEY,             XK_e,                     spawn,                {.v = (const char*[]){ "networkmanager_dmenu", NULL } } },
 	{ MODKEY,			        XK_r,                     spawn,		            {.v = (const char*[]){ "st", "-e", "lf", NULL } } },
 	{ MODKEY|ShiftMask,	  XK_r,                     spawn,		            {.v = (const char*[]){ "thunar", NULL } } },
@@ -321,8 +320,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_o,                     incnmaster,           {.i = -1 } },
 	{ MODKEY,			        XK_a,                     spawn,		            {.v = (const char*[]){ "dmenu_hub", NULL } } },
 	{ MODKEY,             XK_d,                     spawn,                {.v = dmenu_run_cmd } },
-	{ MODKEY,             XK_f,                     spawn,                SHCMD("st fuz") },
-	{ ALTKEY,             XK_f,                     togglefakefullscreen, {0} },
+	{ MODKEY,             XK_f,                     togglefakefullscreen, {0} },
 	{ MODKEY,             XK_h,                     setmfact,             {.f = -0.05} },
 	{ MODKEY,             XK_j,                     focusstack,           {.i = +1 } },
 	{ MODKEY,             XK_k,                     focusstack,           {.i = -1 } },

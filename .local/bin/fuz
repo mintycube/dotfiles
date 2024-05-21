@@ -1,137 +1,64 @@
 #!/usr/bin/env bash
 
-# Dependencies
-DIRCOLORS_CMD="/usr/bin/dircolors"
-DIRNAME_CMD="/usr/bin/dirname"
-DISPLAY_CMD="/usr/bin/display"
-FD_CMD="/usr/bin/fd"
-FILE_CMD="/usr/bin/file"
-FZFP_CMD="/usr/bin/fzfp" # comes from AUR (stpv-git)
-GIMP_CMD="/usr/bin/gimp"
-LF_CMD="/usr/bin/lf"
-LIBREOFFICE_CMD="/usr/bin/zaread"
-MPV_CMD="/usr/bin/mpv"
-NSXIV_CMD="/usr/bin/nsxiv"
-NVIM_CMD="/usr/bin/nvim"
-READLINK_CMD="/usr/bin/readlink"
-ZATHURA_CMD="/usr/bin/zathura"
-# ZSH_CMD="/usr/bin/zsh"
+echo -ne '\e[3 q'        # Use underline shape cursor on startup.
+eval "$(dircolors --sh)" # Setup correct colors
+dwmc setlayoutex 2
 
-echo -ne '\e[3 q' # Use underline shape cursor on startup.
-eval "$($DIRCOLORS_CMD --sh)" # Setup correct colors
+selection=$(fd --hidden --color=always -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo |
+	fzfp --ansi --prompt "   All  " \
+		--bind "alt-1:transform:[[ ! \$FZF_PROMPT =~ All ]] &&
+              echo 'change-prompt(   All  )+reload(fd --hidden --color=always -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)' ||
+              echo 'change-prompt(   Folders  )+reload(fd --color=always --hidden --type directory -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)'" \
+		--bind "alt-2:change-prompt(   Git  )+reload( fd --color=always -HI '^.git$' --type d --base-directory ~ -E .cache -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo | sed 's|\\[1\;34m\.git\\[0m\\[1\;34m\/\\[0m||')" \
+		--bind "alt-3:change-prompt(   Documents  )+reload(fd --color=always --hidden -e pdf -e epub -e djvu -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
+		--bind "alt-4:change-prompt(   Images  )+reload(fd --color=always --hidden -e jpg -e jpg -e jpeg -e png -e webp -e bmp -e tiff -e tif -e raw -e ico -e exif -e heic -e heif -e gif -e avif -e jxl -e JPG -e PNG -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
+		--bind "alt-5:change-prompt(   Videos  )+reload(fd --color=always --hidden -e mkv -e mp4 -e mkv -e webm -e avi -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
+		--header "[1;34m Prefix[1;90m:[0mAlt [1;90m::[0m [1;34m1[1;90m:[0mAll/Folders [1;90m::[0m [1;34m2[1;90m:[0mGit [1;90m::[0m  [1;34m3[1;90m:[0mDocuments [1;90m::[0m [1;34m4[1;90m:[0mImages [1;90m::[0m [1;34m5[1;90m:[0mVideos" \
+		--color="fg:#c0caf5,bg:#1a1b26,hl:#ff9e64" \
+		--color="fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64" \
+		--color="info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff" \
+		--color="marker:#9ece6a,spinner:#9ece6a,header:#9ece6a" \
+		--height=100% --pointer=" " --ellipsis= --no-info --header-first --scheme=path --algo=v2 \
+		--preview-window "border-vertical" --border=horizontal)
 
-FD_COMMAND=(
-	"$FD_CMD" "--hidden" "--color=always"
-	"-E" "*.cache"
-	"-E" "*.git"
-	"-E" "*.github"
-	"-E" "*.local/state"
-	"-E" "*.ssh"
-	"-E" "*.android"
-	"-E" "*GIMP"
-	"-E" "*Thunar"
-	"-E" "*config/blender"
-	"-E" "*config/mpv/script_modules"
-	"-E" "*config/mpv/scripts"
-	"-E" "*config/tmux/plugins"
-	"-E" "*fontforge"
-	"-E" "*fzf-tab-completion"
-	"-E" "*gnupg"
-	"-E" "*libreoffice"
-	"-E" "*node_modules"
-	"-E" "*obsidian"
-	"-E" "*qBittorrent"
-	"-E" "*subversion"
-	"-E" "*terminfo"
-)
-
-FZF_COMMAND=(
-	"$FZFP_CMD"
-	"--scheme=path" "--algo=v2"
-	"--height=100%" "--prompt=  " "--pointer= " "--ellipsis="
-  "--border=horizontal" "--margin=5%,10%,5%,10%"  "--scrollbar=▐" "--preview-window=border-vertical"
-	"--color=fg:#c0caf5,bg:#1a1b26,hl:#ff9e64"
-	"--color=fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64"
-	"--color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff"
-	"--color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a"
-	"--keep-right" "--info=hidden" "--scroll-off=10" "--ansi" "--tabstop=2" "--reverse"
-)
-
-case "$1" in
-"-doc")
-	# FZF_COMMAND+=("--query=pdf$ | epub$ | djvu$ ")
-	FD_COMMAND+=("-e" "pdf" "-e" "epub" "-e" "djvu")
-	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	# export selection
-	[ -n "$selection" ] && $ZATHURA_CMD "$selection"
-	;;
-"-lf")
-	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	# export selection
-	[ -n "$selection" ] && $LF_CMD -command "set hidden" "$selection"
-	;;
-"-video")
-	# FZF_COMMAND+=("--query=mp4$ | mkv$ | webm$ | avi$ ")
-	FD_COMMAND+=("-e" "mp4" "-e" "mkv" "-e" "webm" "-e" "avi")
-	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	# export selection
-	[ -n "$selection" ] && "$MPV_CMD" --loop-file "$selection" -quiet
-	;;
-"-image")
-	# FZF_COMMAND+=("--query=jpg$ | jpeg$ | png$ | webp$ | bmp$ | tiff$ | tif$ | raw$ | ico$ | exif$ | heic$ | heif$ | gif$ | avif$ | jxl$ | JPG$ | PNG$ ")
-	FD_COMMAND+=("jpg" "-e" "jpeg" "-e" "png" "-e" "webp" "-e" "bmp" "-e" "tiff" "-e" "tif" "-e" "raw" "-e" "ico" "-e" "exif" "-e" "heic" "-e" "heif" "-e" "gif" "-e" "avif" "-e" "jxl" "-e" "JPG" "-e" "PNG")
-	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	# export selection
-	[ -n "$selection" ] && "$MPV_CMD" --loop-file "$selection" -quiet
-	;;
-*)
-	selection="$("${FD_COMMAND[@]}" | "${FZF_COMMAND[@]}")"
-	# export selection
-	[ -n "$selection" ] &&
-		case $($FILE_CMD --mime-type "$($READLINK_CMD -f "$selection")" -b) in
-		image/vnd.djvu | application/pdf | application/postscript | application/epub*) "$ZATHURA_CMD" "$selection" >/dev/null 2>&1 ;;
-		text/html) "$NVIM_CMD" "$selection" ;;
-		text/* | application/json | inode/x-empty | application/x-subrip | application/javascript) "$NVIM_CMD" "$selection" ;;
-		image/x-xcf) "$GIMP_CMD" "$selection" >/dev/null 2>&1 ;;
-		image/svg+xml) $DISPLAY_CMD -- "$selection" ;;
-		image/*)
-			shopt -s nullglob
-			dir="$($DIRNAME_CMD "$selection")"
-			selected_file="$selection"
-			images=()
-			for file in "$dir"/*.{jpg,jpeg,png,webp,bmp,tiff,tif,raw,ico,exif,heic,heif,gif,avif,jxl,JPG,PNG}; do
-				[[ -f "$file" ]] && images+=("$file")
-			done
-			sorted_images=()
-			while IFS= read -r line; do
-				sorted_images+=("$line")
-			done < <(printf "%s\n" "${images[@]}" | sort -fV)
-			for ((i = 0; i < ${#sorted_images[@]}; i++)); do
-				[[ "${sorted_images[i]}" = "$selected_file" ]] && {
-					setsid $NSXIV_CMD -aon "$((i + 1))" "${sorted_images[@]}"
-					break
-				}
-			done
-			;;
-		audio/* | video/x-ms-asf) "$MPV_CMD" --loop-file --profile=builtin-pseudo-gui "$selection" ;;
-		video/*) "$MPV_CMD" --loop-file "$selection" -quiet >/dev/null 2>&1 ;;
-		application/pgp-encrypted) "$NVIM_CMD" "$selection" ;;
-		application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/vnd.oasis.opendocument.text | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | application/vnd.oasis.opendocument.spreadsheet | application/vnd.oasis.opendocument.spreadsheet-template | application/vnd.openxmlformats-officedocument.presentationml.presentation | application/vnd.oasis.opendocument.presentation-template | application/vnd.oasis.opendocument.presentation | application/vnd.ms-powerpoint | application/vnd.oasis.opendocument.graphics | application/vnd.oasis.opendocument.graphics-template | application/vnd.oasis.opendocument.formula | application/vnd.oasis.opendocument.database) "$LIBREOFFICE_CMD" "$selection" >/dev/null 2>&1 ;;
-		application/octet-stream) case ${selection##*.} in
-			doc | docx | xls | xlsx | odt | ppt | pptx) "$LIBREOFFICE_CMD" "$selection" >/dev/null 2>&1 ;;
-			ts) "$MPV_CMD" "$selection" -quiet >/dev/null 2>&1 ;;
-			*) "$ZATHURA_CMD" "$selection" >/dev/null 2>&1 ;;
-			esac ;;
-		*) $LF_CMD -command "set hidden" "$selection" ;;
+[ -n "$selection" ] &&
+	case $(file --mime-type "$(readlink -f "$selection")" -b) in
+	image/vnd.djvu | application/pdf | application/postscript | application/epub*) zathura "$selection" >/dev/null 2>&1 ;;
+	text/html) nvim "$selection" ;;
+	text/* | application/json | inode/x-empty | application/x-subrip | application/javascript) nvim "$selection" ;;
+	image/x-xcf) gimp "$selection" >/dev/null 2>&1 ;;
+	image/svg+xml) display -- "$selection" ;;
+	image/*)
+		shopt -s nullglob
+		dir="$(dirname "$selection")"
+		selected_file="$selection"
+		images=()
+		for file in "$dir"/*.{jpg,jpeg,png,webp,bmp,tiff,tif,raw,ico,exif,heic,heif,gif,avif,jxl,JPG,PNG}; do
+			[[ -f "$file" ]] && images+=("$file")
+		done
+		sorted_images=()
+		while IFS= read -r line; do
+			sorted_images+=("$line")
+		done < <(printf "%s\n" "${images[@]}" | sort -fV)
+		for ((i = 0; i < ${#sorted_images[@]}; i++)); do
+			[[ "${sorted_images[i]}" = "$selected_file" ]] && {
+				setsid nsxiv -aon "$((i + 1))" "${sorted_images[@]}"
+				break
+			}
+		done
+		;;
+	audio/* | video/x-ms-asf) mpv --loop-file --profile=builtin-pseudo-gui "$selection" ;;
+	video/*) mpv --loop-file "$selection" -quiet >/dev/null 2>&1 ;;
+	application/pgp-encrypted) nvim "$selection" ;;
+	application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/vnd.oasis.opendocument.text | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | application/vnd.oasis.opendocument.spreadsheet | application/vnd.oasis.opendocument.spreadsheet-template | application/vnd.openxmlformats-officedocument.presentationml.presentation | application/vnd.oasis.opendocument.presentation-template | application/vnd.oasis.opendocument.presentation | application/vnd.ms-powerpoint | application/vnd.oasis.opendocument.graphics | application/vnd.oasis.opendocument.graphics-template | application/vnd.oasis.opendocument.formula | application/vnd.oasis.opendocument.database) libreoffice "$selection" >/dev/null 2>&1 ;;
+	application/octet-stream)
+		case ${selection##*.} in
+		doc | docx | xls | xlsx | odt | ppt | pptx) libreoffice "$selection" >/dev/null 2>&1 ;;
+		ts) mpv "$selection" -quiet >/dev/null 2>&1 ;;
+		*) zathura "$selection" >/dev/null 2>&1 ;;
 		esac
-	;;
-esac
+		;;
+	*) lf -command "set hidden" "$selection" ;;
+	esac
 
-
-# if [ -d "$selection" ]; then
-# 	cd "$selection" && exec $ZSH_CMD
-# elif [ -f "$selection" ]; then
-# 	cd "$($DIRNAME_CMD "$selection")" && exec $ZSH_CMD
-# else
-# 	exec $ZSH_CMD
-# fi
+dwmc setlayoutex 0
