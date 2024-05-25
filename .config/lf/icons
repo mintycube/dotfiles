@@ -60,6 +60,7 @@ fi      󰈔       # FILE
 *.jpeg          
 *.bmp           
 *.png           
+*.avif          
 *.webp          
 *.gif           
 *.ico           
