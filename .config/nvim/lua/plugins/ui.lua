@@ -1,6 +1,64 @@
 return {
   -- colorscheme
   {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    priority = 1000,
+    lazy = false,
+    config = function()
+      require("rose-pine").setup({
+        variant = "moon",
+        dim_inactive_windows = true,
+        groups = {
+          error = "subtle",
+          warn = "subtle",
+          info = "subtle",
+          hint = "subtle",
+        }
+      })
+      vim.cmd.colorscheme("rose-pine")
+    end
+  },
+  {
+    "tiagovla/tokyodark.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("tokyodark").setup({
+        transparent_background = false,                                        -- set background to transparent
+        gamma = 1.00,                                                          -- adjust the brightness of the theme
+        styles = {
+          comments = { italic = true },                                        -- style for comments
+          keywords = { italic = true },                                        -- style for keywords
+          identifiers = { italic = true },                                     -- style for identifiers
+          functions = {},                                                      -- style for functions
+          variables = {},                                                      -- style for variables
+        },
+        custom_highlights = {} or function(highlights, palette) return {} end, -- extend highlights
+        custom_palette = {} or function(palette) return {} end,                -- extend palette
+        terminal_colors = true,                                                -- enable terminal colors
+      })
+      -- vim.cmd.colorscheme("tokyodark")
+    end,
+  },
+  {
+    "nyoom-engineering/oxocarbon.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd.colorscheme("oxocarbon")
+      local hl = vim.api.nvim_set_hl
+      hl(0, "DiagnosticVirtualTextError", { link = "Comment" })
+      hl(0, "DiagnosticVirtualTextInfo", { link = "Comment" })
+      hl(0, "DiagnosticVirtualTextWarn", { link = "Comment" })
+      hl(0, "DiagnosticVirtualTextHint", { link = "Comment" })
+      hl(0, "DiagnosticUnderlineError", { underline = true, sp = "#858694" })
+      hl(0, "DiagnosticUnderlineWarn", { underline = true, sp = "#858694" })
+      hl(0, "DiagnosticUnderlineInfo", { underline = true, sp = "#858694" })
+      hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#858694" })
+    end,
+  },
+  {
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
@@ -43,7 +101,7 @@ return {
           }
         end,
       })
-      vim.cmd.colorscheme("tokyonight")
+      -- vim.cmd.colorscheme("tokyonight")
       vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
       vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
     end,
@@ -55,45 +113,48 @@ return {
   },
 
   -- statusline
+
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     config = function()
-      local lualine = require("lualine")
-      local themecolor = require("tokyonight.colors").setup()
-      local colors = {
-        bg = "#0d0d12",
-        fg = themecolor.fg_dark,
-        yellow = themecolor.yellow,
-        cyan = themecolor.cyan,
-        green = themecolor.green,
-        magenta = themecolor.magenta,
-        blue = themecolor.blue,
-        red = themecolor.red,
-        low = themecolor.terminal_black,
-        mode = themecolor.terminal_black,
-        bg2 = "#292e42",
-        bg3 = "#16161e"
-      }
-      local mode_color = {
-        n = colors.blue,
-        i = colors.green,
-        v = colors.magenta,
-        ["^V"] = colors.magenta,
-        V = colors.magenta,
-        c = colors.blue,
-        no = colors.red,
-        ic = colors.yellow,
-        R = colors.red,
-        Rv = colors.red,
-        cv = colors.red,
-        ce = colors.red,
-        r = colors.blue,
-        rm = colors.blue,
-        ["r?"] = colors.blue,
-        ["!"] = colors.blue,
-        t = colors.blue,
-      }
+      local function get_colors()
+        local colorscheme = vim.g.colors_name
+        if colorscheme == "rose-pine" then
+          return {
+            bg = "#232136",
+            fg = "#908caa",
+            active_buf = "#e0def4",
+          }
+        elseif colorscheme == "tokyonight" then
+          return {
+            bg = '#16161e',
+            fg = '#3B4261',
+            active_buf = "#c0caf5",
+          }
+        elseif colorscheme == "tokyodark" then
+          return {
+            bg = '#11121D',
+            fg = '#4A5057',
+            active_buf = "#a0a8cd",
+          }
+        elseif colorscheme == "oxocarbon" then
+          return {
+            bg = '#161616',
+            fg = '#525252',
+            active_buf = "#dde1e6",
+          }
+        else
+          return {
+            bg = "",
+            fg = "",
+            active_buf = "",
+          }
+        end
+      end
+
+      local colors = get_colors()
+
       local conditions = {
         buffer_not_empty = function()
           return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
@@ -105,16 +166,17 @@ return {
           local filepath = vim.fn.expand("%:p:h")
           local gitdir = vim.fn.finddir(".git", filepath .. ";")
           return gitdir and #gitdir > 0 and #gitdir < #filepath
-        end,
+        end
       }
+
       local config = {
         options = {
           component_separators = "",
-          section_separators = "",
+          section_separators = "   ",
           disabled_filetypes = { "help", "lazy", "mason", "fzf", "lspinfo", "alpha" },
           theme = {
-            normal = { c = { fg = colors.fg, bg = colors.bg3 } },
-            inactive = { c = { fg = colors.fg, bg = colors.bg3 } },
+            normal = { c = { fg = colors.fg, bg = colors.bg } },
+            inactive = { c = { fg = colors.fg, bg = colors.bg } },
           },
         },
         sections = {
@@ -140,44 +202,47 @@ return {
       local function ins_right(component)
         table.insert(config.sections.lualine_x, component)
       end
+
       ins_left({
         function()
-          return ""
-        end,
-        color = { fg = colors.bg2, bg = colors.bg3 },
-        padding = { left = 0, right = 0 },
+          return ""
+        end
       })
+
       ins_left({
-        function()
-          return " "
-          -- return " "
-          -- return " "
-        end,
-        color = function()
-          return { fg = mode_color[vim.fn.mode()], bg = colors.bg2 }
-        end,
-        padding = { left = 0, right = 0 },
+        "mode",
       })
-      ins_left({
+
+      ins_left {
+        'diagnostics',
+        sources = { 'nvim_diagnostic' },
+        -- Displays diagnostics for the defined severity types
+        sections = { 'error', 'warn' },
+        symbols = { error = ' ', warn = ' ' },
+        colored = false,
+      }
+
+      ins_left {
         function()
-          return ""
+          return '%='
         end,
-        color = { fg = colors.bg2 },
-        padding = { left = 0, right = 1 },
-      })
+      }
+
       ins_left({
         "buffers",
+        hide_filename_extension = false,
         buffers_color = {
-          active = { fg = colors.magenta, bg = colors.bg3 },
-          inactive = { fg = colors.low, bg = colors.bg3 },
+          active = { fg = colors.active_buf, bg = colors.bg },
+          inactive = { fg = colors.fg, bg = colors.bg },
         },
         symbols = {
           modified = " ●",
           alternate_file = "",
         },
         cond = conditions.buffer_not_empty,
-        color = { fg = colors.magenta, gui = "bold" },
+        color = { fg = colors.active_buf, gui = "bold" },
       })
+
       ins_right({
         function()
           if vim.bo.filetype == "txt" or vim.bo.filetype == "markdown" or vim.bo.filetype == "tex" then
@@ -192,8 +257,8 @@ return {
             return ""
           end
         end,
-        color = { fg = colors.low },
       })
+
       ins_right({
         -- Lsp server name
         function()
@@ -212,53 +277,19 @@ return {
           return msg
         end,
         icon = " ",
-        color = { fg = colors.low },
       })
+
       ins_right({
         "branch",
         icon = "",
-        color = { fg = colors.low, gui = "bold" },
-      })
-      ins_right({
-        "diff",
-        symbols = { added = " ", modified = " ", removed = " " },
-        diff_color = {
-          added = { fg = colors.low },
-          modified = { fg = colors.low },
-          removed = { fg = colors.low },
-        },
-        cond = conditions.hide_in_width,
+        color = { gui = "bold" },
       })
       ins_right({
         "location",
-        color = function()
-          return { fg = mode_color[vim.fn.mode()] }
-        end,
-        padding = { left = 0, right = 1 },
       })
-      ins_right({
-        function()
-          return ""
-        end,
-        color = { fg = colors.bg2 },
-        padding = { left = 0, right = 0 },
-      })
-      ins_right({
-        "progress",
-        color = function()
-          return { fg = mode_color[vim.fn.mode()], bg = colors.bg2, gui = "bold" }
-        end,
-        padding = { left = 0, right = 0 },
-      })
-      ins_right({
-        function()
-          return ""
-        end,
-        color = { fg = colors.bg2, bg = colors.bg3 },
-        padding = { left = 0, right = 0 },
-      })
-      lualine.setup(config)
-    end,
+
+      require("lualine").setup(config)
+    end
   },
 
   -- indentation lines

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+dwmc setlayoutex 2
+
 rm -f /tmp/rg-fzf-{r,f}
 
 [ -d "$1" ] && SEARCH_DIR="$1" && shift || SEARCH_DIR="."
@@ -14,7 +16,7 @@ INITIAL_QUERY="${*:-}"
 	--bind "ctrl-t:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] &&
   echo \"rebind(change)+change-prompt(ripgrep  )+disable-search+transform-query:echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" ||
   echo \"unbind(change)+change-prompt(fzf  )+enable-search+transform-query:echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"" \
-	--margin=5%,10%,5%,10% --height=100% --reverse \
+	--margin=5%,10%,5%,10% --height=100% --reverse --color=16 --info=inline-right \
 	--scrollbar=▐ --keep-right --info=hidden --border=none --ellipsis= \
 	--prompt 'ripgrep  ' \
 	--delimiter : \
@@ -22,5 +24,7 @@ INITIAL_QUERY="${*:-}"
 	--preview 'bat --style=header,numbers --color=always {1} --highlight-line {2}' \
 	--preview-window 'bottom,60%,border-top,+{2}+3/3,~1' \
 	--bind 'enter:become(nvim {1} +{2})'
+
+dwmc setlayoutex 0
 
 # --color "hl:-1:underline,hl+:-1:underline:reverse" \

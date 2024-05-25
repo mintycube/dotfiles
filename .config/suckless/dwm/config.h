@@ -85,7 +85,6 @@ static char *colors[][ColCount] = {
 static const char *const autostart[] = {
 	// "st", NULL,
 	"dwmblocks", NULL,
-	"pipewire", NULL,
 	"picom", NULL,
 	NULL /* terminate */
 };
@@ -168,7 +167,7 @@ static const Rule rules[] = {
 	RULE(.wintype  = WTYPE "TOOLBAR",                   .isfloating = 1)
 	RULE(.wintype  = WTYPE "SPLASH",                    .isfloating = 1)
 
-	RULE(.class    = "st-terminal",   .tags = 1 << 0,   .switchtag = 1)
+	// RULE(.class    = "st-terminal",   .tags = 1 << 0,   .switchtag = 1)
 	RULE(.class    = "firefox",       .tags = 1 << 1,   .switchtag = 1)
   RULE(.title    = "nvim",          .tags = 1 << 2,   .switchtag = 1)
 	RULE(.title    = "lf",            .tags = 1 << 3,   .switchtag = 1)
@@ -187,6 +186,7 @@ static const Rule rules[] = {
 
 	RULE(.instance = "dictionary",                      .isfloating = 1)
 	RULE(.class    = "volume-ui",                       .isfloating = 1)
+	RULE(.class    = "gping-ui",                        .isfloating = 1)
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -268,6 +268,7 @@ static const Key on_empty_keys[] = {
   {0,         XK_a,          spawn,            {.v = (const char*[]){"dmenu_hub", NULL } } },
   {0,         XK_space,      spawn,            {.v = (const char*[]){"dmenu_web", NULL } } },
   {0,         XK_n,          spawn,            {.v = (const char*[]){"st", "-e", "nvim", NULL } } },
+  {0,         XK_p,          spawn,            {.v = (const char*[]){"st", "-c", "gping-ui", "-g=80x15+353+20", "-e", "gping", "duckduckgo.com", NULL } } },
 };
 
 static const Key keys[] = {
@@ -318,6 +319,7 @@ static const Key keys[] = {
   { MODKEY,             XK_i,                     setlayout,            {0} },
 	{ MODKEY,             XK_o,                     incnmaster,           {.i = +1 } },
 	{ MODKEY|ShiftMask,   XK_o,                     incnmaster,           {.i = -1 } },
+  { MODKEY,             XK_p,                     spawn,                {.v = (const char*[]){"st", "-c", "gping-ui", "-g=80x15+353+20", "-e", "gping", "duckduckgo.com", NULL } } },
 	{ MODKEY,			        XK_a,                     spawn,		            {.v = (const char*[]){ "dmenu_hub", NULL } } },
 	{ MODKEY,             XK_d,                     spawn,                {.v = dmenu_run_cmd } },
 	{ MODKEY,             XK_f,                     togglefakefullscreen, {0} },

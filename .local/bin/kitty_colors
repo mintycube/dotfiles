@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Scrpt for generating a colors.conf file using the xresources file to use as a kitty-colorscheme
+# Script for generating a colors.conf file using the xresources file to use as a kitty-colorscheme
 
 # Colors from xresources
 xresources_colors=("*.background" "*.foreground" "*.cursorColor" "*.color0" "*.color1" "*.color2" "*.color3" "*.color4" "*.color5" "*.color6" "*.color7" "*.color8" "*.color9" "*.color10" ".*color11" "*.color12" "*.color13" "*.color14" "*.color15")

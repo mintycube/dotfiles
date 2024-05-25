@@ -32,10 +32,9 @@ vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.cursorline = true
-vim.opt.cursorlineopt = "both"
+vim.opt.cursorlineopt = "number"
 vim.opt.conceallevel = 2
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.list = false
 vim.opt.showmode = false
 -- vim.opt.colorcolumn = "80"
 vim.opt.winminwidth = 5

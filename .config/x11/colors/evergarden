@@ -1,0 +1,42 @@
+!! vim: filetype=xdefaults
+
+*.foreground:         #d3c6aa
+*.background:         #1c2023
+*.cursorColor:        #d3c6aa
+*.color0:             #272e32
+*.color8:             #7a8478
+*.color1:             #e67e80
+*.color9:             #dbbc7f
+*.color2:             #b2c98f
+*.color10:            #b2c98f
+*.color3:             #dbbc7f
+*.color11:            #dbbc7f
+*.color4:             #A2C8C3
+*.color12:            #A2C8C3
+*.color5:             #D699B6
+*.color13:            #D699B6
+*.color6:             #88c096
+*.color14:            #88c096
+*.color7:             #9da9a0
+*.color15:            #dde1e6
+
+dwm.normbordercolor:  #262626
+dwm.normbgcolor:      #1c2023
+dwm.normfgcolor:      #a2a9b0
+dwm.selbordercolor:   #666666
+dwm.selbgcolor:       #262626
+dwm.selfgcolor:       #a2a9b0
+dwm.tagsnormfgcolor:  #a2a9b0
+dwm.tagsnormbgcolor:  #1c2023
+dwm.tagsselfgcolor:   #eeeeee
+dwm.tagsselbgcolor:   #343E44
+
+dmenu.foreground:     #d3c6aa
+dmenu.background:     #1c2023
+dmenu.selforeground:  #1c2023
+dmenu.selbackground:  #88c096
+dmenu.bordercolor:    #88c096
+
+slock.locked:         #2E383F
+slock.input:          #ADB3BA
+slock.failed:         #555555

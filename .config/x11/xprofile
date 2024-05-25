@@ -9,7 +9,9 @@ nvim --headless "+Lazy! load all" +qa &
 xrdb "${XDG_CONFIG_HOME:-$HOME/.config}"/x11/xresources &
 xrdbpid=$! # Uncomment to use Xresources colors/settings on startup
 
-autostart="mpd dunst unclutter remapd clipmenud"
+pidof -sx dunst || dunst -config "${XDG_CONFIG_HOME:-$HOME/.config}"/dunst/config &
+
+autostart="mpd pipewire unclutter remapd clipmenud"
 
 for program in $autostart; do
 	pidof -sx "$program" || "$program" &

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+dwmc setlayoutex 2
+
 search_dir="${1:-.}"
 preview='bat --style=header,numbers --color=always {}'
 
@@ -20,12 +22,15 @@ fzf_command="fzf \
   --keep-right \
   --layout=reverse \
   --scheme=path \
-  --multi \
+  --multi --color=16 \
   --preview=\"[[ -n {1} ]] && $preview\" \
   --preview-window='bottom,60%,border-top' \
-  --scrollbar='▐' --info=hidden \
+  --scrollbar='▐' --info=inline-right \
   --margin=5%,10%,5%,10% --border=none \
   --prompt='  ' --pointer=' ' --ellipsis='' "
 
 eval "$fd_command" | eval "$fzf_command"
+
+dwmc setlayoutex 0
+
 exit 0

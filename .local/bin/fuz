@@ -13,13 +13,16 @@ selection=$(fd --hidden --color=always -E .cache -E .git -E \*github\* -E .local
 		--bind "alt-3:change-prompt(   Documents  )+reload(fd --color=always --hidden -e pdf -e epub -e djvu -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
 		--bind "alt-4:change-prompt(   Images  )+reload(fd --color=always --hidden -e jpg -e jpg -e jpeg -e png -e webp -e bmp -e tiff -e tif -e raw -e ico -e exif -e heic -e heif -e gif -e avif -e jxl -e JPG -e PNG -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
 		--bind "alt-5:change-prompt(   Videos  )+reload(fd --color=always --hidden -e mkv -e mp4 -e mkv -e webm -e avi -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
-		--header "[1;34m Prefix[1;90m:[0mAlt [1;90m::[0m [1;34m1[1;90m:[0mAll/Folders [1;90m::[0m [1;34m2[1;90m:[0mGit [1;90m::[0m  [1;34m3[1;90m:[0mDocuments [1;90m::[0m [1;34m4[1;90m:[0mImages [1;90m::[0m [1;34m5[1;90m:[0mVideos" \
-		--color="fg:#c0caf5,bg:#1a1b26,hl:#ff9e64" \
-		--color="fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64" \
-		--color="info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff" \
-		--color="marker:#9ece6a,spinner:#9ece6a,header:#9ece6a" \
-		--height=100% --pointer=" " --ellipsis= --no-info --header-first --scheme=path --algo=v2 \
-		--preview-window "border-vertical" --border=horizontal)
+		--header "                            [1;34m Prefix[1;90m:[0mAlt [1;90m::[0m [1;34m1[1;90m:[0mAll/Folders [1;90m::[0m [1;34m2[1;90m:[0mGit [1;90m::[0m  [1;34m3[1;90m:[0mDocuments [1;90m::[0m [1;34m4[1;90m:[0mImages [1;90m::[0m [1;34m5[1;90m:[0mVideos" \
+		--height=100% --pointer=" " --ellipsis= --info=inline-right --header-first --scheme=path --algo=v2 --color="16" \
+		--preview-window "bottom,60%,border-top" --border=none --margin=5%,10%,5%,10% \
+    --preview "fuz-preview {}")
+
+		# --color="fg:#c0caf5,bg:#16161e,hl:#ff9e64" \
+		# --color="fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64" \
+		# --color="info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff" \
+		# --color="marker:#9ece6a,spinner:#9ece6a,header:#9ece6a,border:#292e42" \
+
 
 [ -n "$selection" ] &&
 	case $(file --mime-type "$(readlink -f "$selection")" -b) in

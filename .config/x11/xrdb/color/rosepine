@@ -1,7 +1,7 @@
 !! vim: filetype=xdefaults
 
 *.foreground:   #e0def4
-*.background:   #191724
+*.background:   #232136
 *.cursorColor:  #e0def4
 *.color0:       #2a273f
 *.color8:       #393552

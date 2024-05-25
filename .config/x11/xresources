@@ -1,42 +1,17 @@
 ! vim: filetype=xdefaults
 
-! ▄ ▄
-! ▄▀▄
+! Choices: tokyonight, rose-pine, onedark,
+! evergarden, nord, oxocarbon, catpuccin, tokyodark
+#include "colors/rose-pine"
 
-Xcursor.theme: Bibata-Modern-Ice
-Xcursor.size:  24
+Xcursor.theme:  Bibata-Modern-Ice
+Xcursor.size:   24
 
-! Choices: tokyonight, rosepine, cellia, custom-onedark, ashes
-! dracula, eighties, lighthaus, violla,, gruvchad, evergarden,
-! gruvbox, monokai, nord, ocean, oxocarbon, tomorrow, mountain
-! catpuccin, kanagawa, tokyodark, terafox, duskfox, nordfox, rhxyn
-#include "xrdb/color/tokyonight"
-
-! ▄█▀▀█▀
-
-! st.font:       CaskaydiaCove Nerd Font:style:Regular:size=10
-st.font:       JetBrainsMono Nerd Font:style:Medium:size=10
+st.font:       JetBrains Mono Nerd Font:style:Medium:size=10
 st.borderpx:   10
-st.alpha:      0.9
+st.alpha:      1.0
 st.tabspaces:  2
 st.cwscale:    1.0
 st.chscale:    1.0
 
-!   █
-! ███▀█▀██▄█▀█▄█
-
-! Choices: tokyo, tokyodark, oxocarbon, nord, tomorrow, banana
-#include "xrdb/dmenu/tokyonight"
-dmenu.font: JetBrainsMono Nerd Font:style:medium:size=10
-! dmenu.font:   CaskaydiaCove Nerd Font:style:Regular:size=10
-
-!   █
-! ███▄█▄█▀█▀█
-
-! Choices: oxocarbon, tokyonight
-#include "xrdb/dwm/tokyonight"
-
-!  ▄▄█ ▄▄ ▄▄ █ ▄
-! ▄█ █▄██▄█▄▄█▀▄
-! Choices: tokyonight, ashes
-#include "xrdb/slock/ashes"
+dmenu.font:    JetBrainsMono Nerd Font:style:medium:size=10
