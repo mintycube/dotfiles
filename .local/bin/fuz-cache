@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+eval "$(dircolors --sh)" # Setup correct colors
+
+# Cache directory
+CACHE_DIR="/tmp/fuz_cache"
+mkdir -p "$CACHE_DIR"
+
+FD_OPTIONS="--hidden --color=always"
+
+FD_EXCLUDE_ARGS="-E .cache -E .github -E github -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E obsidian -E .obsidian -E qBittorrent -E subversion -E .terminfo -E terminfo"
+
+# Function to populate the cache
+populate_cache() {
+	fd $FD_OPTIONS $FD_EXCLUDE_ARGS -E .git >"$CACHE_DIR/all"
+	fd $FD_OPTIONS $FD_EXCLUDE_ARGS -E .git --type directory >"$CACHE_DIR/folders"
+	fd --color=always -HI '^.git$' --type d --base-directory ~ $FD_EXCLUDE_ARGS |
+		sed 's|\\[1\;34m\.git\\[0m\\[1\;34m\/\\[0m||' >"$CACHE_DIR/git"
+	fd $FD_OPTIONS $FD_EXCLUDE_ARGS -E .git -e pdf -e epub -e djvu >"$CACHE_DIR/documents"
+	fd $FD_OPTIONS $FD_EXCLUDE_ARGS -E .git -e jpg -e jpeg -e png -e webp -e bmp -e tiff -e tif -e raw -e ico -e exif -e heic -e heif -e gif -e avif -e jxl >"$CACHE_DIR/images"
+	fd $FD_OPTIONS $FD_EXCLUDE_ARGS -E .git -e mkv -e mp4 -e webm -e avi >"$CACHE_DIR/videos"
+}
+
+# Populate the cache initially
+populate_cache &
+
+EXCLUDE_DIRS=(
+	"$HOME/.cache"
+	"$HOME/.mozilla"
+	"$HOME/.local/state"
+)
+
+# Combine excluded directories into a single regular expression pattern
+EXCLUDE_PATTERN=$(
+	IFS="|"
+	echo "${EXCLUDE_DIRS[*]}"
+)
+
+# Watch for changes in ~ and update the cache
+inotifywait -m -q -r -e move -e create -e delete --exclude "$EXCLUDE_PATTERN" "$HOME" |
+	while read -r; do
+		# Throttle cache updates by sleeping for 1 second
+		sleep 10
+		populate_cache
+	done

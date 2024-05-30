@@ -44,6 +44,7 @@ z4h init || return
 # Extend PATH.
 export PATH="$PATH:${$(find ~/.local/bin -type d -printf %p:)%%:}"
 export PATH=$PATH:~/.local/share/npm/bin
+export PATH=$PATH:~/.local/share/nvim/mason/bin
 
 # Export environment variables.
 export GPG_TTY=$TTY
@@ -53,8 +54,7 @@ export TERMINAL_PROG="st"
 export BROWSER="firefox"
 export MANPAGER="nvim +Man!"
 export XDG_SESSION_TYPE="x11"
-export FZF_DEFAULT_OPTS="--height=50% --reverse --info=inline-right \
---height=100% --prompt='  ' --pointer=' ' --ellipsis='' --border=horizontal"
+export FZF_DEFAULT_OPTS="--height=50% --reverse --prompt='  ' --pointer=' ' --ellipsis='' --color='16'"
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -139,6 +139,8 @@ function lfcd () {
 # Define functions and completions.
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 compdef _directories md
+
+eval "$(navi widget zsh)"
 
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 unsetopt PROMPT_SP

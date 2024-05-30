@@ -73,36 +73,5 @@ return {
       vim.g.vimtex_compiler_method = "tectonic"
       -- vim.cmd("call vimtex#init()")
     end,
-  },
-  {
-    "vhyrro/luarocks.nvim",
-    priority = 1000,
-    config = true,
-  },
-  {
-    "nvim-neorg/neorg",
-    enabled = false,
-    dependencies = { "luarocks.nvim" },
-    lazy = false,  -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
-    version = "*", -- Pin Neorg to the latest stable release
-    config = function()
-      require("neorg").setup {
-        load = {
-          ["core.defaults"] = {},
-          ["core.concealer"] = {},
-          ["core.dirman"] = {
-            config = {
-              workspaces = {
-                notes = "~/notes",
-              },
-              default_workspace = "notes",
-            },
-          },
-        },
-      }
-
-      vim.wo.foldlevel = 99
-      vim.wo.conceallevel = 2
-    end,
-  },
+  }
 }

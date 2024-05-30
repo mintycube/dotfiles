@@ -1,67 +1,49 @@
 #!/usr/bin/env bash
 
-echo -ne '\e[3 q'        # Use underline shape cursor on startup.
-eval "$(dircolors --sh)" # Setup correct colors
+# Populated by fuz-cache script through xprofile at startup
+CACHE_DIR="/tmp/fuz_cache"
+
+# Define color escape sequences
+c_blue='[1;34m'
+c_gray='[1;90m'
+c_norm='[0m'
+h_padding=$(printf '%*s' 23 ' ')
+h_gap="  ${c_gray}::"
+
+# Define the header using the escape sequences
+HEADER="${h_padding}\
+  ${c_blue}Prefix${c_gray}:${c_norm}Alt${h_gap}\
+  ${c_blue}1${c_gray}:${c_norm}All/Folders/Git${h_gap}\
+  ${c_blue}2${c_gray}:${c_norm}Documents${h_gap}\
+  ${c_blue}3${c_gray}:${c_norm}Images${h_gap}\
+  ${c_blue}4${c_gray}:${c_norm}Videos"
+
+# --bind "alt-1:transform:[[ ! \$FZF_PROMPT =~ All ]] &&
+#   echo 'change-prompt(   All  )+reload(cat $CACHE_DIR/all)' ||
+#   echo 'change-prompt(   Folders  )+reload(cat $CACHE_DIR/folders)'" \
+fzf_main_func() {
+	cat $CACHE_DIR/all | fzf --ansi --prompt "   All  " \
+		--bind "alt-1:transform:(
+           ([[ \$FZF_PROMPT =~ All ]] && echo 'change-prompt(   Folders  )+reload(cat $CACHE_DIR/folders)') ||
+           ([[ \$FZF_PROMPT =~ Folders ]] && echo 'change-prompt(   Git  )+reload(cat $CACHE_DIR/git)') ||
+           echo 'change-prompt(   All  )+reload(cat $CACHE_DIR/all)')" \
+		--bind "alt-2:change-prompt(   Documents  )+reload(cat $CACHE_DIR/documents)" \
+		--bind "alt-3:change-prompt(   Images  )+reload(cat $CACHE_DIR/images)" \
+		--bind "alt-4:change-prompt(   Videos  )+reload(cat $CACHE_DIR/videos)" \
+		--header "$HEADER" \
+		--height=100% --pointer=" " --ellipsis= --header-first --scheme=path --algo=v2 --color="16" \
+		--preview-window "bottom,60%,border-top" --border=none --margin=5%,10%,5%,10% --info=inline-right \
+		--preview "fuz-preview {}"
+}
+
+echo -ne '\e[3 q' # Use underline shape cursor on startup.
 dwmc setlayoutex 2
 
-selection=$(fd --hidden --color=always -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo |
-	fzfp --ansi --prompt "   All  " \
-		--bind "alt-1:transform:[[ ! \$FZF_PROMPT =~ All ]] &&
-              echo 'change-prompt(   All  )+reload(fd --hidden --color=always -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)' ||
-              echo 'change-prompt(   Folders  )+reload(fd --color=always --hidden --type directory -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)'" \
-		--bind "alt-2:change-prompt(   Git  )+reload( fd --color=always -HI '^.git$' --type d --base-directory ~ -E .cache -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo | sed 's|\\[1\;34m\.git\\[0m\\[1\;34m\/\\[0m||')" \
-		--bind "alt-3:change-prompt(   Documents  )+reload(fd --color=always --hidden -e pdf -e epub -e djvu -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
-		--bind "alt-4:change-prompt(   Images  )+reload(fd --color=always --hidden -e jpg -e jpg -e jpeg -e png -e webp -e bmp -e tiff -e tif -e raw -e ico -e exif -e heic -e heif -e gif -e avif -e jxl -e JPG -e PNG -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
-		--bind "alt-5:change-prompt(   Videos  )+reload(fd --color=always --hidden -e mkv -e mp4 -e mkv -e webm -e avi -E .cache -E .git -E \*github\* -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E \*obsidian -E qBittorrent -E subversion -E \*terminfo)" \
-		--header "                            [1;34m Prefix[1;90m:[0mAlt [1;90m::[0m [1;34m1[1;90m:[0mAll/Folders [1;90m::[0m [1;34m2[1;90m:[0mGit [1;90m::[0m  [1;34m3[1;90m:[0mDocuments [1;90m::[0m [1;34m4[1;90m:[0mImages [1;90m::[0m [1;34m5[1;90m:[0mVideos" \
-		--height=100% --pointer=" " --ellipsis= --info=inline-right --header-first --scheme=path --algo=v2 --color="16" \
-		--preview-window "bottom,60%,border-top" --border=none --margin=5%,10%,5%,10% \
-    --preview "fuz-preview {}")
+selection=$(fzf_main_func)
 
-		# --color="fg:#c0caf5,bg:#16161e,hl:#ff9e64" \
-		# --color="fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64" \
-		# --color="info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff" \
-		# --color="marker:#9ece6a,spinner:#9ece6a,header:#9ece6a,border:#292e42" \
+if [ -n "$selection" ]; then
+	fuz-opener "$selection"
+fi
 
-
-[ -n "$selection" ] &&
-	case $(file --mime-type "$(readlink -f "$selection")" -b) in
-	image/vnd.djvu | application/pdf | application/postscript | application/epub*) zathura "$selection" >/dev/null 2>&1 ;;
-	text/html) nvim "$selection" ;;
-	text/* | application/json | inode/x-empty | application/x-subrip | application/javascript) nvim "$selection" ;;
-	image/x-xcf) gimp "$selection" >/dev/null 2>&1 ;;
-	image/svg+xml) display -- "$selection" ;;
-	image/*)
-		shopt -s nullglob
-		dir="$(dirname "$selection")"
-		selected_file="$selection"
-		images=()
-		for file in "$dir"/*.{jpg,jpeg,png,webp,bmp,tiff,tif,raw,ico,exif,heic,heif,gif,avif,jxl,JPG,PNG}; do
-			[[ -f "$file" ]] && images+=("$file")
-		done
-		sorted_images=()
-		while IFS= read -r line; do
-			sorted_images+=("$line")
-		done < <(printf "%s\n" "${images[@]}" | sort -fV)
-		for ((i = 0; i < ${#sorted_images[@]}; i++)); do
-			[[ "${sorted_images[i]}" = "$selected_file" ]] && {
-				setsid nsxiv -aon "$((i + 1))" "${sorted_images[@]}"
-				break
-			}
-		done
-		;;
-	audio/* | video/x-ms-asf) mpv --loop-file --profile=builtin-pseudo-gui "$selection" ;;
-	video/*) mpv --loop-file "$selection" -quiet >/dev/null 2>&1 ;;
-	application/pgp-encrypted) nvim "$selection" ;;
-	application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/vnd.oasis.opendocument.text | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | application/vnd.oasis.opendocument.spreadsheet | application/vnd.oasis.opendocument.spreadsheet-template | application/vnd.openxmlformats-officedocument.presentationml.presentation | application/vnd.oasis.opendocument.presentation-template | application/vnd.oasis.opendocument.presentation | application/vnd.ms-powerpoint | application/vnd.oasis.opendocument.graphics | application/vnd.oasis.opendocument.graphics-template | application/vnd.oasis.opendocument.formula | application/vnd.oasis.opendocument.database) libreoffice "$selection" >/dev/null 2>&1 ;;
-	application/octet-stream)
-		case ${selection##*.} in
-		doc | docx | xls | xlsx | odt | ppt | pptx) libreoffice "$selection" >/dev/null 2>&1 ;;
-		ts) mpv "$selection" -quiet >/dev/null 2>&1 ;;
-		*) zathura "$selection" >/dev/null 2>&1 ;;
-		esac
-		;;
-	*) lf -command "set hidden" "$selection" ;;
-	esac
-
+# Reset layout to tile before exiting
 dwmc setlayoutex 0

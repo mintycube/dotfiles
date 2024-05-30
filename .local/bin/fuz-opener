@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+openee="$1"
+
+case $(file --mime-type "$(readlink -f "$openee")" -b) in
+image/vnd.djvu | application/pdf | application/postscript | application/epub*) zathura "$openee" >/dev/null 2>&1 ;;
+text/html) nvim "$openee" ;;
+text/* | application/json | inode/x-empty | application/x-subrip | application/javascript) nvim "$openee" ;;
+image/x-xcf) gimp "$openee" >/dev/null 2>&1 ;;
+image/svg+xml) display -- "$openee" ;;
+image/*)
+	shopt -s nullglob
+	dir="$(dirname "$openee")"
+	selected_file="$openee"
+	images=()
+	for file in "$dir"/*.{jpg,jpeg,png,webp,bmp,tiff,tif,raw,ico,exif,heic,heif,gif,avif,jxl,JPG,PNG}; do
+		[[ -f "$file" ]] && images+=("$file")
+	done
+	sorted_images=()
+	while IFS= read -r line; do
+		sorted_images+=("$line")
+	done < <(printf "%s\n" "${images[@]}" | sort -fV)
+	for ((i = 0; i < ${#sorted_images[@]}; i++)); do
+		[[ "${sorted_images[i]}" = "$selected_file" ]] && {
+			setsid nsxiv -aon "$((i + 1))" "${sorted_images[@]}"
+			break
+		}
+	done
+	;;
+audio/* | video/x-ms-asf) mpv --loop-file --profile=builtin-pseudo-gui "$openee" ;;
+video/*) mpv --loop-file "$openee" -quiet >/dev/null 2>&1 ;;
+application/pgp-encrypted) nvim "$openee" ;;
+application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/vnd.oasis.opendocument.text | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | application/vnd.oasis.opendocument.spreadsheet | application/vnd.oasis.opendocument.spreadsheet-template | application/vnd.openxmlformats-officedocument.presentationml.presentation | application/vnd.oasis.opendocument.presentation-template | application/vnd.oasis.opendocument.presentation | application/vnd.ms-powerpoint | application/vnd.oasis.opendocument.graphics | application/vnd.oasis.opendocument.graphics-template | application/vnd.oasis.opendocument.formula | application/vnd.oasis.opendocument.database) libreoffice "$openee" >/dev/null 2>&1 ;;
+application/octet-stream)
+	case ${openee##*.} in
+	doc | docx | xls | xlsx | odt | ppt | pptx) libreoffice "$openee" >/dev/null 2>&1 ;;
+	ts) mpv "$openee" -quiet >/dev/null 2>&1 ;;
+	*) zathura "$openee" >/dev/null 2>&1 ;;
+	esac
+	;;
+*) lf -command "set hidden" "$openee" ;;
+esac

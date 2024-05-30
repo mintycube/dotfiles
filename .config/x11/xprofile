@@ -11,7 +11,7 @@ xrdbpid=$! # Uncomment to use Xresources colors/settings on startup
 
 pidof -sx dunst || dunst -config "${XDG_CONFIG_HOME:-$HOME/.config}"/dunst/config &
 
-autostart="mpd pipewire unclutter remapd clipmenud"
+autostart="mpd pipewire unclutter remapd clipmenud fuz-cache"
 
 for program in $autostart; do
 	pidof -sx "$program" || "$program" &

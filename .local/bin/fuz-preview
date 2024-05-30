@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+
+# The purpose of this script is to demonstrate how to preview a file or an
+# image in the preview window of fzf.
+
+# Dependencies:
+# - https://github.com/sharkdp/bat
+# - https://github.com/hpjansson/chafa
+# - https://iterm2.com/utilities/imgcat
+# - pdftoppm
+# - exiftool
+# - ffmpegthumbnailer
+# - ImageMagick (convert)
+
+if [[ $# -ne 1 ]]; then
+	>&2 echo "usage: $0 FILENAME"
+	exit 1
+fi
+
+file=${1/#\~\//$HOME/}
+type=$(file --dereference --brief --mime-type -- "$file")
+
+# Debug: Print the detected MIME type
+# echo "Detected MIME type: $type"
+
+# Array to hold temp files for cleanup
+temp_files=()
+
+# Cleanup function to remove temp files
+cleanup() {
+	for temp_file in "${temp_files[@]}"; do
+		rm -f "$temp_file"
+	done
+}
+
+# Register the cleanup function to run on script exit
+trap cleanup EXIT
+
+# Function to preview text files
+preview_text() {
+	if command -v batcat >/dev/null; then
+		batname="batcat"
+	elif command -v bat >/dev/null; then
+		batname="bat"
+	else
+		cat "$1"
+		return
+	fi
+
+	${batname} --style="${BAT_STYLE:-numbers,header}" --color=always --pager=never -- "$file"
+}
+
+# Function to preview images
+preview_image() {
+	local image_file="$1"
+	dim=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}
+	if [[ $dim = x ]]; then
+		dim=$(stty size </dev/tty | awk '{print $2 "x" $1}')
+	elif ! [[ $KITTY_WINDOW_ID ]] && ((FZF_PREVIEW_TOP + FZF_PREVIEW_LINES == $(stty size </dev/tty | awk '{print $1}'))); then
+		dim=${FZF_PREVIEW_COLUMNS}x$((FZF_PREVIEW_LINES - 1))
+	fi
+
+	if [[ $KITTY_WINDOW_ID ]]; then
+		kitty icat --clear --transfer-mode=memory --unicode-placeholder --stdin=no --place="$dim@0x0" "$image_file" | sed '$d' | sed $'$s/$/\e[m/'
+	elif command -v chafa >/dev/null; then
+		chafa -f sixel -O 9 -w 1 -s "$dim" "$image_file"
+		echo
+	elif command -v imgcat >/dev/null; then
+		imgcat -W "${dim%%x*}" -H "${dim##*x}" "$image_file"
+	else
+		file "$image_file"
+	fi
+}
+
+# Function to preview PDF files
+preview_pdf() {
+	temp_image=$(mktemp /tmp/preview.XXXXXX)
+	temp_files+=("$temp_image" "${temp_image}.jpg")
+	if pdftoppm -jpeg -f 1 -singlefile "$file" "$temp_image" >/dev/null 2>&1; then
+		temp_image="${temp_image}.jpg"
+		preview_image "$temp_image"
+	else
+		file "$file"
+	fi
+}
+
+# Function to preview audio files
+preview_audio() {
+	if command -v exiftool >/dev/null; then
+		exiftool -FileName -Title -Artist -Album -Genre -ChannelMode -AudioBitrate -FileSize -MIMEType -SampleRate -Duration "$file"
+	else
+		echo "exiftool not found."
+		file "$file"
+	fi
+}
+
+# Function to preview video files
+preview_video() {
+	temp_image=$(mktemp /tmp/preview.XXXXXX.jpg)
+	temp_files+=("$temp_image")
+	if ffmpegthumbnailer -i "$file" -o "$temp_image" -s 0 >/dev/null 2>&1; then
+		convert "$temp_image" -resize 25% "$temp_image"
+		preview_image "$temp_image"
+	else
+		file "$file"
+	fi
+}
+
+# Function to preview archives files
+preview_zip() {
+	atool --list -- "$file"
+}
+
+preview_dir() {
+  echo
+  eza -Ga --group-directories-first --icons=always --color=always "$file"
+}
+
+# Dispatch based on MIME type
+case "$type" in
+inode/directory)
+	preview_dir "$file"
+	;;
+text/*)
+	preview_text "$file"
+	;;
+image/*)
+	preview_image "$file"
+	;;
+application/pdf)
+	preview_pdf "$file"
+	;;
+audio/*)
+	preview_audio "$file"
+	;;
+video/*)
+	preview_video "$file"
+	;;
+application/*zip)
+	preview_zip "$file"
+	;;
+*)
+	exiftool "$file"
+	;;
+esac
