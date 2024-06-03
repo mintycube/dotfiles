@@ -38,16 +38,7 @@ trap cleanup EXIT
 
 # Function to preview text files
 preview_text() {
-	if command -v batcat >/dev/null; then
-		batname="batcat"
-	elif command -v bat >/dev/null; then
-		batname="bat"
-	else
-		cat "$1"
-		return
-	fi
-
-	${batname} --style="${BAT_STYLE:-numbers,header}" --color=always --pager=never -- "$file"
+	bat --style="${BAT_STYLE:-numbers,header}" --color=always --pager=never -- "$file"
 }
 
 # Function to preview images
@@ -120,6 +111,9 @@ preview_dir() {
 case "$type" in
 inode/directory)
 	preview_dir "$file"
+	;;
+text/plain)
+	preview_text "$file"
 	;;
 text/*)
 	preview_text "$file"

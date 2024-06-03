@@ -24,20 +24,20 @@ populate_cache() {
 # Populate the cache initially
 populate_cache &
 
-EXCLUDE_DIRS=(
+MONITOR_EXCLUDE_DIRS=(
 	"$HOME/.cache"
 	"$HOME/.mozilla"
 	"$HOME/.local/state"
 )
 
 # Combine excluded directories into a single regular expression pattern
-EXCLUDE_PATTERN=$(
+MONITOR_EXCLUDE_PATTERN=$(
 	IFS="|"
-	echo "${EXCLUDE_DIRS[*]}"
+	echo "${MONITOR_EXCLUDE_DIRS[*]}"
 )
 
 # Watch for changes in ~ and update the cache
-inotifywait -m -q -r -e move -e create -e delete --exclude "$EXCLUDE_PATTERN" "$HOME" |
+inotifywait -m -q -r -e move -e create -e delete --exclude "$MONITOR_EXCLUDE_PATTERN" "$HOME" |
 	while read -r; do
 		# Throttle cache updates by sleeping for 1 second
 		sleep 10

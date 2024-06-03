@@ -22,7 +22,7 @@ if [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'up' ] ; then
   if [ ! -e ~/.cache/bar_color ]; then
     wifiicon="$(awk '/^\s*w/ { cmd="nmcli -t -f active,ssid dev wifi | grep yes | cut -d: -f2"; cmd | getline output; close(cmd); print "󰤪 ", output }' /proc/net/wireless)"
   else
-    wifiicon="$(awk '/^\s*w/ { cmd="nmcli -t -f active,ssid dev wifi | grep yes | cut -d: -f2"; cmd | getline output; close(cmd); print "^C3^󰤪 ^d^", output }' /proc/net/wireless)"
+    wifiicon="$(awk '/^\s*w/ { cmd="nmcli -t -f active,ssid dev wifi | grep yes | cut -d: -f2"; cmd | getline output; close(cmd); print "^C2^󰤪 ^d^", output }' /proc/net/wireless)"
   fi
 elif [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'down' ] ; then
   if [ ! -e ~/.cache/bar_color ]; then

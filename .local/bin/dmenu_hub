@@ -14,6 +14,7 @@ bar_colors_toggle = '[ -e "$HOME/.cache/bar_color" ] && { rm "$HOME/.cache/bar_c
 options = {
     f"󰀻  Apps": apps,
     f"󰉦  Bar colors": bar_colors_toggle,
+    f"  Fix audio": "fix-audio",
     f"  Edit Configs": "st -e confedit",
     f"  Web Search": "dmenu_web",
     f"󰌹  Handler": "dmenuhandler",

@@ -2,7 +2,7 @@
 
 ! Choices: tokyonight, rose-pine, onedark,
 ! evergarden, nord, oxocarbon, catpuccin, tokyodark
-#include "colors/rose-pine"
+#include "colors/catpuccin"
 
 Xcursor.theme:  Bibata-Modern-Ice
 Xcursor.size:   24

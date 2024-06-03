@@ -18,7 +18,7 @@ return {
           lint.codespell, -- general code spellings
 
           -- Formatting
-          formatting.shfmt,  -- for sh
+          formatting.shfmt, -- for sh
           formatting.prettier, -- for js, md, html, css``
 
           -- Code Actions

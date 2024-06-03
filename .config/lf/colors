@@ -46,7 +46,7 @@ or      31;01   # ORPHAN
 tw      34      # STICKY_OTHER_WRITABLE
 ow      34      # OTHER_WRITABLE
 st      01;34   # STICKY
-di      01;35   # DIR
+di      01;34   # DIR
 pi      33      # FIFO
 so      01;35   # SOCK
 bd      33;01   # BLK
@@ -176,4 +176,4 @@ fi      49;68      # FILE
 *.xspf  00;36
 
 # Projects
-~/Projects   01;32
+~/projects   01;32

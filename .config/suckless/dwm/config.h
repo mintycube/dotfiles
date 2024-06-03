@@ -8,7 +8,7 @@ static const unsigned int borderpx       = 1;   /* border pixel of windows */
  * automatically update with setborderpx. */
 static const unsigned int barborderpx    = 0;  /* border pixel of bar */
 static const unsigned int snap           = 32;  /* snap pixel */
-static const int showbar                 = 0;   /* 0 means no bar */
+static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 0;   /* 0 means bottom bar */
 static const int bar_height              = 0;   /* 0 means derive from font, >= 1 explicit height */
 static const int focusonwheel            = 0;
@@ -85,7 +85,6 @@ static char *colors[][ColCount] = {
 static const char *const autostart[] = {
 	// "st", NULL,
 	"dwmblocks", NULL,
-	"picom", NULL,
 	NULL /* terminate */
 };
 
@@ -167,7 +166,6 @@ static const Rule rules[] = {
 	RULE(.wintype  = WTYPE "TOOLBAR",                   .isfloating = 1)
 	RULE(.wintype  = WTYPE "SPLASH",                    .isfloating = 1)
 
-	// RULE(.class    = "st-terminal",   .tags = 1 << 0,   .switchtag = 1)
 	RULE(.class    = "firefox",       .tags = 1 << 1,   .switchtag = 1)
   RULE(.title    = "nvim",          .tags = 1 << 2,   .switchtag = 1)
 	RULE(.title    = "lf",            .tags = 1 << 3,   .switchtag = 1)
@@ -324,19 +322,21 @@ static const Key keys[] = {
 	{ MODKEY,             XK_d,                     spawn,                {.v = dmenu_run_cmd } },
 	{ MODKEY,             XK_f,                     togglefakefullscreen, {0} },
 	{ MODKEY,             XK_h,                     setmfact,             {.f = -0.05} },
+	{ ALTKEY,             XK_h,                     spawn,                {.v = (const char*[]){ "dmenuhandler" , NULL} } },
 	{ MODKEY,             XK_j,                     focusstack,           {.i = +1 } },
 	{ MODKEY,             XK_k,                     focusstack,           {.i = -1 } },
 	{ MODKEY,             XK_l,                     setmfact,             {.f = +0.05} },
 	{ ALTKEY,             XK_l,                     spawn,                {.v = (const char*[]){"dictionary", NULL } } },
 	{ MODKEY|ShiftMask,   XK_apostrophe,            togglescratch,        {.ui = 2 } },
 	{ MODKEY,             XK_apostrophe,            togglescratch,        {.ui = 1 } },
-  { MODKEY,             XK_Return,                spawn,                {.v = (const char *[]){"st", "-c", "st-terminal", NULL}}},
-  { ALTKEY,             XK_Return,                spawn,                {.v = (const char *[]){"st", NULL}}},
+  { MODKEY,             XK_Return,                spawn,                {.v = (const char *[]){"st", NULL}}},
+  { ALTKEY,             XK_Return,                spawn,                {.v = (const char *[]){"kitty", NULL}}},
 	{ MODKEY|ShiftMask,   XK_Return,                togglescratch,        {.ui = 0 } },
 	{ MODKEY,             XK_x,                     transfer,             {0} },
 	{ MODKEY,             XK_b,                     togglebar,            {0} },
 	{ MODKEY|ShiftMask,	  XK_b,                     spawn,		            {.v = (const char*[]){ "dmenu_web", "--add" , NULL } } },
 	{ MODKEY,			        XK_n,                     spawn,		            {.v = (const char*[]){ "st", "-e", "nvim", NULL } } },
+	{ ALTKEY,			        XK_n,                     spawn,		            {.v = (const char*[]){ "kitty", "nvim", NULL } } },
 	{ MODKEY|ShiftMask,	  XK_n,                     spawn,		            {.v = (const char*[]){ "st", "-e", "newsboat", NULL } } },
 	{ MODKEY,             XK_m,                     togglescratch,        {.ui = 3 } },
 	{ MODKEY,             XK_comma,                 togglescratch,        {.ui = 4 } },

@@ -15,7 +15,6 @@ zstyle ':z4h:autosuggestions' forward-char 'accept'
 zstyle ':z4h:fzf-complete' recurse-dirs 'yes'
 zstyle ':z4h:direnv' enable 'no'
 zstyle ':z4h:direnv:success' notify 'yes'
-alias clear=z4h-clear-screen-soft-bottom
 
 # Enable ('yes') or disable ('no') automatic teleportation of z4h over
 # SSH when connecting to these hosts.
