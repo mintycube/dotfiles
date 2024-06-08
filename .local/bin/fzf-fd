@@ -14,6 +14,7 @@ fd_command="fd . \
   --exclude .github \
   --exclude *.o \
   --exclude *.pyc \
+  --exclude node_modules \
   --full-path \"$search_dir\""
 
 fzf_command="fzf \

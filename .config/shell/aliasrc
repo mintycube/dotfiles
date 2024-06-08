@@ -16,7 +16,7 @@ unset command
 
 alias \
 	be="fzf-fd \$HOME/.local/bin | xargs -r nvim" \
-	ce="fzf-fd \$HOME/.config | xargs -r nvim" \
+	ce="confedit" \
 	cg="fzf-grep \$HOME/.config" \
 	fe="fzf-fd \$(pwd) | xargs -r nvim" \
 	fg="fzf-grep \$(pwd)" \

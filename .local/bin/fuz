@@ -3,24 +3,17 @@
 # Populated by fuz-cache script through xprofile at startup
 CACHE_DIR="/tmp/fuz_cache"
 
-# Define color escape sequences
-c_blue='[1;34m'
-c_gray='[1;90m'
-c_norm='[0m'
-h_padding=$(printf '%*s' 23 ' ')
-h_gap="  ${c_gray}::"
+h_padding=$(printf '%*s' 20 ' ')
+h_gap=$(printf '%*s' 4 ' ')
 
 # Define the header using the escape sequences
 HEADER="${h_padding}\
-  ${c_blue}Prefix${c_gray}:${c_norm}Alt${h_gap}\
-  ${c_blue}1${c_gray}:${c_norm}All/Folders/Git${h_gap}\
-  ${c_blue}2${c_gray}:${c_norm}Documents${h_gap}\
-  ${c_blue}3${c_gray}:${c_norm}Images${h_gap}\
-  ${c_blue}4${c_gray}:${c_norm}Videos"
+  [1;34m Prefix[1;90m:[0mAlt${h_gap}\
+  [1;34m 1[1;90m:[0mAll/Folders/Git${h_gap}\
+  [1;34m 2[1;90m:[0mDocuments${h_gap}\
+  [1;34m 3[1;90m:[0mImages${h_gap}\
+  [1;34m 4[1;90m:[0mVideos"
 
-# --bind "alt-1:transform:[[ ! \$FZF_PROMPT =~ All ]] &&
-#   echo 'change-prompt(   All  )+reload(cat $CACHE_DIR/all)' ||
-#   echo 'change-prompt(   Folders  )+reload(cat $CACHE_DIR/folders)'" \
 fzf_main_func() {
 	cat $CACHE_DIR/all | fzf --ansi --prompt "   All  " \
 		--bind "alt-1:transform:(
@@ -36,14 +29,8 @@ fzf_main_func() {
 		--preview "fuz-preview {}"
 }
 
-echo -ne '\e[3 q' # Use underline shape cursor on startup.
-dwmc setlayoutex 2
-
 selection=$(fzf_main_func)
 
 if [ -n "$selection" ]; then
 	fuz-opener "$selection"
 fi
-
-# Reset layout to tile before exiting
-dwmc setlayoutex 0

@@ -13,6 +13,9 @@ progress_bar_height = 80
 progress_bar_frame_width = 1
 progress_bar_min_width = 300
 progress_bar_max_width = 300
+icon =
+default_icon =
+icon_position=off
 indicate_hidden = yes
 transparency = 0
 separator_height = 1
@@ -51,18 +54,27 @@ title = Dunst
 class = Dunst
 
 [urgency_low]
+icon =
+default_icon =
+icon_position=off
 timeout = 2
 background = "#1e1e2e"
 foreground = "#a6adc8"
 frame_color = "#cba6f7"
 
 [urgency_normal]
+icon =
+default_icon =
+icon_position=off
 timeout = 5
 background = "#1e1e2e"
 foreground = "#a6adc8"
 frame_color = "#cba6f7"
 
 [urgency_critical]
+icon =
+default_icon =
+icon_position=off
 timeout = 0
 background = "#1e1e2e"
 foreground = "#a6adc8"

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 word=$(xclip -o -selection "clipboard")
 

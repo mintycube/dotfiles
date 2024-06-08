@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# The purpose of this script is to demonstrate how to preview a file or an
-# image in the preview window of fzf.
-
 # Dependencies:
 # - https://github.com/sharkdp/bat
 # - https://github.com/hpjansson/chafa
@@ -20,9 +17,6 @@ fi
 file=${1/#\~\//$HOME/}
 type=$(file --dereference --brief --mime-type -- "$file")
 
-# Debug: Print the detected MIME type
-# echo "Detected MIME type: $type"
-
 # Array to hold temp files for cleanup
 temp_files=()
 
@@ -38,10 +32,21 @@ trap cleanup EXIT
 
 # Function to preview text files
 preview_text() {
-	bat --style="${BAT_STYLE:-numbers,header}" --color=always --pager=never -- "$file"
+	bat --style="${BAT_STYLE:-numbers,header}" --color=always --pager=never --line-range :19 -- "$file"
 }
 
-# Function to preview images
+preview_json() {
+	jq -C . "$file"
+}
+
+preview_diff() {
+	delta < "$file"
+}
+
+preview_markdown() {
+  glow -s auto -w "$FZF_PREVIEW_COLUMNS" "$file"
+}
+
 preview_image() {
 	local image_file="$1"
 	dim=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}
@@ -63,7 +68,6 @@ preview_image() {
 	fi
 }
 
-# Function to preview PDF files
 preview_pdf() {
 	temp_image=$(mktemp /tmp/preview.XXXXXX)
 	temp_files+=("$temp_image" "${temp_image}.jpg")
@@ -75,7 +79,6 @@ preview_pdf() {
 	fi
 }
 
-# Function to preview audio files
 preview_audio() {
 	if command -v exiftool >/dev/null; then
 		exiftool -FileName -Title -Artist -Album -Genre -ChannelMode -AudioBitrate -FileSize -MIMEType -SampleRate -Duration "$file"
@@ -85,7 +88,6 @@ preview_audio() {
 	fi
 }
 
-# Function to preview video files
 preview_video() {
 	temp_image=$(mktemp /tmp/preview.XXXXXX.jpg)
 	temp_files+=("$temp_image")
@@ -97,8 +99,7 @@ preview_video() {
 	fi
 }
 
-# Function to preview archives files
-preview_zip() {
+preview_archive() {
 	atool --list -- "$file"
 }
 
@@ -107,19 +108,31 @@ preview_dir() {
   eza -Ga --group-directories-first --icons=always --color=always "$file"
 }
 
-# Dispatch based on MIME type
 case "$type" in
 inode/directory)
 	preview_dir "$file"
 	;;
-text/plain)
-	preview_text "$file"
+text/x-patch)
+	preview_diff "$file"
+	;;
+text/x-diff)
+	preview_diff "$file"
 	;;
 text/*)
-	preview_text "$file"
+	case "$file" in
+		*.md|*.markdown)
+			preview_markdown "$file"
+			;;
+		*)
+			preview_text "$file"
+			;;
+	esac
 	;;
 image/*)
 	preview_image "$file"
+	;;
+application/json)
+	preview_json "$file"
 	;;
 application/pdf)
 	preview_pdf "$file"
@@ -130,8 +143,8 @@ audio/*)
 video/*)
 	preview_video "$file"
 	;;
-application/*zip)
-	preview_zip "$file"
+application/zip|application/x-tar|application/gzip|application/x-bzip2|application/x-xz|application/x-rar|application/x-7z-compressed)
+	preview_archive "$file"
 	;;
 *)
 	exiftool "$file"

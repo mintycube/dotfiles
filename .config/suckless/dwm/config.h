@@ -161,30 +161,32 @@ static const Rule rules[] = {
 	 *	WM_WINDOW_ROLE(STRING) = role
 	 *	_NET_WM_WINDOW_TYPE(ATOM) = wintype
 	 */
-	RULE(.wintype  = WTYPE "DIALOG",                    .isfloating = 1)
-	RULE(.wintype  = WTYPE "UTILITY",                   .isfloating = 1)
-	RULE(.wintype  = WTYPE "TOOLBAR",                   .isfloating = 1)
-	RULE(.wintype  = WTYPE "SPLASH",                    .isfloating = 1)
+	RULE(.wintype  = WTYPE "DIALOG",                        .isfloating = 1)
+	RULE(.wintype  = WTYPE "UTILITY",                       .isfloating = 1)
+	RULE(.wintype  = WTYPE "TOOLBAR",                       .isfloating = 1)
+	RULE(.wintype  = WTYPE "SPLASH",                        .isfloating = 1)
 
-	RULE(.class    = "firefox",       .tags = 1 << 1,   .switchtag = 1)
-  RULE(.title    = "nvim",          .tags = 1 << 2,   .switchtag = 1)
-	RULE(.title    = "lf",            .tags = 1 << 3,   .switchtag = 1)
-  RULE(.class    = "mpv",           .tags = 1 << 4,   .switchtag = 3)
-  RULE(.title    = "newsboat",      .tags = 1 << 5,   .switchtag = 3)
-  RULE(.class    = "Zathura",       .tags = 1 << 6,   .switchtag = 3)
-  RULE(.title    = "nsxiv",         .tags = 1 << 7,   .switchtag = 3)
-	RULE(.class    = "Gimp",          .tags = 1 << 8,   .switchtag = 3)
+	RULE(.class    = "firefox",       .tags = 1 << 1,       .switchtag = 1)
+  RULE(.title    = "nvim",          .tags = 1 << 2,       .switchtag = 1)
+	RULE(.title    = "lf",            .tags = 1 << 3,       .switchtag = 1)
+  RULE(.class    = "mpv",           .tags = 1 << 4,       .switchtag = 3)
+  RULE(.title    = "newsboat",      .tags = 1 << 5,       .switchtag = 3)
+  RULE(.class    = "Zathura",       .tags = 1 << 6,       .switchtag = 3)
+  RULE(.title    = "nsxiv",         .tags = 1 << 7,       .switchtag = 3)
+	RULE(.class    = "Gimp",          .tags = 1 << 8,       .switchtag = 3)
+	RULE(.instance = "libreoffice",   .tags = 1 << 8,       .switchtag = 3)
 
-	RULE(.instance = "spterm",        .tags = SPTAG(0), .isfloating = 1)
-	RULE(.instance = "spcalc",        .tags = SPTAG(1), .isfloating = 1)
-	RULE(.class    = "Qalculate-gtk", .tags = SPTAG(2), .isfloating = 1)
-	RULE(.instance = "spmusic",       .tags = SPTAG(3), .isfloating = 1)
-	RULE(.instance = "spnotes",       .tags = SPTAG(4), .isfloating = 1)
-	RULE(.instance = "spterm",        .tags = SPTAG(0), .isfloating = 1)
+	RULE(.instance = "spterm",        .tags = SPTAG(0),     .isfloating = 1)
+	RULE(.instance = "spcalc",        .tags = SPTAG(1),     .isfloating = 1)
+	RULE(.class    = "Qalculate-gtk", .tags = SPTAG(2),     .isfloating = 1)
+	RULE(.instance = "spmusic",       .tags = SPTAG(3),     .isfloating = 1)
+	RULE(.instance = "spnotes",       .tags = SPTAG(4),     .isfloating = 1)
+	RULE(.instance = "spterm",        .tags = SPTAG(0),     .isfloating = 1)
 
-	RULE(.instance = "dictionary",                      .isfloating = 1)
-	RULE(.class    = "volume-ui",                       .isfloating = 1)
-	RULE(.class    = "gping-ui",                        .isfloating = 1)
+	RULE(.instance = "dictionary",                          .isfloating = 1)
+	RULE(.class    = "volume-ui",                           .isfloating = 1)
+	RULE(.class    = "gping-ui",                            .isfloating = 1)
+	RULE(.class    = "PersepolisDM",  .title = "(None)None",.isfloating = 1)
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -255,8 +257,8 @@ static const char* volume_ui_cmd[] = { "st", "-c", "volume-ui", "-g=80x15+353+20
 
 static const Key on_empty_keys[] = {
 	/* modifier key            function          argument */
-	{0,         XK_e,          spawn,            SHCMD("st fuz") },
-	{0,         XK_f,          spawn,            SHCMD("st fuz") },
+	{0,         XK_e,          spawn,            {.v = (const char*[]){"fuz-launcher", NULL } } },
+	{0,         XK_f,          spawn,            {.v = (const char*[]){"fuz-launcher", NULL } } },
   {0,         XK_w,          spawn,            {.v = (const char*[]){"firefox", NULL } } },
   {0,         XK_grave,      spawn,            {.v = (const char*[]){"dmenunerdsymbols", NULL } } },
   {0,         XK_BackSpace,  spawn,            {.v = (const char*[]){"sysact", NULL } } },
@@ -307,7 +309,7 @@ static const Key keys[] = {
 	{ MODKEY,             XK_q,                     killclient,           {0} },
   { MODKEY|ShiftMask,   XK_q,                     killunsel,            {0} },
 	{ MODKEY,			        XK_w,                     spawn,		            {.v = (const char*[]){ "firefox", NULL } } },
-	{ MODKEY,             XK_e,                     spawn,                SHCMD("st fuz") },
+	{ MODKEY,             XK_e,                     spawn,                {.v = (const char*[]){"fuz-launcher", NULL } } },
   { ALTKEY,             XK_e,                     spawn,                {.v = (const char*[]){ "networkmanager_dmenu", NULL } } },
 	{ MODKEY,			        XK_r,                     spawn,		            {.v = (const char*[]){ "st", "-e", "lf", NULL } } },
 	{ MODKEY|ShiftMask,	  XK_r,                     spawn,		            {.v = (const char*[]){ "thunar", NULL } } },

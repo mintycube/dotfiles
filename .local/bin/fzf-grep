@@ -6,21 +6,21 @@ rm -f /tmp/rg-fzf-{r,f}
 
 [ -d "$1" ] && SEARCH_DIR="$1" && shift || SEARCH_DIR="."
 
-RG_PREFIX="rg --column --line-number --no-heading --follow --color=always --smart-case \
-  --glob '!/.ssh' --glob '!/.android' --glob '!/.gnupg'"
+RG_PREFIX="rg --hidden --column --line-number --no-heading --follow --color=always --smart-case \
+  --glob '!/.ssh' --glob '!/.android' --glob '!/.gnupg' --glob '!node_modules'"
 INITIAL_QUERY="${*:-}"
 
 : | fzf --ansi --disabled --query "$INITIAL_QUERY" \
 	--bind "start:reload:$RG_PREFIX {q} $SEARCH_DIR" \
 	--bind "change:reload:sleep 0.1; $RG_PREFIX {q} $SEARCH_DIR || true" \
-	--bind "ctrl-t:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] &&
+	--bind "ctrl-space:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] &&
   echo \"rebind(change)+change-prompt(ripgrep  )+disable-search+transform-query:echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" ||
   echo \"unbind(change)+change-prompt(fzf  )+enable-search+transform-query:echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"" \
 	--margin=5%,10%,5%,10% --height=100% --reverse --color=16 --info=inline-right \
-	--scrollbar=▐ --keep-right --info=hidden --border=none --ellipsis= \
+	--scrollbar=▐ --keep-right --border=none --ellipsis= \
 	--prompt 'ripgrep  ' \
 	--delimiter : \
-	--header 'CTRL-T: Switch between ripgrep/fzf' \
+	--header 'CTRL-Space: Switch between ripgrep/fzf' --header-first \
 	--preview 'bat --style=header,numbers --color=always {1} --highlight-line {2}' \
 	--preview-window 'bottom,60%,border-top,+{2}+3/3,~1' \
 	--bind 'enter:become(nvim {1} +{2})'

@@ -1,6 +1,6 @@
 ! vim: filetype=xdefaults
 
-! Choices: tokyonight, rose-pine, onedark,
+! Choices: tokyonight, rose-pine, onedark, monochrome
 ! evergarden, nord, oxocarbon, catpuccin, tokyodark
 #include "colors/catpuccin"
 

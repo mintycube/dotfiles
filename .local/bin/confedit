@@ -1,34 +1,35 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-configs=(
-  "$XDG_CONFIG_HOME/suckless/dmenu/config.h"
-  "$XDG_CONFIG_HOME/suckless/dwm/config.h"
-  "$XDG_CONFIG_HOME/suckless/dwmblocks/config.h"
-  "$XDG_CONFIG_HOME/suckless/st/config.h"
-  "$XDG_CONFIG_HOME/suckless/slock/config.h"
-  "$XDG_CONFIG_HOME/x11/xresources"
-  "$XDG_CONFIG_HOME/nvim/lua"
-  "$XDG_CONFIG_HOME/zsh/.zshrc"
-  "$XDG_CONFIG_HOME/shell/aliasrc"
-  "$XDG_CONFIG_HOME/x11/xinitrc"
-  "$XDG_CONFIG_HOME/x11/xprofile"
-  "$HOME/.bashrc"
-  "$XDG_CONFIG_HOME/mpd/mpd.conf"
-  "$XDG_CONFIG_HOME/ncmpcpp/config"
-  "$XDG_CONFIG_HOME/dunst/dunstrc"
-  "$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
-  "$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
-  "$XDG_CONFIG_HOME/lf/lfrc"
-  "$XDG_CONFIG_HOME/newsboat/config"
-  "$XDG_CONFIG_HOME/newsboat/urls"
-  "$XDG_CONFIG_HOME/zathura/zathurarc"
-  "$XDG_DATA_HOME/script-data/keybinds"
-  "$XDG_CONFIG_HOME/dmenu_web"
-)
+configs="[1;34m$XDG_CONFIG_HOME/suckless/dmenu/[1;32mconfig.h
+[1;34m$XDG_CONFIG_HOME/suckless/dwm/[1;32mconfig.h
+[1;34m$XDG_CONFIG_HOME/suckless/dwmblocks/[1;32mconfig.h
+[1;34m$XDG_CONFIG_HOME/suckless/st/[1;32mconfig.h
+[1;34m$XDG_CONFIG_HOME/suckless/slock/[1;32mconfig.h
+[1;34m$XDG_CONFIG_HOME/x11/[1;32mxresources
+[1;34m$XDG_CONFIG_HOME/nvim/lua
+[1;34m$XDG_CONFIG_HOME/zsh/[1;32m.zshrc
+[1;34m$XDG_CONFIG_HOME/shell/[1;32maliasrc
+[1;34m$XDG_CONFIG_HOME/x11/[1;32mxinitrc
+[1;34m$XDG_CONFIG_HOME/x11/[1;32mxprofile
+[1;34m$HOME/[1;32m.bashrc
+[1;34m$XDG_CONFIG_HOME/mpd/[1;32mmpd.conf
+[1;34m$XDG_CONFIG_HOME/ncmpcpp/[1;32mconfig
+[1;34m$XDG_CONFIG_HOME/dunst/[1;32mdunstrc
+[1;34m$XDG_CONFIG_HOME/gtk-2.0/[1;32mgtkrc-2.0
+[1;34m$XDG_CONFIG_HOME/gtk-3.0/[1;32msettings.ini
+[1;34m$XDG_CONFIG_HOME/lf/[1;32mlfrc
+[1;34m$XDG_CONFIG_HOME/newsboat/[1;32mconfig
+[1;34m$XDG_CONFIG_HOME/newsboat/[1;32murls
+[1;34m$XDG_CONFIG_HOME/zathura/[1;32mzathurarc
+[1;34m$XDG_DATA_HOME/script-data/[1;32mkeybinds
+[1;34m$XDG_CONFIG_HOME/dmenu_web"
 
-fzf_command="fzfp --ansi --layout=reverse -m --marker='󰄾' --pointer=' 󰶻'"
+fzf_command="fzf --prompt '   Configs  ' \
+  --layout=reverse -m --height=100% --pointer=' ' \
+  --ellipsis= --scheme=path --algo=v2 --color='16' \
+	--preview-window='bottom,60%,border-top' --border=sharp \
+  --margin='5%,10%,5%,10%' --info=inline-right \
+  --ansi --preview='fuz-preview {}' \
+	--bind 'enter:become(nvim {})'"
 
-selected=$(printf '%s\n' "${configs[@]}" | eval "$fzf_command")
-if [ -n "$selected" ]; then
-	nvim "$selected"
-fi
+echo "$configs" | eval "$fzf_command"
