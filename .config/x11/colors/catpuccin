@@ -1,6 +1,6 @@
 !! vim: filetype=xdefaults
 
-*.background:         #1E1E2E
+*.background:         #14161B
 *.foreground:         #CDD6F4
 *.cursorColor:        #CDD6F4
 *.color0:             #45475A
@@ -20,20 +20,20 @@
 *.color7:             #BAC2DE
 *.color15:            #A6ADC8
 
-dwm.normbordercolor:  #313244
-dwm.normbgcolor:      #1e1e2e
+dwm.normbordercolor:  #262626
+dwm.normbgcolor:      #14161B
 dwm.normfgcolor:      #a6adc8
 dwm.selbordercolor:   #585b70
 dwm.selbgcolor:       #7f849c
 dwm.selfgcolor:       #a6adc8
 dwm.tagsnormfgcolor:  #a6adc8
-dwm.tagsnormbgcolor:  #1e1e2e
+dwm.tagsnormbgcolor:  #14161B
 dwm.tagsselfgcolor:   #a6adc8
 dwm.tagsselbgcolor:   #313244
 
 dmenu.foreground:     #a6adc8
-dmenu.background:     #1e1e2e
-dmenu.selforeground:  #1e1e2e
+dmenu.background:     #14161B
+dmenu.selforeground:  #14161B
 dmenu.selbackground:  #cba6f7
 dmenu.bordercolor:    #cba6f7
 

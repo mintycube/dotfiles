@@ -7,7 +7,7 @@
 # - pdftoppm
 # - exiftool
 # - ffmpegthumbnailer
-# - ImageMagick (convert)
+# - ImageMagick (magick)
 
 if [[ $# -ne 1 ]]; then
 	>&2 echo "usage: $0 FILENAME"
@@ -92,7 +92,7 @@ preview_video() {
 	temp_image=$(mktemp /tmp/preview.XXXXXX.jpg)
 	temp_files+=("$temp_image")
 	if ffmpegthumbnailer -i "$file" -o "$temp_image" -s 0 >/dev/null 2>&1; then
-		convert "$temp_image" -resize 25% "$temp_image"
+		magick "$temp_image" -resize 25% "$temp_image"
 		preview_image "$temp_image"
 	else
 		file "$file"

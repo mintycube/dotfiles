@@ -1,6 +1,7 @@
 #!/bin/sh
 
 word=$(xclip -o -selection "clipboard")
+word=$(echo "$word" | sed 's/^[ \t]*//;s/[ \t]*$//')
 
 if [ -z "$word" ]; then
     notify-send "No query."
@@ -12,4 +13,3 @@ st                                     \
   -g 74x20+800                         \
   -f "JetBrainsMono Nerd Font:size=12" \
   sh -c "dict -d wn \"$word\" | colorit | sed -e '1,3d' -e 's/\[34;47m/[34m/g' | less -R";
-work

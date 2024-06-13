@@ -187,6 +187,7 @@ static const Rule rules[] = {
 	RULE(.class    = "volume-ui",                           .isfloating = 1)
 	RULE(.class    = "gping-ui",                            .isfloating = 1)
 	RULE(.class    = "PersepolisDM",  .title = "(None)None",.isfloating = 1)
+	RULE(.class    = "gnuplot_qt",                          .isfloating = 1)
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as

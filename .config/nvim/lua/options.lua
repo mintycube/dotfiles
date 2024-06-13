@@ -20,7 +20,7 @@ vim.opt.grepprg = "rg --vimgrep"
 vim.opt.inccommand = "split"
 
 -- user interface
-vim.opt.fillchars = { eob = " " }
+-- vim.opt.fillchars = { eob = " " }
 vim.opt.laststatus = 3
 vim.opt.number = true
 vim.opt.numberwidth = 2

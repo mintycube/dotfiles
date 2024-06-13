@@ -5,7 +5,7 @@ return {
     event = "VeryLazy",
     keys = {
       {
-        "\\p",
+        "<A-p>",
         function()
           local contents = require("project_nvim").get_recent_projects()
           local reverse = {}
@@ -67,16 +67,6 @@ return {
     end
   },
 
-  -- vim-be-good game
-  {
-    "theprimeagen/vim-be-good",
-    dependencies = {
-      "nvim-lua/plenary.nvim"
-    },
-    config = function()
-    end
-  },
-
   -- todo-comments
   {
     "folke/todo-comments.nvim",
@@ -101,12 +91,12 @@ return {
     cmd = { "TroubleToggle", "Trouble" },
     opts = { use_diagnostic_signs = true },
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
-      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>",      desc = "Symbols (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",                        desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",           desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>",                desc = "Symbols (Trouble)" },
       { "<leader>xS", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP references/definitions/... (Trouble)", },
-      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List (Trouble)" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                            desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                             desc = "Quickfix List (Trouble)" },
       {
         "[q",
         function()
@@ -166,6 +156,7 @@ return {
   -- illuminate
   {
     "RRethy/vim-illuminate",
+    enabled = false,
     event = "VeryLazy",
     opts = {
       delay = 200,
@@ -336,6 +327,59 @@ return {
       vim.api.nvim_set_hl(0, "LeapMatch", { fg = "white", bold = true, nocombine = true })
       vim.api.nvim_set_hl(0, "LeapLabelPrimary", { fg = "#f02077", bold = true, nocombine = true })
       vim.api.nvim_set_hl(0, "LeapLabelSecondary", { fg = "#99ddff", bold = true, nocombine = true })
+
+      local api = vim.api
+      local ts = vim.treesitter
+
+      local function get_ts_nodes()
+        if not pcall(ts.get_parser) then return end
+        local wininfo = vim.fn.getwininfo(api.nvim_get_current_win())[1]
+        -- Get current node, and then its parent nodes recursively.
+        local cur_node = ts.get_node()
+        if not cur_node then return end
+        local nodes = { cur_node }
+        local parent = cur_node:parent()
+        while parent do
+          table.insert(nodes, parent)
+          parent = parent:parent()
+        end
+        -- Create Leap targets from TS nodes.
+        local targets = {}
+        local startline, startcol
+        for _, node in ipairs(nodes) do
+          startline, startcol, endline, endcol = node:range() -- (0,0)
+          local startpos = { startline + 1, startcol + 1 }
+          local endpos = { endline + 1, endcol + 1 }
+          -- Add both ends of the node.
+          if startline + 1 >= wininfo.topline then
+            table.insert(targets, { pos = startpos, altpos = endpos })
+          end
+          if endline + 1 <= wininfo.botline then
+            table.insert(targets, { pos = endpos, altpos = startpos })
+          end
+        end
+        if #targets >= 1 then return targets end
+      end
+
+      local function select_node_range(target)
+        local mode = api.nvim_get_mode().mode
+        -- Force going back to Normal from Visual mode.
+        if not mode:match('no?') then vim.cmd('normal! ' .. mode) end
+        vim.fn.cursor(unpack(target.pos))
+        local v = mode:match('V') and 'V' or mode:match('�') and '�' or 'v'
+        vim.cmd('normal! ' .. v)
+        vim.fn.cursor(unpack(target.altpos))
+      end
+
+      local function leap_ts()
+        require('leap').leap {
+          target_windows = { api.nvim_get_current_win() },
+          targets = get_ts_nodes,
+          action = select_node_range,
+        }
+      end
+
+      vim.keymap.set({ 'x', 'o' }, '\\', leap_ts)
     end,
   },
 

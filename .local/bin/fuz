@@ -14,23 +14,19 @@ HEADER="${h_padding}\
   [1;34m 3[1;90m:[0mImages${h_gap}\
   [1;34m 4[1;90m:[0mVideos"
 
-fzf_main_func() {
-	cat $CACHE_DIR/all | fzf --ansi --prompt "   All  " \
-		--bind "alt-1:transform:(
-           ([[ \$FZF_PROMPT =~ All ]] && echo 'change-prompt(   Folders  )+reload(cat $CACHE_DIR/folders)') ||
-           ([[ \$FZF_PROMPT =~ Folders ]] && echo 'change-prompt(   Git  )+reload(cat $CACHE_DIR/git)') ||
-           echo 'change-prompt(   All  )+reload(cat $CACHE_DIR/all)')" \
-		--bind "alt-2:change-prompt(   Documents  )+reload(cat $CACHE_DIR/documents)" \
-		--bind "alt-3:change-prompt(   Images  )+reload(cat $CACHE_DIR/images)" \
-		--bind "alt-4:change-prompt(   Videos  )+reload(cat $CACHE_DIR/videos)" \
-		--header "$HEADER" \
-		--height=100% --pointer=" " --ellipsis= --header-first --scheme=path --algo=v2 --color="16" \
-		--preview-window "bottom,60%,border-top" --border=none --margin=5%,10%,5%,10% --info=inline-right \
-		--preview "fuz-preview {}"
-}
+OPENER="fuz-opener"
+PREVIEWER="fuz-preview"
 
-selection=$(fzf_main_func)
-
-if [ -n "$selection" ]; then
-	fuz-opener "$selection"
-fi
+cat $CACHE_DIR/all | fzf --ansi --prompt "   All  " \
+	--bind "alt-1:transform:(
+          ([[ \$FZF_PROMPT =~ All ]] && echo 'change-prompt(   Folders  )+reload(cat $CACHE_DIR/folders)') ||
+          ([[ \$FZF_PROMPT =~ Folders ]] && echo 'change-prompt(   Git  )+reload(cat $CACHE_DIR/git)') ||
+          echo 'change-prompt(   All  )+reload(cat $CACHE_DIR/all)')" \
+	--bind "alt-2:change-prompt(   Documents  )+reload(cat $CACHE_DIR/documents)" \
+	--bind "alt-3:change-prompt(   Images  )+reload(cat $CACHE_DIR/images)" \
+	--bind "alt-4:change-prompt(   Videos  )+reload(cat $CACHE_DIR/videos)" \
+	--header "$HEADER" \
+	--height=100% --pointer=" " --ellipsis= --header-first --scheme=path --algo=v2 --color="16" \
+	--preview-window "bottom,60%,border-top" --border=none --margin=5%,10%,5%,10% --info=inline-right \
+	--preview "$PREVIEWER {}" \
+	--bind "enter:execute:$OPENER {}"

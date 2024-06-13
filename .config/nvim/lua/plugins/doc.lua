@@ -15,18 +15,25 @@ return {
   },
 
   -- qalc
+  -- {
+  --   "iffse/qalculate.vim",
+  --   event = "BufEnter *.qalc",
+  -- },
   {
     "Apeiros-46B/qalc.nvim",
     event = "BufEnter *.qalc",
     cmd = { "QalcAttach", "QalcYank" },
+    dependencies = {
+      "iffse/qalculate.vim"
+    },
     keys = {
       { "<leader>cqa", "<cmd>QalcAttach<CR>", desc = "Attach Calculator" },
       { "<leader>cqy", "<cmd>QalcYank<CR>",   desc = "Yank Result" },
     },
     opts = {
-      cmd_args = {},               -- table
+      cmd_args = {'t'},            -- table
       bufname = '',                -- string
-      set_ft = 'config',           -- string
+      set_ft = 'qalculate',        -- string
       attach_extension = '*.qalc', -- string
       sign = ' ==> ',              -- string
       show_sign = true,            -- boolean

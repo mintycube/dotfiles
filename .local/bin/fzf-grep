@@ -8,23 +8,34 @@ rm -f /tmp/rg-fzf-{r,f}
 
 RG_PREFIX="rg --hidden --column --line-number --no-heading --follow --color=always --smart-case \
   --glob '!/.ssh' --glob '!/.android' --glob '!/.gnupg' --glob '!node_modules'"
+
 INITIAL_QUERY="${*:-}"
 
-: | fzf --ansi --disabled --query "$INITIAL_QUERY" \
+h_padding=$(printf '%*s' 7 ' ')
+h_gap=$(printf '%*s' 2 ' ')
+HEADER="${h_padding}\
+  [1;34m Prefix[1;90m:[0mAlt${h_gap}\
+  [1;34m Space[1;90m:[0mfzf/ripgrep${h_gap}\
+  [1;34m A[1;90m:[0mSelect All${h_gap}\
+  [1;34m D[1;90m:[0mDeselect All${h_gap}\
+  [1;34m /[1;90m:[0mToggle Preview${h_gap}\
+  [1;34m Q[1;90m:[0mQuickfix List"
+
+: | fzf --ansi --multi --disabled --query "$INITIAL_QUERY" \
 	--bind "start:reload:$RG_PREFIX {q} $SEARCH_DIR" \
 	--bind "change:reload:sleep 0.1; $RG_PREFIX {q} $SEARCH_DIR || true" \
-	--bind "ctrl-space:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] &&
+	--bind "alt-space:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] &&
   echo \"rebind(change)+change-prompt(ripgrep  )+disable-search+transform-query:echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" ||
   echo \"unbind(change)+change-prompt(fzf  )+enable-search+transform-query:echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"" \
+	--bind 'alt-a:select-all,alt-d:deselect-all,alt-/:toggle-preview' \
 	--margin=5%,10%,5%,10% --height=100% --reverse --color=16 --info=inline-right \
 	--scrollbar=▐ --keep-right --border=none --ellipsis= \
 	--prompt 'ripgrep  ' \
 	--delimiter : \
-	--header 'CTRL-Space: Switch between ripgrep/fzf' --header-first \
+	--header "$HEADER" --header-first \
 	--preview 'bat --style=header,numbers --color=always {1} --highlight-line {2}' \
 	--preview-window 'bottom,60%,border-top,+{2}+3/3,~1' \
-	--bind 'enter:become(nvim {1} +{2})'
+	--bind "alt-q:execute:nvim +cw -q {+f}" \
+	--bind "enter:execute:nvim {1} +{2}"
 
 dwmc setlayoutex 0
-
-# --color "hl:-1:underline,hl+:-1:underline:reverse" \
