@@ -30,6 +30,8 @@ dwm.tagsnormfgcolor:      #a6adc8
 dwm.tagsnormbgcolor:      #14161B
 dwm.tagsselfgcolor:       #a6adc8
 dwm.tagsselbgcolor:       #313244
+dwm.normfloatcolor:       #262626
+dwm.selfloatcolor:        #585b70
 
 dwm.titlenormfgcolor:     #a6adc8
 dwm.titlenormbgcolor:     #14161B
