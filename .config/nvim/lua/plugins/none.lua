@@ -13,7 +13,7 @@ return {
         sources = {
           -- Linting
           lint.cppcheck, -- for c,cpp ( Install manually using pacman )
-          lint.proselint, -- for md
+          -- lint.proselint, -- for md
           lint.stylelint, -- for css
           lint.codespell, -- general code spellings
 

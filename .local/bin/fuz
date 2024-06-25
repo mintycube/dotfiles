@@ -3,7 +3,7 @@
 # Populated by fuz-cache script through xprofile at startup
 CACHE_DIR="/tmp/fuz_cache"
 
-h_padding=$(printf '%*s' 20 ' ')
+h_padding=$(printf '%*s' 14 ' ')
 h_gap=$(printf '%*s' 4 ' ')
 
 # Define the header using the escape sequences
@@ -12,7 +12,8 @@ HEADER="${h_padding}\
   [1;34m 1[1;90m:[0mAll/Folders/Git${h_gap}\
   [1;34m 2[1;90m:[0mDocuments${h_gap}\
   [1;34m 3[1;90m:[0mImages${h_gap}\
-  [1;34m 4[1;90m:[0mVideos"
+  [1;34m 4[1;90m:[0mVideos${h_gap}\
+  [1;34m f[1;90m:[0mlf"
 
 OPENER="fuz-opener"
 PREVIEWER="fuz-preview"
@@ -29,4 +30,5 @@ cat $CACHE_DIR/all | fzf --ansi --prompt "   All  " \
 	--height=100% --pointer=" " --ellipsis= --header-first --scheme=path --algo=v2 --color="16" \
 	--preview-window "bottom,60%,border-top" --border=none --margin=5%,10%,5%,10% --info=inline-right \
 	--preview "$PREVIEWER {}" \
-	--bind "enter:execute:$OPENER {}"
+	--bind "enter:execute:$OPENER {}" \
+	--bind "alt-f:execute:lf {}"

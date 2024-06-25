@@ -1,3 +1,7 @@
+-- colorscheme
+vim.cmd.colorscheme("default")
+-- vim.opt.background = "light"
+
 -- indentation
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2

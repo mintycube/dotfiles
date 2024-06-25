@@ -1,5 +1,6 @@
 # vim: filetype=zathurarc
 
+set database sqlite
 set notification-error-bg "#f7768e"
 set notification-error-fg "#a0a8cd"
 set notification-warning-bg "#e0af68"

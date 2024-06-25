@@ -115,6 +115,54 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   group = vim.api.nvim_create_augroup("CloseLast", { clear = true }),
 })
 
+vim.cmd([[
+  command -bar -nargs=? -complete=help HelpCurwin call HelpCurwin(<q-args>)
+
+  let g:did_open_help = v:false
+
+  function! HelpCurwin(subject) abort
+    let mods = 'silent noautocmd keepalt'
+    if !g:did_open_help
+      execute mods .. ' help'
+      execute mods .. ' helpclose'
+      let g:did_open_help = v:true
+    endif
+    if !empty(getcompletion(a:subject, 'help'))
+      execute mods .. ' edit ' .. &helpfile
+      set buftype=help
+    endif
+    return 'help ' .. a:subject
+  endfunction
+]])
+
+-- Function to check if the buffer is empty
+local function is_buffer_empty(buf)
+  local line_count = vim.api.nvim_buf_line_count(buf)
+  if line_count > 1 then
+    return false
+  end
+  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  return lines[1] == ''
+end
+
+-- Function to close all empty buffers if the current buffer is 'help'
+local function close_empty_buffers_if_help()
+  local current_buf = vim.api.nvim_get_current_buf()
+  if vim.bo.ft == 'help' then
+    local buffers = vim.api.nvim_list_bufs()
+    for _, buf in ipairs(buffers) do
+      if buf ~= current_buf and vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_is_loaded(buf) and is_buffer_empty(buf) then
+        vim.api.nvim_buf_delete(buf, { force = true })
+      end
+    end
+  end
+end
+
+vim.api.nvim_create_autocmd('BufWinEnter', {
+  callback = close_empty_buffers_if_help,
+  group = vim.api.nvim_create_augroup("help_in_fullscreen", { clear = true }),
+})
+
 -- [[ Autosave ]]
 -- vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "BufWinLeave", "InsertLeave" }, {
 -- 	callback = function()

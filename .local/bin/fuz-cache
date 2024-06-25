@@ -27,6 +27,8 @@ populate_cache &
 MONITOR_EXCLUDE_DIRS=(
 	"$HOME/.cache"
 	"$HOME/.mozilla"
+	"$HOME/.pki"
+	"$HOME/.terminfo"
 	"$HOME/.local/state"
 )
 
