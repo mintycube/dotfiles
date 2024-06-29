@@ -59,7 +59,8 @@ cmd on-cd &{{
 cmd fzf_search ${{
   selected=$(fzf-fd)
   if [ -n "$selected" ]; then
-    lf "$selected"
+    lf -remote "send $id set hidden"
+    lf -remote "send $id select $selected"
   fi
 }}
 
