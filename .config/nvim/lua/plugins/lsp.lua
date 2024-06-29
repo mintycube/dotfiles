@@ -132,6 +132,13 @@ return {
         severity_sort = true,
       })
 
+      -- vim.cmd("hi Keyword gui=italic,bold cterm=italic,bold")
+      vim.cmd("hi Comment gui=italic cterm=italic")
+      vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { link = "Comment" })
+      vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo", { link = "Comment" })
+      vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { link = "Comment" })
+      vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { link = "Comment" })
+
       require("mason-lspconfig").setup({
         ensure_installed = {
           "clangd",
@@ -144,6 +151,7 @@ return {
           "texlab",
           "jsonls",
           "eslint",
+          "vtsls",
         },
         handlers = {
           lsp_zero.default_setup,
@@ -190,6 +198,44 @@ return {
           -- 		},
           -- 	})
           -- end,
+          vtsls = function()
+            require("lspconfig").vtsls.setup({
+              filetypes = {
+                "javascript",
+                "javascriptreact",
+                "javascript.jsx",
+                "typescript",
+                "typescriptreact",
+                "typescript.tsx",
+              },
+              settings = {
+                complete_function_calls = true,
+                vtsls = {
+                  enableMoveToFileCodeAction = true,
+                  autoUseWorkspaceTsdk = true,
+                  experimental = {
+                    completion = {
+                      enableServerSideFuzzyMatch = true,
+                    },
+                  },
+                },
+                typescript = {
+                  updateImportsOnFileMove = { enabled = "always" },
+                  suggest = {
+                    completeFunctionCalls = true,
+                  },
+                  inlayHints = {
+                    enumMemberValues = { enabled = true },
+                    functionLikeReturnTypes = { enabled = true },
+                    parameterNames = { enabled = "literals" },
+                    parameterTypes = { enabled = true },
+                    propertyDeclarationTypes = { enabled = true },
+                    variableTypes = { enabled = false },
+                  },
+                },
+              },
+            })
+          end
         },
       })
     end,

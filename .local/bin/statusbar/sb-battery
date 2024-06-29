@@ -12,14 +12,7 @@ case $BLOCK_BUTTON in
  : battery very low!
 
 - Scroll to adjust brightness" ;;
-	3) notify-send "  Battery module" " : discharging
-󰅙 : not charging
- : stagnant charge
-󱐋 : charging
- : charged
- : battery very low!
-
-- Scroll to adjust brightness" ;;
+	3) dwmc view 7; wpctl set-mute @DEFAULT_AUDIO_SINK@ 1 ; pkill -RTMIN+10 "${STATUSBAR:-dwmblocks}" ; st bat ~/.bashrc ; st lf ;;
 	4) xbacklight -inc 15 ;;
 	5) xbacklight -dec 15 ;;
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
@@ -44,7 +37,7 @@ for battery in /sys/class/power_supply/BAT?*; do
       "Full") status="^C2^  ^d^" ;;
       "Discharging") status="^C5^  ^d^" ;;
       "Charging") status="^C3^󱐋 ^d^" ;;
-      "Not charging") status="^C1^ 󱈸 ^d^" ;;
+      "Not charging") status="^C1^  ^d^" ;;
       "Unknown") status="^C6^ ^d^" ;;
       *) exit 1 ;;
     esac

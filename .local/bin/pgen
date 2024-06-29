@@ -4,7 +4,7 @@
 [[ -z "$1" ]] && echo "Error: Project name not provided" >&2 && exit 1
 [[ ! $1 =~ ^[a-zA-Z0-9_-]+$ ]] && echo "Error: Invalid project name. Chars allowed: [a-zA-Z0-9_-]" >&2 && exit 1
 
-project_dir="$HOME/Projects/cpp20/$1"
+project_dir="$HOME/projects/cpp20/$1"
 
 [[ -d "$project_dir" ]] && cd "$project_dir" && nvim main.cpp && exit 1
 

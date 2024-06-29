@@ -26,7 +26,7 @@ vim.keymap.set("n", "<A-v>", ":vsplit<CR>", { silent = true })
 vim.keymap.set("n", "<A-h>", ":split<CR>", { silent = true })
 vim.keymap.set("n", "<C-s>", ":w<CR>")
 vim.keymap.set('n', "gl", ':lua vim.diagnostic.open_float()<cr>')
-vim.keymap.set("n", "<leader>cs", ":setlocal spell! spelllang=en_us<CR>", { desc = "Spellcheck", silent = true })
+vim.keymap.set("n", "<leader>cg", ":setlocal spell! spelllang=en_us<CR>", { desc = "Spellcheck", silent = true })
 
 vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { silent = true })
 vim.keymap.set("x", "K", ":m '<-2<cr>gv=gv")
