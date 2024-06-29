@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Command for notes scratchpad used in dwm
+fd --color=always \
+  --base-directory ~/notes \
+  -e md -e txt -e qalc \
+  | fzf \
+    --ansi  \
+    --prompt="Notes  " \
+    --margin="10%,5%" \
+    --no-info --height=100% --scrollbar="" \
+    --preview="glow ~/notes/{}" \
+    --preview-window="border-left" \
+    | xargs -r nvim

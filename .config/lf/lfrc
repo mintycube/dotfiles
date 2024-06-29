@@ -18,6 +18,15 @@ set cleaner ctpvclear
 &ctpv -s $id
 &ctpvquit $id
 
+cmd on-cd &{{
+  printf "\033]0; $PWD\007" > /dev/tty
+  export STARSHIP_SHELL=
+  fmt="$(starship prompt)"
+  lf -remote "send $id set promptfmt \"$fmt\""
+}}
+
+on-cd
+
 # cmds/functions
 cmd open ${{
   case $(file --mime-type "$(readlink -f $f)" -b) in
@@ -49,27 +58,12 @@ cmd open ${{
   esac
 }}
 
-cmd on-cd &{{
-  export STARSHIP_SHELL=
-  fmt="$(starship prompt)"
-  lf -remote "send $id set promptfmt \"$fmt\""
-}}
-
-
 cmd fzf_search ${{
   selected=$(fzf-fd)
   if [ -n "$selected" ]; then
     lf -remote "send $id set hidden"
     lf -remote "send $id select $selected"
   fi
-}}
-
-cmd fzf_grep ${{
-  fzf-grep "$PWD"
-}}
-
-cmd lazygit ${{
-  lazygit
 }}
 
 cmd live_server ${{
@@ -162,27 +156,74 @@ cmd git_branch ${{
     lf -remote "send $id updir"
     lf -remote "send $id cd \"$pwd_shell\""
 }}
+cmd git_root ${{
+  root="$(git rev-parse --show-toplevel 2>/dev/null)"
+  if [ -n "$root" ]; then
+      lf -remote "send $id cd $root"
+  else
+      printf "Not in a git repository"
+      read -r _
+      exit 1
+  fi
+}}
 map gb :git_branch
+map gr :git_root
 map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
 map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
 map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
 
 cmd sanitize ${{
 	set -f
-  # Only renames selected files.
 	sanitizefs ${fx}
-  # renames Recursively.
 	# sanitizefs ${PWD}
 }}
+
+cmd resize-for-wallpaper ${{
+  resolution=$(xrandr | grep '*' | awk '{print $1}' | head -n 1)
+  default_resolution="1366x768"
+  if [ -z "$resolution" ]; then
+    resolution=$default_resolution
+  fi
+  for input_image in $fx; do
+    filename=$(basename "$input_image")
+    extension="${filename##*.}"
+    filename="${filename%.*}"
+    output_image="${filename}-${resolution}.${extension}"
+    magick "$input_image" -resize "$resolution" "$output_image"
+  done
+}}
+
+cmd toggle_preview %{{
+  if [ "$lf_preview" = "true" ]; then
+      lf -remote "send $id :set preview false; set ratios 1:5"
+  else
+      lf -remote "send $id :set preview true; set ratios 1:2:3"
+  fi
+}}
+
+cmd change_preview %{{
+  if [ "$lf_previewer" = "ctpv" ]; then
+      lf -remote "send $id :set previewer exiftool; reload"
+  else
+      lf -remote "send $id :set previewer ctpv; reload"
+  fi
+}}
+
+cmd share $curl -F"file=@$fx" -Fexpires=24 https://0x0.st | xclip -selection c
+
+map zp toggle_preview
+map ze change_preview
 
 # Bindings
 map <esc> :quit
 map / :fzf_search
-map ? :fzf_grep
-map <c-l> live_server
+map ? $fzf-grep "$PWD"
+map sw $setsid -f live-server "$PWD" >/dev/null 2>&1
 map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bm-dirs | fzf)"
 map r sanitize
-map gh lazygit
+map so $organize
+map <c-b> resize-for-wallpaper
+map gh $lazygit
 map gg top
 map D delete
 map E extract

@@ -7,6 +7,7 @@
 [ -f "$XINITRC" ] && alias startx="startx \$XINITRC"
 
 alias svn="svn --config-dir \"$XDG_CONFIG_HOME\"/subversion"
+alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
 # sudo not required for some system commands
 for command in mount umount pacman updatedb su shutdown poweroff reboot; do

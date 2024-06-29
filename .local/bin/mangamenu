@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+manga_dir="$HOME/me/manga"
+
+fzf_cmd_base="fzf --no-info --border --height=100% --margin=10%,22% --preview-window=border-left"
+
+list_manga="fd -t d --base-directory $manga_dir -d 1 --format={/}"
+prompt_manga="'Manga  '"
+preview_manga="'fuz-preview $manga_dir/{}/cover.jpg'"
+fzf_cmd_manga="$fzf_cmd_base --prompt $prompt_manga --preview $preview_manga"
+
+selected_manga=$(eval "$list_manga" | eval "$fzf_cmd_manga")
+[[ -z "$selected_manga" ]] && exit 0
+
+list_chapters="fd --base-directory $manga_dir/$selected_manga -d 1 -e pdf"
+prompt_chapters="'Chapters  '"
+preview_chapters="'fuz-preview $manga_dir/$selected_manga/{}'"
+opener_chapters="'enter:execute:setsid -f firefox $manga_dir/$selected_manga/{} >/dev/null 2>&1'"
+fzf_cmd_chapters="$fzf_cmd_base --prompt $prompt_chapters --preview $preview_chapters"
+
+selected_chapter=$(eval "$list_chapters" | eval "$fzf_cmd_chapters" "--bind" "$opener_chapters")
+[[ -z "$selected_chapter" ]] && exit 0

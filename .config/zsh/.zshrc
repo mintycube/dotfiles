@@ -96,6 +96,8 @@ export QT_SCALE_FACTOR=1.1
 export MOZ_USE_XINPUT2="1" # Mozilla smooth scrolling/touchpads.
 export AWT_TOOLKIT="MToolkit wmname LG3D" # May have to install wmname
 export _JAVA_AWT_WM_NONREPARENTING=1 # Fix for Java applications in dwm
+export MAXIMA_USERDIR="$XDG_CONFIG_HOME"/maxima
+export ANDROID_USER_HOME="$XDG_DATA_HOME"/android
 
 [ ! -f ${XDG_CONFIG_HOME:-$HOME/.config}/shell/shortcutrc ] && setsid shortcuts >/dev/null 2>&1
 

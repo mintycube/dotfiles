@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+killall pipewire
+setsid -f pipewire
+sleep 3
+wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+pkill -RTMIN+8 "${STATUSBAR:-dwmblocks}"

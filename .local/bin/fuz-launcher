@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+dwmc setlayoutex 2
+
+st fuz
+
+dwmc setlayoutex 0

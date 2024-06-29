@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# Grand Unification of Manuals
+
+man_pages() {
+	apropos . |
+		grep -v -E '^.+ \(0\)' |
+		awk '{print $2 "	" $1}' |
+		sort |
+		fzf --bind='ctrl-t:toggle-preview' \
+			--height=100% \
+			--pointer=" " \
+			--ellipsis= \
+			--color="16" \
+			--border=none \
+			--margin=5%,5%,5%,5% \
+			--ansi \
+			--info=inline-right \
+			--reverse \
+			--tiebreak=begin \
+			--preview-window="70%,right,border-left" \
+			--preview="echo {1} | sed -E \"s/^\((.+)\)/\1/\" | xargs -I{S} man {S} {2} 2>/dev/null | col -bx | bat -l man -p --color always" |
+		sed -E 's/^\((.+)\)/\1/' |
+		xargs -r man
+}
+
+tldr_pages() {
+	selected=$(tldr --list |
+		fzf --bind='ctrl-t:toggle-preview' \
+			--preview "tldr {1} --color=always" \
+			--preview-window=right,70%,border-left \
+			--margin=5% \
+			--height=100% \
+			--info=inline-right)
+
+	if [ -n "$selected" ]; then
+		temp_file=$(mktemp /tmp/tldr.XXXXXX.md)
+		tldr "$selected" --raw --color=always  >"$temp_file"
+		nvim -R "$temp_file"
+		rm "$temp_file"
+	fi
+}
+
+# FIX:
+nvim_docs() {
+  nvim "+lua require('fzf-lua').helptags()"
+}
+
+# TODO: cht.sh
+
+main_menu() {
+	options=("  Man Pages" "  TLDR Pages" "  Nvim Docs")
+	choice=$(printf '%s\n' "${options[@]}" | fzf --height=100% --no-info --no-border --margin=30%,35% --prompt="")
+
+	case $choice in
+	"  Man Pages")
+		man_pages
+		;;
+	"  TLDR Pages")
+		tldr_pages
+		;;
+	"  Nvim Docs")
+		nvim_docs
+		;;
+	esac
+}
+
+main_menu
