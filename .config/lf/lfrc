@@ -8,16 +8,15 @@ set period 1
 set sortby ext
 set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
 set promptfmt "\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[0m"
-# set cleaner '~/.config/lf/cleaner'
-# set previewer '~/.config/lf/scope'
 set autoquit true
-# set cursorpreviewfmt "\033[7m"
 
+# Previewer
 set previewer ctpv
 set cleaner ctpvclear
 &ctpv -s $id
 &ctpvquit $id
 
+# cmds/functions
 cmd on-cd &{{
   printf "\033]0; $PWD\007" > /dev/tty
   export STARSHIP_SHELL=
@@ -27,7 +26,6 @@ cmd on-cd &{{
 
 on-cd
 
-# cmds/functions
 cmd open ${{
   case $(file --mime-type "$(readlink -f $f)" -b) in
     application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
@@ -70,15 +68,12 @@ cmd live_server ${{
   setsid -f live-server "$PWD"
 }}
 
-cmd ff $ff "$(echo $*)"
-
 cmd extract ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
 	printf "%s\n\t" "$fx"
-	printf "extract?[y/N]"
-	read ans
-	[ $ans = "y" ] && {
+	ans=$(echo -e "Cancel\nOk" | fzf --prompt="Extract?" --ansi --border=rounded --margin=0,35% --no-info --height=7)
+	[ $ans = "Ok" ] && {
 		case $fx in
 			*.tar.bz2)   tar xjf $fx     ;;
 			*.tar.gz)    tar xzf $fx     ;;
@@ -100,9 +95,8 @@ cmd delete ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
 	printf "%s\n\t" "$fx"
-	printf "delete?[y/N]"
-	read ans
-	[ $ans = "y" ] && rm -rf -- $fx
+  ans=$(echo -e "Cancel\nOk" | fzf --prompt="Delete?" --ansi --border=rounded --margin=0,35% --no-info --height=7)
+	[ $ans = "Ok" ] && trash-put $fx
 }}
 
 cmd moveto ${{
@@ -126,8 +120,6 @@ cmd copyto ${{
 	done &&
 	notify-send "📋 File(s) copied." "File(s) copies to $dest."
 }}
-
-cmd setbg "$1"
 
 cmd bulkrename ${{
     tmpfile_old="$(mktemp)"
@@ -156,6 +148,7 @@ cmd git_branch ${{
     lf -remote "send $id updir"
     lf -remote "send $id cd \"$pwd_shell\""
 }}
+
 cmd git_root ${{
   root="$(git rev-parse --show-toplevel 2>/dev/null)"
   if [ -n "$root" ]; then
@@ -166,11 +159,6 @@ cmd git_root ${{
       exit 1
   fi
 }}
-map gb :git_branch
-map gr :git_root
-map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
-map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
-map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
 
 cmd sanitize ${{
 	set -f
@@ -209,10 +197,9 @@ cmd change_preview %{{
   fi
 }}
 
+cmd ff $ff "$(echo $*)"
 cmd share $curl -F"file=@$fx" -Fexpires=24 https://0x0.st | xclip -selection c
-
-map zp toggle_preview
-map ze change_preview
+cmd setbg "$1"
 
 # Bindings
 map <esc> :quit
@@ -231,13 +218,12 @@ map C copyto
 map M moveto
 map <c-n> push :ff<space>
 map <c-r> reload
-map <c-s> set hidden!
+map <c-s> share
 map <enter> shell
 map x $$f
 map X !$f
 map o &mimeopen "$f"
 map O $mimeopen --ask "$f"
-
 map a :rename; cmd-end # at the very end
 map c push A<c-u> # new rename
 map I :rename; cmd-home # at the very beginning
@@ -245,18 +231,19 @@ map i :rename # before extension
 map A :rename; cmd-right # after extension
 map B bulkrename
 map b $setbg $f
-
 map <c-e> down
 map <c-y> up
 map V push :!nvim<space>
-
 map W $setsid -f $TERMINAL >/dev/null 2>&1
-
 map . set hidden!
 map U $printf "%s" "$fx" | xclip -selection clipboard
 map u $printf "%s" "$fx" | sed 's/.*\///' | xclip -selection clipboard
 map T $sxiv -t "$(pwd)" # opens thumbnail mode
 map <c-l> unselect
-
-# Source Bookmarks
-source "~/.config/lf/shortcutrc"
+map zp toggle_preview
+map ze change_preview
+map gb :git_branch
+map gr :git_root
+map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
+map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
+map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
