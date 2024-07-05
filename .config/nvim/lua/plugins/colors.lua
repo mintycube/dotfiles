@@ -105,50 +105,49 @@ return {  -- colorscheme
   --     hl(0, "DiagnosticUnderlineHint", { underline = true, sp = "#858694" })
   --   end,
   -- },
-  -- {
-  --   "folke/tokyonight.nvim",
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     require("tokyonight").setup({
-  --       style = "night",
-  --       styles = {
-  --         sidebars = "dark",
-  --         floats = "dark",
-  --       },
-  --       sidebars = { "qf", "help", "Outline" },
-  --       on_colors = function(colors)
-  --         colors.bg = "#16161E"
-  --         colors.bg_dark = "#0d0d12"
-  --       end,
-  --       on_highlights = function(hl, colors)
-  --         hl.DiagnosticVirtualTextError = {
-  --           fg = colors.comment
-  --         }
-  --         hl.DiagnosticVirtualTextHint = {
-  --           fg = colors.comment
-  --         }
-  --         hl.DiagnosticVirtualTextInfo = {
-  --           fg = colors.comment
-  --         }
-  --         hl.DiagnosticVirtualTextWarn = {
-  --           fg = colors.comment
-  --         }
-  --         hl.DiagnosticSignError = {
-  --           fg = colors.comment
-  --         }
-  --         hl.DiagnosticSignHint = {
-  --           fg = colors.comment
-  --         }
-  --         hl.DiagnosticSignInfo = {
-  --           fg = colors.comment
-  --         }
-  --         hl.DiagnosticSignWarn = {
-  --           fg = colors.comment
-  --         }
-  --       end,
-  --     })
-  --     -- vim.cmd.colorscheme("tokyonight")
-  --   end,
-  -- },
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("tokyonight").setup({
+        styles = {
+          sidebars = "dark",
+          floats = "dark",
+        },
+        sidebars = { "qf", "help", "Outline" },
+        -- on_colors = function(colors)
+        --   colors.bg = "#16161E"
+        --   colors.bg_dark = "#0d0d12"
+        -- end,
+        on_highlights = function(hl, colors)
+          hl.DiagnosticVirtualTextError = {
+            fg = colors.comment
+          }
+          hl.DiagnosticVirtualTextHint = {
+            fg = colors.comment
+          }
+          hl.DiagnosticVirtualTextInfo = {
+            fg = colors.comment
+          }
+          hl.DiagnosticVirtualTextWarn = {
+            fg = colors.comment
+          }
+          -- hl.DiagnosticSignError = {
+          --   fg = colors.comment
+          -- }
+          -- hl.DiagnosticSignHint = {
+          --   fg = colors.comment
+          -- }
+          -- hl.DiagnosticSignInfo = {
+          --   fg = colors.comment
+          -- }
+          -- hl.DiagnosticSignWarn = {
+          --   fg = colors.comment
+          -- }
+        end,
+      })
+      vim.cmd.colorscheme("tokyonight")
+    end,
+  },
 }

@@ -77,3 +77,8 @@ vim.g.neovide_padding_top = 5
 vim.g.neovide_padding_bottom = 0
 vim.g.neovide_padding_right = 10
 vim.g.neovide_padding_left = 10
+
+vim.opt.virtualedit = "block"
+vim.opt.smoothscroll = true
+vim.opt.pumblend = 10 -- Popup blend
+vim.opt.pumheight = 10 -- Maximum number of entries in a popup

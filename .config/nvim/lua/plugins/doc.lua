@@ -1,6 +1,38 @@
 return {
   -- markdown
   {
+    "OXY2DEV/markview.nvim",
+    ft = { "markdown" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
+    },
+    -- opts = {
+    --   headings = {
+    --     enable = true,
+    --     shift_width = 4,
+    --     heading_1 = {
+    --       style = "label",
+    --     },
+    --     heading_2 = {
+    --       style = "label",
+    --     },
+    --     heading_3 = {
+    --       style = "label",
+    --     },
+    --     heading_4 = {
+    --       style = "label",
+    --     },
+    --     heading_5 = {
+    --       style = "label",
+    --     },
+    --     heading_6 = {
+    --       style = "label",
+    --     }
+    --   }
+    -- }
+  },
+  {
     "ixru/nvim-markdown",
     ft = { "markdown" },
   },
@@ -20,7 +52,8 @@ return {
   --   event = "BufEnter *.qalc",
   -- },
   {
-    "Apeiros-46B/qalc.nvim",
+    "grueslayer/qalc.nvim",
+    branch = "scratch_buffer",
     event = "BufEnter *.qalc",
     cmd = { "QalcAttach", "QalcYank" },
     dependencies = {
@@ -31,7 +64,7 @@ return {
       { "<leader>cqy", "<cmd>QalcYank<CR>",   desc = "Yank Result" },
     },
     opts = {
-      cmd_args = {'t'},            -- table
+      cmd_args = { 't' },          -- table
       bufname = '',                -- string
       set_ft = 'qalculate',        -- string
       attach_extension = '*.qalc', -- string

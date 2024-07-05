@@ -1,7 +1,7 @@
 # Basic vars
 set shellopts '-eu'
 set ifs "\n"
-set scrolloff 8
+set scrolloff 3
 set icons
 set nohidden
 set period 1
@@ -72,8 +72,8 @@ cmd extract ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
 	printf "%s\n\t" "$fx"
-	ans=$(echo -e "Cancel\nOk" | fzf --prompt="Extract?" --ansi --border=rounded --margin=0,35% --no-info --height=7)
-	[ $ans = "Ok" ] && {
+	ans=$(echo -e "No\nYes" | fzf --prompt="Extract?" --ansi --border=rounded --margin=0,35% --no-info --height=7)
+	[ $ans = "Yes" ] && {
 		case $fx in
 			*.tar.bz2)   tar xjf $fx     ;;
 			*.tar.gz)    tar xzf $fx     ;;
@@ -95,8 +95,8 @@ cmd delete ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
 	printf "%s\n\t" "$fx"
-  ans=$(echo -e "Cancel\nOk" | fzf --prompt="Delete?" --ansi --border=rounded --margin=0,35% --no-info --height=7)
-	[ $ans = "Ok" ] && trash-put $fx
+  ans=$(echo -e "No\nYes" | fzf --prompt="Delete?" --ansi --border=rounded --margin=0,35% --no-info --height=7)
+	[ $ans = "Yes" ] && trash-put $fx
 }}
 
 cmd moveto ${{

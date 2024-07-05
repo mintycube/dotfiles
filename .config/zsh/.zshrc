@@ -53,7 +53,27 @@ export TERMINAL_PROG="st"
 export BROWSER="firefox"
 export MANPAGER="nvim +Man!"
 export XDG_SESSION_TYPE="x11"
-export FZF_DEFAULT_OPTS="--height=50% --reverse --prompt='  ' --pointer=' ' --ellipsis='' --color='16'"
+export FZF_DEFAULT_OPTS="
+  --height=50% \
+  --reverse \
+  --prompt='  ' \
+  --pointer=' ' \
+  --ellipsis='' \
+  --color=bg+:#2d3f76 \
+  --color=bg:#1e2030 \
+  --color=border:#589ed7 \
+  --color=fg:#c8d3f5 \
+  --color=gutter:#1e2030 \
+  --color=header:#ff966c \
+  --color=hl+:#65bcff \
+  --color=hl:#65bcff \
+  --color=info:#545c7e \
+  --color=marker:#ff007c \
+  --color=pointer:#ff007c \
+  --color=prompt:#65bcff \
+  --color=query:#c8d3f5:regular \
+  --color=spinner:#ff007c \
+  "
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
