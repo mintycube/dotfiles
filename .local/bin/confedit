@@ -26,8 +26,8 @@ configs="[1;34m$XDG_CONFIG_HOME/suckless/dmenu/[1;32mconfig.h
 
 fzf_command="fzf --prompt '   Configs  ' \
   --layout=reverse -m --height=100% --pointer=' ' \
-  --ellipsis= --scheme=path --algo=v2 --color='16' \
-	--preview-window='bottom,60%,border-top' --border=sharp \
+  --ellipsis= --scheme=path --algo=v2 \
+	--preview-window='bottom,60%,border-top' \
   --margin='5%,10%,5%,10%' --info=inline-right \
   --ansi --preview='fuz-preview {}' \
 	--bind 'enter:become(nvim {})'"

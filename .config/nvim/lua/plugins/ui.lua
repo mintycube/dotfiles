@@ -66,47 +66,12 @@ return {
     config = function()
       local function get_colors()
         local colorscheme = vim.g.colors_name
-        if colorscheme == "rose-pine" then
+        if colorscheme == "tokyonight-moon" then
+          local colors = require("tokyonight.colors").setup()
           return {
-            bg = "#232136",
-            fg = "#908caa",
-            active_buf = "#e0def4",
-          }
-        elseif colorscheme == "tokyonight-moon" then
-          return {
-            bg = '#222436',
-            fg = '#636DA6',
-            active_buf = "#C8D3F5",
-          }
-        elseif colorscheme == "tokyodark" then
-          return {
-            bg = '#11121D',
-            fg = '#4A5057',
-            active_buf = "#a0a8cd",
-          }
-        elseif colorscheme == "oxocarbon" then
-          return {
-            bg = '#161616',
-            fg = '#525252',
-            active_buf = "#dde1e6",
-          }
-        elseif colorscheme == "evergarden" then
-          return {
-            bg = '#1c2023',
-            fg = '#859289',
-            active_buf = "#D6CBB4",
-          }
-        elseif colorscheme == "nordic" then
-          return {
-            bg = '#242933',
-            fg = '#4C566A',
-            active_buf = "#C0C8D8",
-          }
-        elseif colorscheme == "catppuccin-mocha" then
-          return {
-            bg = '#1E1E2E',
-            fg = '#6C7086',
-            active_buf = "#CDD6F4",
+            bg = colors.bg,
+            fg = colors.comment,
+            active_buf = colors.fg,
           }
         elseif colorscheme == "default" then
           return {
@@ -371,7 +336,7 @@ return {
           ":lua require('fzf-lua').files({cmd=[[fd -t f -E '*.json' -E '*.pdf' -E '*.canvas']],cwd =[[~/notes]]})<CR>"),
         dashboard.button("c", "  Configuration", ":e $MYVIMRC <CR>"),
         dashboard.button("z", "󰒲  Lazy", ":Lazy<CR>"),
-        dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
+        dashboard.button("q", "  Quit", ":qa<CR>"),
       }
       dashboard.section.buttons.opts.spacing = 0
 

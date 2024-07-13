@@ -37,7 +37,7 @@ for battery in /sys/class/power_supply/BAT?*; do
       "Full") status="^C2^  ^d^" ;;
       "Discharging") status="^C5^  ^d^" ;;
       "Charging") status="^C3^󱐋 ^d^" ;;
-      "Not charging") status="^C1^  ^d^" ;;
+      "Not charging") status="^C1^ 󱈸 ^d^" ;;
       "Unknown") status="^C6^ ^d^" ;;
       *) exit 1 ;;
     esac

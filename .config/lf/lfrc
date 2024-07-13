@@ -6,7 +6,7 @@ set icons
 set nohidden
 set period 1
 set sortby ext
-set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml"
+set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml:*.srt"
 set promptfmt "\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[0m"
 set autoquit true
 
@@ -178,6 +178,25 @@ cmd resize-for-wallpaper ${{
     filename="${filename%.*}"
     output_image="${filename}-${resolution}.${extension}"
     magick "$input_image" -resize "$resolution" "$output_image"
+  done
+}}
+
+cmd extract-audio ${{
+  for video in $fx; do
+    # Check if the file is a video
+    mime_type=$(file --mime-type -b "$video")
+    if [[ $mime_type == video/* ]]; then
+      # Extract the filename without the extension
+      filename=$(basename -- "$video")
+      extension="${filename##*.}"
+      filename="${filename%.*}"
+
+      # Use ffmpeg to extract audio and save it as mp3
+      ffmpeg -i "$video" -q:a 0 -map a "${filename}.mp3"
+      echo "Audio extracted from $video and saved as ${filename}.mp3"
+    else
+      echo "$video is not a video file. Skipping."
+    fi
   done
 }}
 

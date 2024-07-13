@@ -1,12 +1,10 @@
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'no'
 zstyle ':z4h:bindkey' keyboard  'pc'
-zstyle ':z4h:' start-tmux 'no'
 # if [[ -z $DISPLAY && XDG_VTNR -eq 1 ]]; then
-  # zstyle ':z4h:' start-tmux 'no'
+zstyle ':z4h:' start-tmux 'no'
 # else
-  # zstyle ':z4h:' start-tmux command tmux -u new -A -D -t z4h
-  # zstyle ':z4h:' start-tmux 'no'
+  # zstyle ':z4h:' start-tmux command tmux -u new -A -D -t zsh
 # fi
 zstyle ':z4h:' propagate-cwd yes
 zstyle ':z4h:' prompt-at-bottom 'no'

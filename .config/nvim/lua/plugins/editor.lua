@@ -537,6 +537,7 @@ return {
         ["lua"] = "lua %",
         ["zsh"] = "zsh %",
         ["sh"] = "sh %",
+        ["qalculate"] = "qalc --color='1' --file %",
         -- ["java"] = "cd %:h && javac *.java && java %:t:r",
         -- ["asm"] = "nasm -f elf64 % -o %:r.o && ld %:r.o -o %:r && ./%:r && rm %:r.o",
         -- ["cpp"] = "g++ -g -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -Werror -std=c++20 -pedantic-errors % -o %:r && ./%:r",

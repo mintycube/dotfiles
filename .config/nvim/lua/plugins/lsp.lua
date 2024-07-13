@@ -105,6 +105,24 @@ return {
       },
       { "hrsh7th/cmp-nvim-lsp" },
       { "williamboman/mason-lspconfig.nvim" },
+      {
+        "SmiteshP/nvim-navbuddy",
+        dependencies = {
+          "SmiteshP/nvim-navic",
+          "MunifTanjim/nui.nvim"
+        },
+        keys = {
+          { "<leader>n",   function() require("nvim-navbuddy").open() end, desc = "Open Navbuddy" },
+        },
+        opts = {
+          lsp = {
+            auto_attach = true
+          },
+          window = {
+            border = "rounded",
+          },
+        }
+      }
     },
     config = function()
       local lsp_zero = require("lsp-zero")

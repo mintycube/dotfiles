@@ -2,6 +2,7 @@ return {
   -- markdown
   {
     "OXY2DEV/markview.nvim",
+    enabled = false,
     ft = { "markdown" },
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
@@ -47,43 +48,42 @@ return {
   },
 
   -- qalc
-  -- {
-  --   "iffse/qalculate.vim",
-  --   event = "BufEnter *.qalc",
-  -- },
   {
-    "grueslayer/qalc.nvim",
-    branch = "scratch_buffer",
+    "iffse/qalculate.vim",
     event = "BufEnter *.qalc",
-    cmd = { "QalcAttach", "QalcYank" },
-    dependencies = {
-      "iffse/qalculate.vim"
-    },
-    keys = {
-      { "<leader>cqa", "<cmd>QalcAttach<CR>", desc = "Attach Calculator" },
-      { "<leader>cqy", "<cmd>QalcYank<CR>",   desc = "Yank Result" },
-    },
-    opts = {
-      cmd_args = { 't' },          -- table
-      bufname = '',                -- string
-      set_ft = 'qalculate',        -- string
-      attach_extension = '*.qalc', -- string
-      sign = ' ==> ',              -- string
-      show_sign = true,            -- boolean
-      right_align = true,          -- boolean
-      highlights = {
-        sign   = '@comment',       -- sign before result
-        result = '@string',        -- result in virtual text
-      },
-      diagnostics = {              -- table
-        underline = false,
-        virtual_text = false,
-        signs = true,
-        update_in_insert = true,
-        severity_sort = true,
-      }
-    }
   },
+  -- {
+  --   "grueslayer/qalc.nvim",
+  --   branch = "scratch_buffer",
+  --   event = "BufEnter *.qalc",
+  --   cmd = { "QalcAttach", "QalcYank" },
+  --   dependencies = {
+  --     "iffse/qalculate.vim"
+  --   },
+  --   keys = {
+  --     { "<leader>cqa", "<cmd>QalcAttach<CR>", desc = "Attach Calculator" },
+  --     { "<leader>cqy", "<cmd>QalcYank<CR>",   desc = "Yank Result" },
+  --   },
+  --   opts = {
+  --     bufname = '',                -- string
+  --     set_ft = 'qalculate',        -- string
+  --     attach_extension = '*.qalc', -- string
+  --     sign = ' ==> ',              -- string
+  --     show_sign = true,            -- boolean
+  --     right_align = true,          -- boolean
+  --     highlights = {
+  --       sign   = '@comment',       -- sign before result
+  --       result = '@string',        -- result in virtual text
+  --     },
+  --     diagnostics = {              -- table
+  --       underline = false,
+  --       virtual_text = false,
+  --       signs = true,
+  --       update_in_insert = true,
+  --       severity_sort = true,
+  --     }
+  --   }
+  -- },
 
   -- vimtex + snippets
   {

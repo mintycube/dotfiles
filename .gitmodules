@@ -10,3 +10,6 @@
 [submodule ".config/suckless/st"]
 	path = .config/suckless/st
 	url = git@github.com:mintycube/st.git
+[submodule ".config/suckless/slock"]
+	path = .config/suckless/slock
+	url = git@github.com:mintycube/slock.git

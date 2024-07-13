@@ -111,6 +111,7 @@ return {  -- colorscheme
     priority = 1000,
     config = function()
       require("tokyonight").setup({
+      transparent = true, -- Enable this to disable setting the background color
         styles = {
           sidebars = "dark",
           floats = "dark",
@@ -148,6 +149,8 @@ return {  -- colorscheme
         end,
       })
       vim.cmd.colorscheme("tokyonight")
+      -- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+      -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
     end,
   },
 }
