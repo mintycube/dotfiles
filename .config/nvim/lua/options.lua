@@ -1,5 +1,5 @@
 -- colorscheme
-vim.cmd.colorscheme("default")
+-- vim.cmd.colorscheme("default")
 -- vim.opt.background = "light"
 
 -- indentation

@@ -62,7 +62,8 @@ return {
   -- statusline
   {
     "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+    lazy = false,
+    -- event = "VeryLazy",
     config = function()
       local function get_colors()
         local colorscheme = vim.g.colors_name
