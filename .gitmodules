@@ -13,3 +13,6 @@
 [submodule ".config/suckless/slock"]
 	path = .config/suckless/slock
 	url = git@github.com:mintycube/slock.git
+[submodule ".config/nvim"]
+	path = .config/nvim
+	url = git@github.com:mintycube/nvim-config.git
