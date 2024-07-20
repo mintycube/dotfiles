@@ -6,10 +6,10 @@ selection=$(fd --color=always                   \
   -e md -e txt -e qalc                          \
   | fzf                                         \
     --ansi                                      \
-    --prompt="Notes  "                         \
-    --margin="10%,5%"                           \
+    --prompt=" Notes  "                        \
+    --margin="10%,3%"                           \
     --no-info --height=100% --scrollbar=""      \
-    --preview="glow ~/notes/{}"                 \
-    --preview-window="border-left")
+    --preview="fuz-preview ~/notes/{}"          \
+    --preview-window="70%,border-left")
 
 [ -n "$selection" ] && nvim ~/notes/"$selection"

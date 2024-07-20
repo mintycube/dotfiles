@@ -9,7 +9,7 @@ Xcursor.size:   24
 
 st.font:       JetBrains Mono:size=10
 st.borderpx:   10
-st.alpha:      1.0
+st.alpha:      0.8
 st.tabspaces:  2
 st.cwscale:    1.0
 st.chscale:    1.0
