@@ -20,7 +20,7 @@ alias \
 	ce="confedit" \
 	cg="fzf-grep \$HOME/.config" \
 	fe="fzf-fd \$(pwd) | xargs -r nvim" \
-	fg="fzf-grep \$(pwd)" \
+	fgr="fzf-grep \$(pwd)" \
 	cp="cp -iv" \
 	mv="mv -iv" \
 	rm="rm -vI" \
