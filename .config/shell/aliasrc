@@ -46,5 +46,5 @@ alias \
 	yta="yt -x -f bestaudio/best" \
 	ffmpeg="ffmpeg -hide_banner" \
 	ref="shortcuts >/dev/null; source \${XDG_CONFIG_HOME:-\$HOME/.config}/shell/shortcutrc ; source \${XDG_CONFIG_HOME:-\$HOME/.config}/shell/zshnameddirrc"
-	# weath="curl wttr.in | head -n -1 | cat" \
+	# weath="curl wttr.in | head -n -1 | cat"
 	# weath2="curl v2.wttr.in | head -n -1 | cat"
