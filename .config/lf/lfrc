@@ -6,7 +6,7 @@ set icons
 set nohidden
 set period 1
 set sortby ext
-set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml:*.srt"
+set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml:*.srt:compile_flags.txt"
 set promptfmt "\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[0m"
 set autoquit true
 
@@ -23,8 +23,6 @@ cmd on-cd &{{
   fmt="$(starship prompt)"
   lf -remote "send $id set promptfmt \"$fmt\""
 }}
-
-on-cd
 
 cmd open ${{
   case $(file --mime-type "$(readlink -f $f)" -b) in
