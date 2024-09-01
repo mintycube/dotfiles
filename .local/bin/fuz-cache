@@ -6,7 +6,7 @@ eval "$(dircolors --sh)" # Setup correct colors
 CACHE_DIR="/tmp/fuz_cache"
 mkdir -p "$CACHE_DIR"
 
-FD_OPTIONS="--hidden --color=always"
+FD_OPTIONS="--hidden --color=always --follow"
 
 FD_EXCLUDE_ARGS="-E .cache -E .github -E github -E .local/state -E .ssh -E .android -E GIMP -E Thunar -E .config/blender -E .config/mpv/script_modules -E .config/mpv/scripts -E .config/tmux/plugins -E fontforge -E fzf-tab-completion -E .gnupg -E libreoffice -E node_modules -E obsidian -E .obsidian -E qBittorrent -E subversion -E .terminfo -E terminfo -E .local/share/nvim/mason/packages -E *.pyc -E .maxima -E .config/vivaldi -E .mozilla -E *.o"
 

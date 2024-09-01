@@ -159,8 +159,6 @@ function lfcd () {
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
 compdef _directories md
 
-eval "$(navi widget zsh)"
-
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 unsetopt PROMPT_SP
 setopt glob_dots

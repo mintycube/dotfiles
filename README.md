@@ -5,7 +5,7 @@
 These dotfiles are meant to be used after installing [LARBS](https=//github.com/LukeSmithxyz/LARBS).
 Here are some details about this setup
 
-- **OS** = EndeavourOS
+- **OS** = Arch Linux
 - **Login Manager** = None
 - **WM** = [dwm](https://github.com/mintycube/dwm)
 - **Bar** = [dwmblocks](https://github.com/mintycube/dwmblocks)
