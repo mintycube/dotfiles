@@ -11,6 +11,6 @@ fi
 st                                     \
   -n "dictionary"                      \
   -g 74x20+800                         \
-  -f "JetBrainsMono Nerd Font:size=12" \
-  sh -c "dict -d wn \"$word\" | nvim -R -";
+  -f "JetBrainsMono Nerd Font:size=10" \
+  sh -c "dict -d wn \"$word\" | nvim --clean +'source ~/.local/share/script-data/init.lua' -R -";
   # sh -c "dict -d wn \"$word\" | colorit | sed -e '1,3d' -e 's/\[34;47m/[34m/g' | less -R";

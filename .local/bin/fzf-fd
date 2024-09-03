@@ -29,22 +29,20 @@ fzf_command="fzf \
   --scrollbar='▐' --info=inline-right \
   --margin=5%,10%,5%,10% --border=none \
   --highlight-line \
-  --color=bg+:#2d3f76 \
-  --color=bg:#1e2030 \
-  --color=border:#589ed7 \
-  --color=fg:#c8d3f5 \
-  --color=gutter:#1e2030 \
-  --color=header:#ff966c \
-  --color=hl+:#65bcff \
-  --color=hl:#65bcff \
-  --color=info:#545c7e \
-  --color=marker:#ff007c \
-  --color=pointer:#ff007c \
-  --color=prompt:#65bcff \
-  --color=query:#c8d3f5:regular \
-  --color=scrollbar:#589ed7 \
-  --color=separator:#ff966c \
-  --color=spinner:#ff007c \
+  --color=bg+:#b7c1e3 \
+  --color=bg:#d0d5e3 \
+  --color=border:#4094a3 \
+  --color=fg:#3760bf \
+  --color=gutter:#d0d5e3 \
+  --color=header:#b15c00 \
+  --color=hl+:#188092 \
+  --color=hl:#188092 \
+  --color=info:#8990b3 \
+  --color=marker:#d20065 \
+  --color=pointer:#d20065 \
+  --color=prompt:#188092 \
+  --color=query:#3760bf:regular \
+  --color=spinner:#d20065 \
   --prompt='  ' --pointer=' ' --ellipsis='' "
 
 eval "$fd_command" | eval "$fzf_command"

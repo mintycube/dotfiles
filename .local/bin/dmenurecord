@@ -24,7 +24,6 @@ killrecording() {
 	pkill -RTMIN+9 "${STATUSBAR:-dwmblocks}"
 }
 
-		# -f alsa -thread_queue_size 1024 -i default \
 screencast() {
 	ffmpeg -y \
 		-f x11grab \
@@ -35,6 +34,7 @@ screencast() {
 		-use_wallclock_as_timestamps 1 \
 		-c:v h264 \
 		-crf 0 -preset ultrafast -c:a aac \
+		-f alsa -thread_queue_size 1024 -i default \
 		"$HOME/screencast-$(date '+%y%m%d-%H%M-%S').mp4" &
 	echo $! >/tmp/recordingpid
 	updateicon "^C4^  ^d^"

@@ -1,0 +1,80 @@
+! Light Tones
+#define yellow       #AD8301
+#define orange       #BC5215
+#define red          #AF3029
+#define magenta      #A02F6F
+#define violet       #5E409D
+#define blue         #205EA6
+#define cyan         #24837B
+#define green        #66800B
+#define white        #eeeeee
+#define black        #100F0F
+#define bryellow     #D0A215
+#define brorange     #DA702C
+#define brred        #D14D41
+#define brmagenta    #CE5D97
+#define brviolet     #8B7EC8
+#define brblue       #4385BE
+#define brcyan       #3AA99F
+#define brgreen      #879A39
+#define brwhite      #F2F0E5
+#define brblack      #1C1B1A
+*background:              white
+*foreground:              black
+*fading:                  40
+*fadeColor:               white
+*cursorColor:             black
+*pointerColorBackground:  brwhite
+*pointerColorForeground:  white
+*color0:     brblack
+*color8:     black
+*color1:     brred
+*color9:     red
+*color2:     brgreen
+*color10:    green
+*color3:     bryellow
+*color11:    yellow
+*color4:     brblue
+*color12:    blue
+*color5:     brmagenta
+*color13:    magenta
+*color6:     brcyan
+*color14:    cyan
+*color7:     brwhite
+*color15:    white
+
+dwm.normbordercolor:      #ffffff
+dwm.normbgcolor:          #eeeeee
+dwm.normfgcolor:          #000000
+dwm.selbordercolor:       #a6adc8
+dwm.selbgcolor:           #2d7d9a
+dwm.selfgcolor:           #a6adc8
+dwm.tagsnormfgcolor:      #000000
+dwm.tagsnormbgcolor:      #eeeeee
+dwm.tagsselfgcolor:       #ffffff
+dwm.tagsselbgcolor:       #2d7d9a
+dwm.normfloatcolor:       #313244
+dwm.selfloatcolor:        #585b70
+
+dwm.titlenormfgcolor:     #000000
+dwm.titlenormbgcolor:     #ffffff
+dwm.titlenormbordercolor: #eeeeee
+dwm.titlenormfloatcolor:  #c099ff
+dwm.titleselfgcolor:      #ffffff
+dwm.titleselbgcolor:      #2d7d9a
+dwm.titleselbordercolor:  #2d7d9a
+dwm.titleselfloatcolor:   #313244
+dwm.hidnormfgcolor:       #ffffff
+dwm.hidselfgcolor:        #ffffff
+dwm.hidnormbgcolor:       #a6adc8
+dwm.hidselbgcolor:        #a6adc8
+
+dmenu.foreground:         #000000
+dmenu.background:         #eeeeee
+dmenu.selforeground:      #ffffff
+dmenu.selbackground:      #2d7d9a
+dmenu.bordercolor:        #2d7d9a
+
+slock.locked:             #45475a
+slock.input:              #a6adc8
+slock.failed:             #89b4fa

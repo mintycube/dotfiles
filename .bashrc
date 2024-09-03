@@ -32,5 +32,5 @@ shopt -s checkwinsize         # checks term size when bash regains control
 
 PS1='\[\e[34;3m\]\w \[\e[0;32m\] \[\e[0m\]' # prompt with dir in italic
 
-source "$HOME/.local/src/fzf-tab-completion/bash/fzf-bash-completion.sh" # https://github.com/lincheney/fzf-tab-completion.git
-bind -x '"\t": fzf_bash_completion'
+# source "$HOME/.local/src/fzf-tab-completion/bash/fzf-bash-completion.sh" # https://github.com/lincheney/fzf-tab-completion.git
+# bind -x '"\t": fzf_bash_completion'

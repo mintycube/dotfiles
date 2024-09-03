@@ -1,7 +1,7 @@
 :root {
-	--tab-active-bg-color: #464646;		/* background color of an active tab */
-	--tab-inactive-bg-color: #161616;		/* background color of an inactive tab */
-	--tab-active-fg-fallback-color: #dde1e6;	/* color of text in an active tab without a container */
+	--tab-active-bg-color: #ffffff;		/* background color of an active tab */
+	--tab-inactive-bg-color: #cccccc;		/* background color of an inactive tab */
+	--tab-active-fg-fallback-color: #565656;	/* color of text in an active tab without a container */
 	--tab-inactive-fg-fallback-color: #565656;	/* color of text in an inactive tab without a container */
 
 	/* try increasing if you encounter problems */
@@ -19,7 +19,7 @@
 /* --- GENERAL DEBLOAT ---------------------------------- */
 
 /* Bottom left page loading status or url preview */
-#statuspanel { display: none !important; }
+/* #statuspanel { display: none !important; } */
 
 /* Hide dropdown that appears when you type in search bar */
 .autocomplete-history-popup, panel[type=autocomplete-richlistbox], panel[type=autocomplete] {
@@ -50,7 +50,7 @@ toolbar .toolbarbutton-1 { padding: 0 0 !important; }
 
 #nav-bar, #navigator-toolbox {
 	border-width: 0 !important;
-	--toolbar-field-focus-border-color: #42414d;
+	--toolbar-field-focus-border-color: #bbbbbb;
 }
 
 #urlbar-container {

@@ -6,7 +6,7 @@ setbg &         # set the background with the `setbg` script
 xrdb "${XDG_CONFIG_HOME:-$HOME/.config}"/x11/xresources &
 xrdbpid=$! # Uncomment to use Xresources colors/settings on startup
 
-autostart="fuz-cache xcompmgr pipewire unclutter remapd clipmenud dunst"
+autostart="fuz-cache picom dictd pipewire unclutter remapd clipmenud dunst"
 
 for program in $autostart; do
 	pidof -sx "$program" || "$program" &
