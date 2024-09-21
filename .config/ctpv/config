@@ -1,5 +1,7 @@
 set forcekittyanim
 
+priority cat
+
 preview audio audio/* {{
   /usr/bin/vendor_perl/exiftool -- "$f"
 }}
