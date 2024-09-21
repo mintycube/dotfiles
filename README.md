@@ -8,7 +8,7 @@ Here are some details about this setup
 - **Login Manager** = None
 - **WM** = [dwm](https://github.com/mintycube/dwm)
 - **Bar** = [dwmblocks](https://github.com/mintycube/dwmblocks)
-- **Compositor** = [picom-pijulius](https://github.com/pijulius/picom)
+- **Compositor** = [picom-pijulius](https://github.com/pijulius/picom/tree/implement-window-animations)
 - **LockScreen** = [slock](https://github.com/mintycube/slock)
 - **Resolution** = 1366x768
 - **Cursor-theme** = [Phinger Cursors Light](https://github.com/phisch/phinger-cursors)

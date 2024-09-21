@@ -2,12 +2,9 @@
 
 ! Choices: tokyonight, rose-pine, onedark, monochrome
 ! evergarden, nord, oxocarbon, catpuccin, tokyodark
-#include "colors/onenord-light"
+#include "colors/nvim-light"
 
-Xcursor.theme:  Bibata-Modern-Ice
-Xcursor.size:   24
-
-st.font:       JetBrains Mono:size=12
+st.font:       JetBrains Mono:size=11
 st.borderpx:   10
 st.alpha:      1
 st.tabspaces:  2
