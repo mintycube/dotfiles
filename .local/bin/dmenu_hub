@@ -2,7 +2,7 @@
 import subprocess
 
 dmenu_command = "dmenu -i -l 16 -W 200 -Y 15 -X 1151 -bw 2"
-apps = "dmenu_run -bw 2 -i -W 390 -X 961 -Y 15 -l 16 -g 3"
+apps = "dmenu_run -bw 2 -i -W 390 -X 8 -Y 420 -l 15 -g 3"
 camera = (
     "mpv --untimed --no-cache --no-osc "
     "--no-input-default-bindings --profile=low-latency "
@@ -12,21 +12,21 @@ camera = (
 bar_colors_toggle = '[ -e "$HOME/.cache/bar_color" ] && { rm "$HOME/.cache/bar_color"; renew-dwm; } || { touch "$HOME/.cache/bar_color"; renew-dwm; }'
 
 options = {
-    f"󰀻  Apps": apps,
-    f"󰉦  Bar colors": bar_colors_toggle,
-    f"  Fix audio": "fix-audio",
-    f"  Edit Configs": "st -e confedit",
-    f"  Web Search": "dmenu_web",
-    f"󰌹  Handler": "dmenuhandler",
-    f"󰌌  Keybinds": "keybinds",
-    f"󰋊  Mount": "mounter",
-    f"󱁌  Unmount": "unmounter",
-    f"  Kill": "processkill",
-    f"  Pick Color": "xcolor-pick",
-    f"  Screenshot": "maimpick",
-    f"  Record": "dmenurecord",
-    f"󰄄  Camera": camera,
-    f"  NerdFont Icons": "dmenunerdsymbols",
+    "󰀻  Apps": apps,
+    "󰉦  Bar colors": bar_colors_toggle,
+    "  Fix audio": "fix-audio",
+    "  Edit Configs": "st -e confedit",
+    "  Web Search": "dmenu_web",
+    "󰌹  Handler": "dmenuhandler",
+    "󰌌  Keybinds": "keybinds",
+    "󰋊  Mount": "mounter",
+    "󱁌  Unmount": "unmounter",
+    "  Kill": "processkill",
+    "  Pick Color": "xcolor-pick",
+    "  Screenshot": "maimpick",
+    "  Record": "dmenurecord",
+    "󰄄  Camera": camera,
+    "  NerdFont Icons": "dmenunerdsymbols",
 }
 option_list = list(options.keys())
 try:
