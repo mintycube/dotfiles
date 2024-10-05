@@ -6,7 +6,7 @@ set icons
 set nohidden
 set period 1
 set sortby ext
-set hiddenfiles ".*:*.aux:*.log:*.bbl:*.bcf:*.blg:*.run.xml:*.srt:compile_flags.txt"
+set hiddenfiles ".*:*.aux:*template.out:*template.toc:*.fls:*.fdb_latexmk:*.synctex.gz:*.log:*.bbl:*.bcf:*.blg:*.run.xml:*.srt:compile_flags.txt"
 set promptfmt "\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[0m"
 set autoquit true
 
