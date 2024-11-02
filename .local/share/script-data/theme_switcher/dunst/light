@@ -5,14 +5,15 @@ width = 200
 height = 500
 origin = top-right
 offset = 15x15
-corner_radius = 10
+corner_radius = 0
 scale = 0
 notification_limit = 0
 progress_bar = true
 progress_bar_height = 80
 progress_bar_frame_width = 1
-progress_bar_min_width = 300
-progress_bar_max_width = 300
+progress_bar_min_width = 100
+progress_bar_max_width = 200
+icon_position=off
 indicate_hidden = yes
 transparency = 0
 separator_height = 1
@@ -51,19 +52,28 @@ title = Dunst
 class = Dunst
 
 [urgency_low]
+icon =
+default_icon =
+icon_position=off
 timeout = 2
-background = "#1e1e2e"
-foreground = "#a6adc8"
-frame_color = "#cba6f7"
+background = "#ffffff"
+foreground = "#000000"
+frame_color = "#0031a9"
 
 [urgency_normal]
+icon =
+default_icon =
+icon_position=off
 timeout = 5
-background = "#1e1e2e"
-foreground = "#a6adc8"
-frame_color = "#cba6f7"
+background = "#ffffff"
+foreground = "#000000"
+frame_color = "#0031a9"
 
 [urgency_critical]
+icon =
+default_icon =
+icon_position=off
 timeout = 0
-background = "#1e1e2e"
-foreground = "#a6adc8"
-frame_color = "#f38bab"
+background = "#ffffff"
+foreground = "#000000"
+frame_color = "#a60000"

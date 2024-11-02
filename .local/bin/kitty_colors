@@ -14,6 +14,6 @@ cat <<EOF >~/.config/kitty/colors.conf
 EOF
 
 for i in "${!xresources_colors[@]}"; do
-	color_value=$(xrdb -query | grep "${xresources_colors[$i]}:" | awk '{print $NF}')
-	echo "${kitty_colors[$i]}      $color_value" >>~/.config/kitty/colors.conf
+  color_value=$(xrdb -query | grep "${xresources_colors[$i]}:" | awk '{print $NF}')
+  echo "${kitty_colors[$i]}      $color_value" >>~/.config/kitty/colors.conf
 done

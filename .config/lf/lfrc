@@ -6,7 +6,7 @@ set icons
 set nohidden
 set period 1
 set sortby ext
-set hiddenfiles ".*:*.aux:*template.out:*template.toc:*.fls:*.fdb_latexmk:*.synctex.gz:*.log:*.bbl:*.bcf:*.blg:*.run.xml:*.srt:compile_flags.txt"
+set hiddenfiles ".*:*.aux:*template.out:*template.toc:*.fls:*.fdb_latexmk:*.synctex.gz:*.out:*.xdv:*.log:*.bbl:*.bcf:*.blg:*.run.xml:*.srt:compile_flags.txt"
 set promptfmt "\033[32m  \033[35;1m%d\033[0m\033[1m%f\033[0m"
 set autoquit true
 
@@ -158,6 +158,10 @@ cmd git_root ${{
   fi
 }}
 
+cmd dragon ${{
+	setsid -f dragon-drop -x -a ${fx}
+}}
+
 cmd sanitize ${{
 	set -f
 	sanitizefs ${fx}
@@ -235,6 +239,7 @@ map C copyto
 map M moveto
 map <c-n> push :ff<space>
 map <c-r> sanitize
+map <a-d> dragon
 map <c-s> share
 map <enter> shell
 map x $$f

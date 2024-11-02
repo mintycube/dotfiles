@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+LIGHT_MODE="$HOME/.cache/light_mode"
+DATA_DIR="$HOME/.local/share/script-data/theme_switcher"
+XRESOURCES_FILE="$HOME/.config/x11/xresources"
+NVIM_COLORS_FILE="$HOME/.config/nvim/lua/plugins/colors.lua"
+GTK2_FILE="$HOME/.config/gtk-2.0/gtkrc-2.0"
+GTK3_FILE="$HOME/.config/gtk-3.0/settings.ini"
+
+if [ -f "$LIGHT_MODE" ]; then
+  rm "$LIGHT_MODE"
+else
+  touch "$LIGHT_MODE"
+fi
+
+if [ -f "$LIGHT_MODE" ]; then
+  setbg -s "$DATA_DIR/walls/light"
+  sed -i 's/modus_vivendi/modus_operandi/' "$NVIM_COLORS_FILE" "$XRESOURCES_FILE"
+  sed -i 's/Qogir-Dark/Qogir-Light/g' "$GTK2_FILE" "$GTK3_FILE"
+  cat "$DATA_DIR"/dunst/light >"$HOME"/.config/dunst/dunstrc
+  find "$HOME/.mozilla/firefox/" -type f -name "userChrome.css" | while read -r css_file; do
+    cp "$DATA_DIR/firefox/light.css" "$css_file"
+  done
+else
+  setbg -s "$DATA_DIR/walls/dark"
+  sed -i 's/modus_operandi/modus_vivendi/' "$NVIM_COLORS_FILE" "$XRESOURCES_FILE"
+  sed -i 's/Qogir-Light/Qogir-Dark/g' "$GTK2_FILE" "$GTK3_FILE"
+  cat "$DATA_DIR"/dunst/dark >"$HOME"/.config/dunst/dunstrc
+  find "$HOME/.mozilla/firefox/" -type f -name "userChrome.css" | while read -r css_file; do
+    cp "$DATA_DIR/firefox/dark.css" "$css_file"
+  done
+fi
+
+killall dunst
+setsid -f dunst >/dev/null 2>&1
+xrdb "$XRESOURCES_FILE"
+killall -USR1 st
+renew-dwm

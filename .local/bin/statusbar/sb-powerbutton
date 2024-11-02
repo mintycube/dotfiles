@@ -3,9 +3,9 @@
 # The clickable help menu. Middle click to restart wm.
 
 case $BLOCK_BUTTON in
-	1) sysact ;;
-	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
-esac;
+1) sysact ;;
+6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
 if [ ! -e ~/.cache/bar_color ]; then
   echo " "
 else

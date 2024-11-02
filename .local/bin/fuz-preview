@@ -10,8 +10,8 @@
 # - ImageMagick (magick)
 
 if [[ $# -ne 1 ]]; then
-	>&2 echo "usage: $0 FILENAME"
-	exit 1
+  >&2 echo "usage: $0 FILENAME"
+  exit 1
 fi
 
 file=${1/#\~\//$HOME/}
@@ -22,9 +22,9 @@ temp_files=()
 
 # Cleanup function to remove temp files
 cleanup() {
-	for temp_file in "${temp_files[@]}"; do
-		rm -f "$temp_file"
-	done
+  for temp_file in "${temp_files[@]}"; do
+    rm -f "$temp_file"
+  done
 }
 
 # Register the cleanup function to run on script exit
@@ -32,15 +32,15 @@ trap cleanup EXIT
 
 # Function to preview text files
 preview_text() {
-	bat --style="${BAT_STYLE:-numbers,header}" --color=always --pager=never --line-range :19 -- "$file"
+  bat --style="${BAT_STYLE:-numbers,header}" --color=always --pager=never --line-range :19 -- "$file"
 }
 
 preview_json() {
-	jq -C . "$file"
+  jq -C . "$file"
 }
 
 preview_diff() {
-	delta < "$file"
+  delta <"$file"
 }
 
 preview_markdown() {
@@ -48,59 +48,59 @@ preview_markdown() {
 }
 
 preview_image() {
-	local image_file="$1"
-	dim=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}
-	if [[ $dim = x ]]; then
-		dim=$(stty size </dev/tty | awk '{print $2 "x" $1}')
-	elif ! [[ $KITTY_WINDOW_ID ]] && ((FZF_PREVIEW_TOP + FZF_PREVIEW_LINES == $(stty size </dev/tty | awk '{print $1}'))); then
-		dim=${FZF_PREVIEW_COLUMNS}x$((FZF_PREVIEW_LINES - 1))
-	fi
+  local image_file="$1"
+  dim=${FZF_PREVIEW_COLUMNS}x${FZF_PREVIEW_LINES}
+  if [[ $dim = x ]]; then
+    dim=$(stty size </dev/tty | awk '{print $2 "x" $1}')
+  elif ! [[ $KITTY_WINDOW_ID ]] && ((FZF_PREVIEW_TOP + FZF_PREVIEW_LINES == $(stty size </dev/tty | awk '{print $1}'))); then
+    dim=${FZF_PREVIEW_COLUMNS}x$((FZF_PREVIEW_LINES - 1))
+  fi
 
-	if [[ $KITTY_WINDOW_ID ]]; then
-		kitty icat --clear --transfer-mode=memory --unicode-placeholder --stdin=no --place="$dim@0x0" "$image_file" | sed '$d' | sed $'$s/$/\e[m/'
-	elif command -v chafa >/dev/null; then
-		chafa -f sixel -O 9 -w 1 -s "$dim" "$image_file"
-		echo
-	elif command -v imgcat >/dev/null; then
-		imgcat -W "${dim%%x*}" -H "${dim##*x}" "$image_file"
-	else
-		file "$image_file"
-	fi
+  if [[ $KITTY_WINDOW_ID ]]; then
+    kitty icat --clear --transfer-mode=memory --unicode-placeholder --stdin=no --place="$dim@0x0" "$image_file" | sed '$d' | sed $'$s/$/\e[m/'
+  elif command -v chafa >/dev/null; then
+    chafa -f sixel -O 9 -w 1 -s "$dim" "$image_file"
+    echo
+  elif command -v imgcat >/dev/null; then
+    imgcat -W "${dim%%x*}" -H "${dim##*x}" "$image_file"
+  else
+    file "$image_file"
+  fi
 }
 
 preview_pdf() {
-	temp_image=$(mktemp /tmp/preview.XXXXXX)
-	temp_files+=("$temp_image" "${temp_image}.jpg")
-	if pdftoppm -jpeg -f 1 -singlefile "$file" "$temp_image" >/dev/null 2>&1; then
-		temp_image="${temp_image}.jpg"
-		preview_image "$temp_image"
-	else
-		file "$file"
-	fi
+  temp_image=$(mktemp /tmp/preview.XXXXXX)
+  temp_files+=("$temp_image" "${temp_image}.jpg")
+  if pdftoppm -jpeg -f 1 -singlefile "$file" "$temp_image" >/dev/null 2>&1; then
+    temp_image="${temp_image}.jpg"
+    preview_image "$temp_image"
+  else
+    file "$file"
+  fi
 }
 
 preview_audio() {
-	if command -v exiftool >/dev/null; then
-		exiftool -FileName -Title -Artist -Album -Genre -ChannelMode -AudioBitrate -FileSize -MIMEType -SampleRate -Duration "$file"
-	else
-		echo "exiftool not found."
-		file "$file"
-	fi
+  if command -v exiftool >/dev/null; then
+    exiftool -FileName -Title -Artist -Album -Genre -ChannelMode -AudioBitrate -FileSize -MIMEType -SampleRate -Duration "$file"
+  else
+    echo "exiftool not found."
+    file "$file"
+  fi
 }
 
 preview_video() {
-	temp_image=$(mktemp /tmp/preview.XXXXXX.jpg)
-	temp_files+=("$temp_image")
-	if ffmpegthumbnailer -i "$file" -o "$temp_image" -s 0 >/dev/null 2>&1; then
-		magick "$temp_image" -resize 25% "$temp_image"
-		preview_image "$temp_image"
-	else
-		file "$file"
-	fi
+  temp_image=$(mktemp /tmp/preview.XXXXXX.jpg)
+  temp_files+=("$temp_image")
+  if ffmpegthumbnailer -i "$file" -o "$temp_image" -s 0 >/dev/null 2>&1; then
+    magick "$temp_image" -resize 25% "$temp_image"
+    preview_image "$temp_image"
+  else
+    file "$file"
+  fi
 }
 
 preview_archive() {
-	atool --list -- "$file"
+  atool --list -- "$file"
 }
 
 preview_dir() {
@@ -110,43 +110,43 @@ preview_dir() {
 
 case "$type" in
 inode/directory)
-	preview_dir "$file"
-	;;
+  preview_dir "$file"
+  ;;
 text/x-patch)
-	preview_diff "$file"
-	;;
+  preview_diff "$file"
+  ;;
 text/x-diff)
-	preview_diff "$file"
-	;;
+  preview_diff "$file"
+  ;;
 text/*)
-	case "$file" in
-		*.md|*.markdown)
-			preview_markdown "$file"
-			;;
-		*)
-			preview_text "$file"
-			;;
-	esac
-	;;
+  case "$file" in
+  *.md | *.markdown)
+    preview_markdown "$file"
+    ;;
+  *)
+    preview_text "$file"
+    ;;
+  esac
+  ;;
 image/*)
-	preview_image "$file"
-	;;
+  preview_image "$file"
+  ;;
 application/json)
-	preview_json "$file"
-	;;
+  preview_json "$file"
+  ;;
 application/pdf)
-	preview_pdf "$file"
-	;;
+  preview_pdf "$file"
+  ;;
 audio/*)
-	preview_audio "$file"
-	;;
+  preview_audio "$file"
+  ;;
 video/*)
-	preview_video "$file"
-	;;
-application/zip|application/x-tar|application/gzip|application/x-bzip2|application/x-xz|application/x-rar|application/x-7z-compressed)
-	preview_archive "$file"
-	;;
+  preview_video "$file"
+  ;;
+application/zip | application/x-tar | application/gzip | application/x-bzip2 | application/x-xz | application/x-rar | application/x-7z-compressed)
+  preview_archive "$file"
+  ;;
 *)
-	exiftool "$file"
-	;;
+  exiftool "$file"
+  ;;
 esac

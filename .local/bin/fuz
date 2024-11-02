@@ -2,6 +2,7 @@
 
 # Populated by fuz-cache script through xprofile at startup
 CACHE_DIR="/tmp/fuz_cache"
+[ -f "$HOME/.cache/light_mode" ] && fzf_theme="light" || fzf_theme="dark"
 
 h_padding=$(printf '%*s' 14 ' ')
 h_gap=$(printf '%*s' 4 ' ')
@@ -19,31 +20,19 @@ OPENER="fuz-opener"
 PREVIEWER="fuz-preview"
 
 cat $CACHE_DIR/all | fzf --ansi --prompt "   All  " \
-	--bind "alt-1:transform:(
+  --bind "alt-1:transform:(
           ([[ \$FZF_PROMPT =~ All ]] && echo 'change-prompt(   Folders  )+reload(cat $CACHE_DIR/folders)') ||
           ([[ \$FZF_PROMPT =~ Folders ]] && echo 'change-prompt(   Git  )+reload(cat $CACHE_DIR/git)') ||
           echo 'change-prompt(   All  )+reload(cat $CACHE_DIR/all)')" \
-	--bind "alt-2:change-prompt(   Documents  )+reload(cat $CACHE_DIR/documents)" \
-	--bind "alt-3:change-prompt(   Images  )+reload(cat $CACHE_DIR/images)" \
-	--bind "alt-4:change-prompt(   Videos  )+reload(cat $CACHE_DIR/videos)" \
-	--header "$HEADER" \
-	--height=100% --pointer=" " --ellipsis= --header-first --scheme=path --algo=v2 \
-	--preview-window "bottom,60%,border-top" --border=none --margin=5%,10%,5%,10% --info=inline-right \
-	--preview "$PREVIEWER {}" \
-	--bind "enter:execute:$OPENER {}" \
+  --bind "alt-2:change-prompt(   Documents  )+reload(cat $CACHE_DIR/documents)" \
+  --bind "alt-3:change-prompt(   Images  )+reload(cat $CACHE_DIR/images)" \
+  --bind "alt-4:change-prompt(   Videos  )+reload(cat $CACHE_DIR/videos)" \
+  --header "$HEADER" \
+  --height=100% --pointer=" " --ellipsis= --header-first --scheme=path --algo=v2 \
+  --preview-window "bottom,60%,border-top" --border=none --margin=5%,10%,5%,10% --info=inline-right \
+  --color="$fzf_theme" \
+  --preview "$PREVIEWER {}" \
+  --bind "enter:execute:$OPENER {}" \
   --highlight-line \
-  --color=bg+:#b7c1e3 \
-  --color=bg:#d0d5e3 \
-  --color=border:#4094a3 \
-  --color=fg:#3760bf \
-  --color=gutter:#d0d5e3 \
-  --color=header:#b15c00 \
-  --color=hl+:#188092 \
-  --color=hl:#188092 \
-  --color=info:#8990b3 \
-  --color=marker:#d20065 \
-  --color=pointer:#d20065 \
-  --color=prompt:#188092 \
-  --color=query:#3760bf:regular \
-  --color=spinner:#d20065 \
-	--bind "alt-f:execute:lf {}"
+  --bind "alt-f:execute:lf {}" \
+  --bind "alt-d:execute:dwmc setlayoutex 0 && setsid -f dragon-drop -a {}"

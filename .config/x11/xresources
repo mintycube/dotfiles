@@ -1,8 +1,6 @@
 ! vim: filetype=xdefaults
 
-! Choices: tokyonight, rose-pine, onedark, monochrome
-! evergarden, nord, oxocarbon, catpuccin, tokyodark
-#include "colors/nvim-light"
+#include "colors/modus_vivendi"
 
 st.font:       JetBrains Mono:size=11
 st.borderpx:   10

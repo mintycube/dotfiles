@@ -1,26 +1,26 @@
 !! vim: filetype=xdefaults
 
-*.foreground:     #14161b
-*.background:     #E0E2EA
-*.highlightColor: #ffaf00
-*.cursorColor:    #14161b
+*.foreground:             #14161b
+*.background:             #E0E2EA
+*.highlightColor:         #ffaf00
+*.cursorColor:            #14161b
 
-*.color0:         #C4C6CD
-*.color8:         #9b9ea4
-*.color1:        	#590008
-*.color9:       	#640009
-*.color2:       	#005523
-*.color10:       	#006029
-*.color3:       	#6b5300
-*.color11:       	#765d00
-*.color4:       	#004c63
-*.color12:       	#005574
-*.color5:       	#470045
-*.color13:       	#52004f
-*.color6:       	#007373
-*.color14:       	#008080
-*.color8:       	#2c2e33
-*.color15:       	#4f5258
+*.color0:                 #C4C6CD
+*.color8:                 #9b9ea4
+*.color1:                 #590008
+*.color9:                 #640009
+*.color2:                 #005523
+*.color10:                #006029
+*.color3:                 #6b5300
+*.color11:                #765d00
+*.color4:                 #004c63
+*.color12:                #005574
+*.color5:                 #470045
+*.color13:                #52004f
+*.color6:                 #007373
+*.color14:                #008080
+*.color8:                 #2c2e33
+*.color15:                #4f5258
 
 dwm.normbordercolor:      #ffffff
 dwm.normbgcolor:          #eeeeee

@@ -1,62 +1,66 @@
-w,               firefox,                    browser google chrome web empty internet
-return,          st,                         shell command prompt st empty enter
-r,               lf,                         file manager empty
-d,               dmenu_run,                  empty apps rofi programs
+3-f-tap,         dictionary,                 define, meaning, thesaurus, synonym
+F7,              clipboard manager,          clipmenu copy paste
 a,               dmenu_hub,                  empty scripts mount color picker edit config kill
-n,               nvim,                       editor text empty
-space,           dmenu_web,                  websearch bookmarks internet empty
-backspace,       systerm action,             empty sysact reboot restart renew reload lock leave dwm
-mod-w,           firefox,                    browser google chrome web
-mod-return,      open terminal,              shell command prompt st
-mod-backspace,   system actions,             sysact reboot restart renew reload lock leave dwm
-mod-r,           lf,                         file manager
-mod-d,           dmenu_run,                  apps rofi programs
-mod-a,           dmenu_hub,                  scripts mount color picker edit config kill
-mod-space,       dmenu_web,                  websearch bookmarks internet
-mod-n,           nvim,                       editor text
-mute,            mute volume,                sound
-raisevolume,     increase volume,            sound
-lowervolume,     lower volume,               sound
-prev,            previous media,             song
-next,            next media,                 song
-pause,           pause media,                song
-play,            play media,                 song
-brightnessUp,    increase brightness,        backlight
-brightnessDown,  decrease brightness,        backlight
-print_scr,       screenshot tool,            capture
-mod-print_scr,   recording tool,             capture video cast
-mod-shift-del,   kill dwm,                   leave log out
-mod-del,         renew dwm,                  refresh wm
-mod-q,           close window,               kill client
-mod-shift-r,     gui file manager,           thunar files
-mod-t,           tile layout,                tiling
-mod-u,           monocle layout,             layout
-mod-y,           floating layout,            no layout
-mod-o,           increase master windows,    master
-mod-shift-o,     decrease master windows,    master
-mod-f,           fake fullscreen,            maximize
-mod-h,           adjust master/stack ratio,  resize
 alt-h,           dmenuhandler,               link
-mod-l,           adjust master/stack ratio,  resize
 alt-l,           dictionary,                 define meaning thesaurus, synonym
+backspace,       system action,              empty sysact reboot restart renew reload lock leave dwm
+brightnessDown,  decrease brightness,        backlight
+brightnessUp,    increase brightness,        backlight
+d,               dmenu_run,                  empty apps rofi programs
+e,               fuz-launcher,               empty fzf preview
+f,               fuz-launcher,               empty fzf preview
+grave,           Icon selector,              empty nerdfont
+lowervolume,     lower volume,               sound
 mod-',           calculator,                 apostrophe qalculate math
-mod-b,           toggle statusbar,           dwmblocks hide
-mod-shift-b,     add bookmark,               dmenuweb
-mod-shift-n,     newsboat,                   rss
-mod-m,           music,                      ncmpcpp mpd songs mp3
-mod-left,        focus left window,          activate client
-mod-right,       focus right window,         activate client
-mod-up,          focus upper window,         activate client
-mod-down,        focus lower window,         activate client
-mod-ctrl-up,     rotate windows CW,          move clients clockwise
-mod-ctrl-down,   rotate windows CCW,         move clients anti counter clockwise
+mod-0,           toggle all-tag,             all workspaces
+mod-[1-9],       change tag,                 switch workspaces 123456789
+mod-a,           dmenu_hub,                  scripts mount color picker edit config kill
 mod-alt-left,    shift window and tag,       move change workspaces tags
 mod-alt-right,   shift window and tag,       move change workspaces tags
+mod-b,           toggle statusbar,           dwmblocks hide
+mod-backspace,   system actions,             sysact reboot restart renew reload lock leave dwm
+mod-ctrl-down,   rotate windows CCW,         move clients anti counter clockwise
 mod-ctrl-left,   switch to adjacent tag,     change workspaces tags
 mod-ctrl-right,  switch to adjacent tag,     change workspaces tags
-mod-shift-space, toggle window floating,     client
-mod-[1-9],       change tag,                 switch workspaces 123456789
-mod-0,           toggle all-tag,             all workspaces
+mod-ctrl-up,     rotate windows CW,          move clients clockwise
+mod-d,           dmenu_run,                  apps rofi programs
+mod-del,         renew dwm,                  refresh wm
+mod-down,        focus lower window,         activate client
+mod-f,           fake fullscreen,            maximize
+mod-h,           adjust master/stack ratio,  resize
+mod-l,           adjust master/stack ratio,  resize
+mod-left,        focus left window,          activate client
+mod-m,           music,                      ncmpcpp mpd songs mp3
+mod-n,           nvim,                       editor text
+mod-o,           increase master windows,    master
+mod-print_scr,   recording tool,             capture video cast
+mod-q,           close window,               kill client
+mod-r,           lf,                         file manager
+mod-return,      open terminal,              shell command prompt st
+mod-right,       focus right window,         activate client
 mod-scroll,      resize floating windows,    client
-F7,              clipboard manager,          clipmenu copy paste
-3-f-tap,         dictionary,                 define, meaning, thesaurus, synonym
+mod-shift-b,     add bookmark,               dmenuweb
+mod-shift-del,   kill dwm,                   leave log out
+mod-shift-n,     newsboat,                   rss
+mod-shift-o,     decrease master windows,    master
+mod-shift-r,     gui file manager,           thunar files
+mod-shift-space, toggle window floating,     client
+mod-space,       dmenu_web,                  websearch bookmarks internet
+mod-t,           tile layout,                tiling
+mod-u,           monocle layout,             layout
+mod-up,          focus upper window,         activate client
+mod-w,           firefox,                    browser google chrome web
+mod-y,           floating layout,            no layout
+mute,            mute volume,                sound
+n,               nvim,                       editor text empty
+next,            next media,                 song
+p,               ping graph,                 network check gping empty
+pause,           pause media,                song
+play,            play media,                 song
+prev,            previous media,             song
+print_scr,       screenshot tool,            capture
+r,               lf,                         file manager empty
+raisevolume,     increase volume,            sound
+return,          st,                         shell command prompt st empty enter
+space,           dmenu_web,                  websearch bookmarks internet empty
+w,               firefox,                    browser google chrome web empty internet

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# Get the IP address
+ip=$(ip addr show wlp1s0 | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
+
+if [ -n "$ip" ]; then
+  url="http://$ip:8000"
+else
+  echo -e "\e[31mError: Not Connected to Wifi\e[0m"
+  exit 1
+fi
+
+echo -e "\e[32mLink: $url\e[0m"
+echo "$url" | xclip -selection clipboard
+
+# Kill existing http.server processes
+pkill -f "python3 -m http.server"
+
+# Create a temporary directory and generate a larger QR code
+tmpdir=$(mktemp -d)
+tmpfile=$(mktemp "$tmpdir/server_qr_XXXXXX.png")
+qrencode -o "$tmpfile" -s 10 "$url"
+
+# Add the URL text below the QR code
+outputfile="$tmpdir/server_qr_with_text.png"
+magick "$tmpfile" -gravity south -splice 0x20 -pointsize 20 -annotate +0+10 "$url" "$outputfile"
+
+# Start the Python HTTP server in the background
+python3 -m http.server &
+
+# Ensure cleanup happens on exit
+trap 'rm -rf "$tmpdir"' EXIT
+
+# Open the QR code image with nsxiv
+nsxiv "$outputfile"

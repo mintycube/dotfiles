@@ -22,35 +22,21 @@ HEADER="${h_padding}\
   [1;34m Q[1;90m:[0mQuickfix List"
 
 : | fzf --ansi --multi --disabled --query "$INITIAL_QUERY" \
-	--bind "start:reload:$RG_PREFIX {q} $SEARCH_DIR" \
-	--bind "change:reload:sleep 0.1; $RG_PREFIX {q} $SEARCH_DIR || true" \
-	--bind "alt-space:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] &&
+  --bind "start:reload:$RG_PREFIX {q} $SEARCH_DIR" \
+  --bind "change:reload:sleep 0.1; $RG_PREFIX {q} $SEARCH_DIR || true" \
+  --bind "alt-space:transform:[[ ! \$FZF_PROMPT =~ ripgrep ]] &&
   echo \"rebind(change)+change-prompt(ripgrep  )+disable-search+transform-query:echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r\" ||
   echo \"unbind(change)+change-prompt(fzf  )+enable-search+transform-query:echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f\"" \
-	--bind 'alt-a:select-all,alt-d:deselect-all,alt-/:toggle-preview' \
-	--margin=5%,10%,5%,10% --height=100% --reverse --info=inline-right \
-	--scrollbar=▐ --keep-right --border=none --ellipsis= \
-	--prompt 'ripgrep  ' \
-	--delimiter : \
-	--header "$HEADER" --header-first \
-	--preview 'bat --style=header,numbers --color=always {1} --highlight-line {2}' \
-	--preview-window 'bottom,60%,border-top,+{2}+3/3,~1' \
-	--bind "alt-q:execute:nvim +cw -q {+f}" \
-	--bind "enter:execute:nvim {1} +{2}" \
-  --highlight-line \
-  --color=bg+:#b7c1e3 \
-  --color=bg:#d0d5e3 \
-  --color=border:#4094a3 \
-  --color=fg:#3760bf \
-  --color=gutter:#d0d5e3 \
-  --color=header:#b15c00 \
-  --color=hl+:#188092 \
-  --color=hl:#188092 \
-  --color=info:#8990b3 \
-  --color=marker:#d20065 \
-  --color=pointer:#d20065 \
-  --color=prompt:#188092 \
-  --color=query:#3760bf:regular \
-  --color=spinner:#d20065 \
+  --bind 'alt-a:select-all,alt-d:deselect-all,alt-/:toggle-preview' \
+  --margin=5%,10%,5%,10% --height=100% --reverse --info=inline-right \
+  --scrollbar=▐ --keep-right --border=none --ellipsis= \
+  --prompt 'ripgrep  ' \
+  --delimiter : \
+  --header "$HEADER" --header-first \
+  --preview 'bat --style=header,numbers --color=always {1} --highlight-line {2}' \
+  --preview-window 'bottom,60%,border-top,+{2}+3/3,~1' \
+  --bind "alt-q:execute:nvim +cw -q {+f}" \
+  --bind "enter:execute:nvim {1} +{2}" \
+  --highlight-line
 
 dwmc setlayoutex 0
