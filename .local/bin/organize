@@ -1,63 +1,55 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-# Auto organize files into respective folders using categories
+# Auto-organize files into categorized folders
 
-organize() {
-  case "$(file -biL "$1")" in
-  *video*)
-    [ ! -d "Videos" ] && mkdir "Videos"
-    mv -- "$1" "Videos/$1"
-    printf "Moved %s to Videos\n" "$1"
-    ;;
+# Define folder names
+declare -A FOLDERS=(
+  ["video"]="Videos"
+  ["audio"]="Audios"
+  ["image"]="Images"
+  ["pdf|document|epub|djvu|cb"]="Documents"
+  ["text"]="Plaintext"
+  ["tar|xz|compress|7z|rar|zip"]="Compressed"
+  ["binary"]="Binaries"
+  ["spreadsheet|excel"]="Spreadsheets"
+  ["presentation"]="Presentations"
+)
 
-  *audio*)
-    [ ! -d "Audios" ] && mkdir "Audios"
-    mv -- "$1" "Audios/$1"
-    printf "Moved %s to Audios\n" "$1"
-    ;;
+# Organize single file based on MIME type
+organize_file() {
+  local file_type folder destination
+  file_type=$(file -biL "$1") || return 1
 
-  *image*)
-    [ ! -d "Images" ] && mkdir "Images"
-    mv -- "$1" "Images/$1"
-    printf "Moved %s to Images\n" "$1"
-    ;;
+  for type in "${!FOLDERS[@]}"; do
+    if [[ "$file_type" =~ $type ]]; then
+      folder=${FOLDERS[$type]}
+      [ ! -d "$folder" ] && mkdir "$folder"
+      destination="$folder/$1"
+      if mv -- "$1" "$destination" 2>/dev/null; then
+        printf "Moved %s to %s\n" "$1" "$folder"
+      else
+        printf "Error moving %s to %s\n" "$1" "$folder" >&2
+      fi
+      return
+    fi
+  done
 
-  *pdf* | *document* | *epub* | *djvu* | *cb*)
-    [ ! -d "Documents" ] && mkdir "Documents"
-    mv -- "$1" "Documents/$1"
-    printf "Moved %s to Documents\n" "$1"
-    ;;
-
-  *text*)
-    [ ! -d "Plaintext" ] && mkdir "Plaintext"
-    mv -- "$1" "Plaintext/$1"
-    printf "Moved %s to Plaintext\n" "$1"
-    ;;
-
-  *tar* | *xz* | *compress* | *7z* | *rar* | *zip*)
-    [ ! -d "Compressed" ] && mkdir "Compressed"
-    mv -- "$1" "Compressed/$1"
-    printf "Moved %s to Compressed\n" "$1"
-    ;;
-
-  *binary*)
-    [ ! -d "Binaries" ] && mkdir "Binaries"
-    mv -- "$1" "Binaries/$1"
-    printf "Moved %s to Binaries\n" "$1"
-    ;;
-
-  *)
-    [ ! -d "Others" ] && mkdir "Others"
-    mv -- "$1" "Others/$1"
+  # If no match found, move to "Others"
+  [ ! -d "Others" ] && mkdir "Others"
+  destination="Others/$1"
+  if mv -- "$1" "$destination" 2>/dev/null; then
     printf "Moved %s to Others\n" "$1"
-    ;;
-  esac
+  else
+    printf "Error moving %s to Others\n" "$1" >&2
+  fi
 }
 
+# Main function to loop through files
 main() {
   for file in *; do
-    [ -f "$file" ] && organize "$file"
+    [ -f "$file" ] && organize_file "$file"
   done
 }
 
+# Run main function
 main "$@"

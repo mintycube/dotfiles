@@ -16,7 +16,7 @@ echo "$url" | xclip -selection clipboard
 # Kill existing http.server processes
 pkill -f "python3 -m http.server"
 
-# Create a temporary directory and generate a larger QR code
+# Create a temporary directory and generate a QR code
 tmpdir=$(mktemp -d)
 tmpfile=$(mktemp "$tmpdir/server_qr_XXXXXX.png")
 qrencode -o "$tmpfile" -s 10 "$url"

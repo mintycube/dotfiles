@@ -66,26 +66,20 @@ cmd live_server ${{
   setsid -f live-server "$PWD"
 }}
 
+cmd compress ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	compressor $fx
+}}
+
 cmd extract ${{
 	clear; tput cup $(($(tput lines)/3)); tput bold
 	set -f
 	printf "%s\n\t" "$fx"
 	ans=$(echo -e "No\nYes" | fzf --prompt="Extract?" --ansi --border=rounded --margin=0,35% --no-info --height=7)
 	[ $ans = "Yes" ] && {
-		case $fx in
-			*.tar.bz2)   tar xjf $fx     ;;
-			*.tar.gz)    tar xzf $fx     ;;
-			*.bz2)       bunzip2 $fx     ;;
-			*.rar)       unrar e $fx     ;;
-			*.gz)        gunzip $fx      ;;
-			*.tar)       tar xf $fx      ;;
-			*.tbz2)      tar xjf $fx     ;;
-			*.tgz)       tar xzf $fx     ;;
-			*.zip)       unzip $fx       ;;
-			*.Z)         uncompress $fx  ;;
-			*.7z)        7z x $fx        ;;
-			*.tar.xz)    tar xf $fx      ;;
-		esac
+		extractor $fx
 	}
 }}
 
@@ -120,31 +114,31 @@ cmd copyto ${{
 }}
 
 cmd bulkrename ${{
-    tmpfile_old="$(mktemp)"
-    tmpfile_new="$(mktemp)"
+  tmpfile_old="$(mktemp)"
+  tmpfile_new="$(mktemp)"
 
-    [ -n "$fs" ] && fs=$(basename -a $fs) || fs=$(ls)
+  [ -n "$fs" ] && fs=$(basename -a $fs) || fs=$(ls)
 
-    echo "$fs" > "$tmpfile_old"
-    echo "$fs" > "$tmpfile_new"
-    $EDITOR "$tmpfile_new"
+  echo "$fs" > "$tmpfile_old"
+  echo "$fs" > "$tmpfile_new"
+  $EDITOR "$tmpfile_new"
 
-    [ "$(wc -l < "$tmpfile_old")" -eq "$(wc -l < "$tmpfile_new")" ] || { rm -f "$tmpfile_old" "$tmpfile_new"; exit 1; }
+  [ "$(wc -l < "$tmpfile_old")" -eq "$(wc -l < "$tmpfile_new")" ] || { rm -f "$tmpfile_old" "$tmpfile_new"; exit 1; }
 
-    paste "$tmpfile_old" "$tmpfile_new" | while IFS="$(printf '\t')" read -r src dst
-    do
-        [ "$src" = "$dst" ] || [ -e "$dst" ] || mv -- "$src" "$dst"
-    done
+  paste "$tmpfile_old" "$tmpfile_new" | while IFS="$(printf '\t')" read -r src dst
+  do
+    [ "$src" = "$dst" ] || [ -e "$dst" ] || mv -- "$src" "$dst"
+  done
 
-    rm -f "$tmpfile_old" "$tmpfile_new"
-    lf -remote "send $id unselect"
+  rm -f "$tmpfile_old" "$tmpfile_new"
+  lf -remote "send $id unselect"
 }}
 
 cmd git_branch ${{
-    git branch | fzf | xargs git checkout
-    pwd_shell=$(pwd | sed 's/\\/\\\\/g;s/"/\\"/g')
-    lf -remote "send $id updir"
-    lf -remote "send $id cd \"$pwd_shell\""
+  git branch | fzf | xargs git checkout
+  pwd_shell=$(pwd | sed 's/\\/\\\\/g;s/"/\\"/g')
+  lf -remote "send $id updir"
+  lf -remote "send $id cd \"$pwd_shell\""
 }}
 
 cmd git_root ${{
@@ -218,8 +212,17 @@ cmd change_preview %{{
   fi
 }}
 
+cmd rename_random ${{
+  for file in $fx; do
+    new_name=$(printf "%s.%s" "$(openssl rand -hex 5)" "${file##*.}")
+    mv "$file" "$new_name"
+  done
+}}
+
 cmd ff $ff "$(echo $*)"
-cmd share $curl -F"file=@$fx" -Fexpires=24 https://0x0.st | xclip -selection c
+cmd share ${{
+  fileshare $f
+}}
 cmd setbg "$1"
 
 # Bindings
@@ -235,6 +238,7 @@ map gh $lazygit
 map gg top
 map D delete
 map E extract
+map Z compress
 map C copyto
 map M moveto
 map <c-n> push :ff<space>

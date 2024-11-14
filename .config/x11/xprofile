@@ -9,7 +9,7 @@ xrdbpid=$! # Uncomment to use Xresources colors/settings on startup
 autostart="fuz-cache picom dictd pipewire unclutter remapd clipmenud dunst"
 
 for program in $autostart; do
-	pidof -sx "$program" || "$program" &
+  pidof -sx "$program" || "$program" &
 done >/dev/null 2>&1
 
 # Ensure that xrdb has finished running before moving on to start the WM/DE.
