@@ -1,38 +1,64 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
+
 BROWSER="firefox"
-SEARCH_ENGINE="https://encrypted.google.com/search?hl=en&safe=off&num=50&pws=0&q="
-BOOKMARKS_FILE="$HOME/.config/dmenu_web/bookmarks"
-SITES_FILE="$HOME/.config/dmenu_web/search_urls"
-NOTIFICAION_FILE="$HOME/.config/dmenu_web/notification"
-DMENU_COMMAND="dmenu -i -bw 2 -W 290 -X 850 -Y 19 -l 15 -g 2 -p \" \""
-DMENU_COMMAND_FOR_ADD_BOOKMARK="dmenu -bw 2 -W 800 -X 283 -Y 190 -p \"󰃅 Add Bookmark: \""
-declare -A SEARCH_URLS
-while IFS=',' read -r site url; do
-  SEARCH_URLS["$site"]="$url"
-done <"$SITES_FILE"
-if [ "$1" == "--add" ]; then
-  bookmark="$(xclip -o)"
-  [ -z "$bookmark" ] || [ -z "${bookmark// /}" ] && notify-send "Bookmark not saved: Nothing to save" && exit 0
-  echo "$bookmark" | grep -Eq '\.[a-zA-Z]{2,}$' || {
-    notify-send "Not a valid URL"
+SEARCH_ENGINE="https://duckduckgo.com/?q="
+BOOKMARKS_FILE="$HOME/.local/src/bookmarks/fmhy_in_bookmarks_starred_only.html"
+BANGS_FILE="$HOME/.local/share/script-data/bangs"
+DMENU_COMMAND="dmenu -i -bw 2 -W 700 -X 333 -Y 190 -l 15 -g 2 -p \" \""
+BANG_CHAR=";"
+
+extract_bookmarks() {
+  grep -oP '<A HREF="[^"]+".*?>.*?</A>' "$BOOKMARKS_FILE" |
+    sed -E 's/<A HREF="([^"]+)".*?>(.*?)<\/A>/\2,\1/' |
+    sort -u
+}
+
+extract_descriptions() {
+  extract_bookmarks | cut -d ',' -f 1
+}
+
+get_url_by_description() {
+  local description="$1"
+  extract_bookmarks | grep -F "$description," | cut -d ',' -f 2
+}
+
+display_bangs_notification() {
+  [[ -f "$BANGS_FILE" ]] && notify-send -t 10000 "$(cat "$BANGS_FILE")"
+}
+
+main() {
+  [[ ! -f "$BOOKMARKS_FILE" ]] && exit 1
+
+  display_bangs_notification &
+
+  local query
+  query=$(extract_descriptions | eval "$DMENU_COMMAND")
+  if [[ -z "$query" ]]; then
+    dunstctl close-all
     exit 0
-  }
-  grep -qF "$bookmark" "$BOOKMARKS_FILE" && notify-send "Already bookmarked!" && exit 0
-  user_input=$(eval "$DMENU_COMMAND_FOR_ADD_BOOKMARK" <&-)
-  [ -z "$user_input" ] || [ -z "${user_input// /}" ] && notify-send "Bookmark not saved: Empty Name" && exit 0
-  bookmark_entry="${user_input},${bookmark}"
-  echo "$bookmark_entry" >>"$BOOKMARKS_FILE"
-  notify-send "Bookmark: $user_input" "$bookmark"
-  exit 0
-fi
-descriptions=$(cut -d ',' -f 1 "$BOOKMARKS_FILE")
-notify-send -t 30000 "$(cat "$NOTIFICAION_FILE")" && query=$(echo "$descriptions" | eval "$DMENU_COMMAND")
-dunstctl close-all
-[ -z "$query" ] || [ -z "${query// /}" ] && exit 0
-url=$(grep "^$query," "$BOOKMARKS_FILE" | cut -d ',' -f 2)
-[ -n "$url" ] && "$BROWSER" "$url" && exit 0
-site=$(echo "$query" | cut -d ' ' -f 1) && search_url="${SEARCH_URLS[$site]}"
-[ "$site" == "1337" ] && [ -n "$search_url" ] && search_query="${query//$site /}" && "$BROWSER" "$search_url$search_query/1/" && exit 0
-[ -n "$search_url" ] && search_query="${query//$site /}" && "$BROWSER" "$search_url$search_query" && exit 0
-echo "$query" | grep -Eq '\.[a-zA-Z]{2,}$' && "$BROWSER" "$query" && exit 0
-"$BROWSER" "$SEARCH_ENGINE$query" && exit 0
+  fi
+
+  dunstctl close-all
+
+  if [[ "$query" =~ ^"$BANG_CHAR" ]]; then
+    query="!${query:1}"
+    "$BROWSER" "${SEARCH_ENGINE}${query}" &
+    exit 0
+  fi
+
+  local url
+  url=$(get_url_by_description "$query")
+  if [[ -n "$url" ]]; then
+    "$BROWSER" "$url" &
+    exit 0
+  fi
+
+  if [[ "$query" =~ ^https?:// || "$query" =~ ^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,} ]]; then
+    "$BROWSER" "https://$query" &
+    exit 0
+  fi
+
+  "$BROWSER" "${SEARCH_ENGINE}${query}"
+}
+
+main "$@"

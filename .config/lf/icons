@@ -105,6 +105,7 @@ fi      󰈔       # FILE
 *.xul           
 *.sln           
 *.suo           
+*.org           
 *.pl            
 *.pm            
 *.t             

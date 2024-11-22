@@ -58,7 +58,7 @@ icon_position=off
 timeout = 2
 background = "#000000"
 foreground = "#ffffff"
-frame_color = "#2fafff"
+frame_color = "#005577"
 
 [urgency_normal]
 icon =
@@ -67,7 +67,7 @@ icon_position=off
 timeout = 5
 background = "#000000"
 foreground = "#ffffff"
-frame_color = "#2fafff"
+frame_color = "#005577"
 
 [urgency_critical]
 icon =

@@ -1,66 +1,85 @@
-3-f-tap,         dictionary,                 define, meaning, thesaurus, synonym
-F7,              clipboard manager,          clipmenu copy paste
-a,               dmenu_hub,                  empty scripts mount color picker edit config kill
-alt-h,           dmenuhandler,               link
-alt-l,           dictionary,                 define meaning thesaurus, synonym
-backspace,       system action,              empty sysact reboot restart renew reload lock leave dwm
-brightnessDown,  decrease brightness,        backlight
-brightnessUp,    increase brightness,        backlight
-d,               dmenu_run,                  empty apps rofi programs
-e,               fuz-launcher,               empty fzf preview
-f,               fuz-launcher,               empty fzf preview
-grave,           Icon selector,              empty nerdfont
-lowervolume,     lower volume,               sound
-mod-',           calculator,                 apostrophe qalculate math
-mod-0,           toggle all-tag,             all workspaces
-mod-[1-9],       change tag,                 switch workspaces 123456789
-mod-a,           dmenu_hub,                  scripts mount color picker edit config kill
-mod-alt-left,    shift window and tag,       move change workspaces tags
-mod-alt-right,   shift window and tag,       move change workspaces tags
-mod-b,           toggle statusbar,           dwmblocks hide
-mod-backspace,   system actions,             sysact reboot restart renew reload lock leave dwm
-mod-ctrl-down,   rotate windows CCW,         move clients anti counter clockwise
-mod-ctrl-left,   switch to adjacent tag,     change workspaces tags
-mod-ctrl-right,  switch to adjacent tag,     change workspaces tags
-mod-ctrl-up,     rotate windows CW,          move clients clockwise
-mod-d,           dmenu_run,                  apps rofi programs
-mod-del,         renew dwm,                  refresh wm
-mod-down,        focus lower window,         activate client
-mod-f,           fake fullscreen,            maximize
-mod-h,           adjust master/stack ratio,  resize
-mod-l,           adjust master/stack ratio,  resize
-mod-left,        focus left window,          activate client
-mod-m,           music,                      ncmpcpp mpd songs mp3
-mod-n,           nvim,                       editor text
-mod-o,           increase master windows,    master
-mod-print_scr,   recording tool,             capture video cast
-mod-q,           close window,               kill client
-mod-r,           lf,                         file manager
-mod-return,      open terminal,              shell command prompt st
-mod-right,       focus right window,         activate client
-mod-scroll,      resize floating windows,    client
-mod-shift-b,     add bookmark,               dmenuweb
-mod-shift-del,   kill dwm,                   leave log out
-mod-shift-n,     newsboat,                   rss
-mod-shift-o,     decrease master windows,    master
-mod-shift-r,     gui file manager,           thunar files
-mod-shift-space, toggle window floating,     client
-mod-space,       dmenu_web,                  websearch bookmarks internet
-mod-t,           tile layout,                tiling
-mod-u,           monocle layout,             layout
-mod-up,          focus upper window,         activate client
-mod-w,           firefox,                    browser google chrome web
-mod-y,           floating layout,            no layout
-mute,            mute volume,                sound
-n,               nvim,                       editor text empty
-next,            next media,                 song
-p,               ping graph,                 network check gping empty
-pause,           pause media,                song
-play,            play media,                 song
-prev,            previous media,             song
-print_scr,       screenshot tool,            capture
-r,               lf,                         file manager empty
-raisevolume,     increase volume,            sound
-return,          st,                         shell command prompt st empty enter
-space,           dmenu_web,                  websearch bookmarks internet empty
-w,               firefox,                    browser google chrome web empty internet
+a,                   dmenu_hub,                     application launcher sysact reboot restart renew reload lock leave dwm
+alt-comma,           notes,                         scratchpad notepad
+alt-enter,           kitty,                         terminal emulator alternate
+alt-h,               dmenuhandler,                  link
+alt-l,               dictionary,                    define meaning thesaurus synonym
+backspace,           system actions,                sysact reboot restart renew reload lock leave dwm
+d,                   dmenu_run,                     applications launcher
+desktop-leftclick,   dmenu_hub,                     notifications applications scripts
+desktop-rightclick,  kill dunst & dmenu,            notifications close dmenu
+e,                   fuz-launcher,                  fuzzy search file opener finder
+f,                   fuz-launcher,                  fuzzy search file opener finder
+f7,                  clipboard manager,             clipmenu copy paste
+grave,               copy nerd icons,               symbols nerdfont
+mod-',               calculator,                    scratchpad qalc apostrophe
+mod-0,               view all tags,                 navigation workspace view all
+mod-[1-9],           change tag,                    switch workspaces 123456789
+mod-a,               dmenu hub,                     applications scripts mount color picker edit config kill
+mod-alt-left,        shift window and tag,          move change workspaces tags
+mod-alt-right,       shift window and tag,          move change workspaces tags
+mod-b,               toggle bar,                    ui toggle bar
+mod-backspace,       system actions,                sysact reboot restart renew reload lock leave dwm
+mod-comma,           focus prev monitor,            multi-monitor navigation
+mod-ctrl-down,       rotate stack,                  navigation rotate
+mod-ctrl-left,       switch to adjacent tag,        change workspaces tags
+mod-ctrl-right,      switch to adjacent tag,        change workspaces tags
+mod-ctrl-shift-q,    quit dwm,                      exit quit
+mod-ctrl-up,         rotate stack,                  navigation rotate
+mod-ctrl-z,          show/hide window,              focus visibility
+mod-d,               dmenu,                         application launcher dmenu
+mod-del,             renew dwm,                     refresh window manager wm
+mod-down,            focus below,                   navigation directional focus
+mod-drag,            move window,                   window management
+mod-enter,           st terminal,                   terminal emulator commandline
+mod-f,               fake fullscreen,               maximize
+mod-h,               master size dec,               layout adjustment tiling resize
+mod-j,               focus next window,             navigation focus
+mod-k,               focus prev window,             navigation focus
+mod-l,               master size inc,               layout adjustment tiling resize
+mod-left,            focus left,                    navigation directional focus
+mod-m,               music player,                  scratchpad cmus audio
+mod-n,               neovim,                        text editor terminal
+mod-o,               inc no. of masters,            layout master area
+mod-p,               gping,                         network monitoring latency
+mod-period,          focus next monitor,            multi-monitor navigation dot
+mod-prtscr,          recorder,                      capture video cast
+mod-q,               close window,                  close terminate kill
+mod-r,               lf,                            file manager terminal thunar nautilus dolphin ranger vifm
+mod-return,          st terminal,                   terminal emulator commandline shell enter
+mod-right,           focus right,                   navigation directional focus
+mod-scroll,          resize window,                 window management
+mod-shift-',         calculator-gui,                scratchpad gui calculator
+mod-shift-0,         all tags to current,           workspace tagging add all tags to focused
+mod-shift-b,         add bookmark,                  web browsing bookmarks dmenu_web
+mod-shift-comma,     move to prev monitor,          multi-monitor window management
+mod-shift-del,       kill dwm,                      leave log out
+mod-shift-enter,     st terminal popup,             scratchpad terminal yakuake dropdown
+mod-shift-f5,        reload xresources,             config reload refresh
+mod-shift-n,         newsboat,                      rss reader terminal
+mod-shift-o,         dec no. of masters,            layout master area
+mod-shift-period,    move to next monitor,          multi-monitor window management
+mod-shift-space,     toggle window floating,        client
+mod-shift-x,         kill all unfocused,            cleanup close multiple
+mod-slash,           zoom window,                   focus zoom
+mod-space,           dmenu_web,                     web browsing launcher
+mod-t,               tile layout,                   layout window management
+mod-tab,             previous tag,                  navigation workspace
+mod-tag-leftclick,   toggle view of tag,            workspace tag toggle
+mod-tag-rightclick,  tag focused window,            workspace tag assignment
+mod-tag-rightclick,  view tag,                      workspace tag navigation
+mod-u,               floating layout,               layout window management
+mod-up,              focus above,                   navigation directional focus
+mod-w,               firefox,                       web browser internet
+mod-x,               transfer to master,            layout adjustment focus management
+mod-y,               set monocle layout,            layout window management
+n,                   neovim,                        text editor terminal
+p,                   gping,                         network monitoring latency
+prtscr,              screenshot,                    capture
+r,                   lf,                            file manager terminal
+return,              st terminal,                   terminal emulator commandline shell enter
+space,               dmenu_web,                     web browsing launcher
+title-3-f-tap,       zoom window to master,         layout zoom master
+title-leftclick,     show/hide window,              focus visibility
+title-rightclick,    toggle visibility,             focus visibility
+v,                   man_pages,                     terminal emulator custom script
+w,                   firefox,                       web browser internet
