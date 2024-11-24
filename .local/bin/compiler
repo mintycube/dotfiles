@@ -1,0 +1,69 @@
+#!/bin/sh
+
+file="${1}"
+ext="${file##*.}"
+dir=$(dirname "$(realpath "${file}")")
+base="${file%.*}"
+
+cd "${dir}" || exit 1
+
+if [ "${ext}" = "h" ] &&
+  printf '%s\n' "dmenu" "dwm" "slock" "dwmblocks" "st" | grep -qx "$(basename "${dir}")"; then
+  (sudo make install && renew-dwm && notify-send '  refresh complete') || exit 1
+fi
+
+if [ -f "Makefile" ]; then
+  make || exit 1
+  exit 0
+elif [ -f "../Makefile" ]; then
+  (cd .. && make) || exit 1
+  exit 0
+fi
+
+csl_file="$HOME/.local/share/script-data/pandoc/ieee.csl"
+latex_template="$HOME/.local/share/script-data/pandoc/template.latex"
+
+case "${ext}" in
+[0-9]) preconv "${file}" | refer -PS -e | groff -mandoc -T pdf >"${base}.pdf" ;;
+mom | ms) preconv "${file}" | refer -PS -e | groff -T pdf -m"${ext}" >"${base}.pdf" ;;
+c) cc "${file}" -o "${base}" && "./${base}" ;;
+cpp) g++ "${file}" -o "${base}" && "./${base}" ;;
+cs) mcs "${file}" && mono "${base}.exe" ;;
+go) go run "${file}" ;;
+java) javac -d classes "${file}" && java -cp classes "${base}" ;;
+lua) lua "${file}" ;;
+m) octave "${file}" ;;
+md)
+  bib_file=""
+  yaml_file=""
+  [ -f "${dir}/references.bib" ] && bib_file="${dir}/references.bib"
+  [ -f "${dir}/metadata.yaml" ] && yaml_file="${dir}/metadata.yaml"
+  pandoc_cmd_pdf="pandoc \"${file}\" --output=\"${base}.pdf\" --highlight-style=tango --citeproc --template=\"${latex_template}\""
+  pandoc_cmd_docx="pandoc \"${file}\" --output=\"${base}.docx\" --highlight-style=tango --citeproc"
+  [ -n "${yaml_file}" ] && pandoc_cmd_pdf="${pandoc_cmd_pdf} --metadata-file=\"${yaml_file}\"" && pandoc_cmd_docx="${pandoc_cmd_docx} --metadata-file=\"${yaml_file}\""
+  [ -n "${bib_file}" ] && pandoc_cmd_pdf="${pandoc_cmd_pdf} --bibliography=\"${bib_file}\" --csl=\"${csl_file}\"" && pandoc_cmd_docx="${pandoc_cmd_docx} --bibliography=\"${bib_file}\" --csl=\"${csl_file}\""
+  eval "${pandoc_cmd_pdf}" || exit 1
+  # eval "${pandoc_cmd_docx}" || exit 1
+  ;;
+org) emacs "${file}" --batch -u "${USER}" -f org-latex-export-to-pdf ;;
+pl) perl "${file}" ;;
+py) python "${file}" ;;
+qalc) qalc -c -f "${file}" ;;
+[rR]md) Rscript -e "rmarkdown::render('${file}', quiet=TRUE)" ;;
+rs) cargo build ;;
+sass) sassc -a "${file}" "${base}.css" ;;
+scad) openscad -o "${base}.stl" "${file}" ;;
+scm) guile "${file}" ;;
+sent) setsid -f sent "${file}" 2>"/dev/null" ;;
+tex)
+  textarget="$(getcomproot "${file}" || echo "${file}")"
+  command="pdflatex"
+  head -n5 "${textarget}" | grep -qi "xelatex" && command="xelatex"
+  ${command} --output-directory="${textarget%/*}" "${textarget%.*}" &&
+    grep -qi addbibresource "${textarget}" &&
+    biber --input-directory "${textarget%/*}" "${textarget%.*}" &&
+    ${command} --output-directory="${textarget%/*}" "${textarget%.*}" &&
+    ${command} --output-directory="${textarget%/*}" "${textarget%.*}"
+  ;;
+*) sed -n '/^#!/s/^#!//p; q' "${file}" | xargs -r -I % "${file}" ;;
+esac

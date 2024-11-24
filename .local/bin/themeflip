@@ -4,8 +4,8 @@ LIGHT_MODE="$HOME/.cache/light_mode"
 DATA_DIR="$HOME/.local/share/script-data/theme_switcher"
 XRESOURCES_FILE="$HOME/.config/x11/xresources"
 NVIM_COLORS_FILE="$HOME/.config/nvim/lua/plugins/colors.lua"
-GTK2_FILE="$HOME/.config/gtk-2.0/gtkrc-2.0"
-GTK3_FILE="$HOME/.config/gtk-3.0/settings.ini"
+GTK2_FILE="$HOME/dotfiles/.config/gtk-2.0/gtkrc-2.0"
+GTK3_FILE="$HOME/dotfiles/.config/gtk-3.0/settings.ini"
 
 if [ -f "$LIGHT_MODE" ]; then
   rm "$LIGHT_MODE"
