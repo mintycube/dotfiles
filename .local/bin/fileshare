@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Validate arguments
+if [[ $# -ne 1 || ! -f $1 ]]; then
+  printf "Usage: %s <file>\n" "$0" >&2
+  exit 1
+fi
+
+FILE_PATH="$1"
+TEMP_DIR=$(mktemp -d)
+QR_CODE_IMAGE="$TEMP_DIR/qrcode.png"
+LINK_FILE="$TEMP_DIR/link.txt"
+
+# Upload file and capture link
+if ! LINK=$(curl -sf -F "file=@${FILE_PATH}" -F "expires=2" https://0x0.st); then
+  printf "Error: Failed to upload file.\n" >&2
+  rm -rf "$TEMP_DIR"
+  exit 1
+fi
+
+# Copy link to clipboard
+printf "%s" "$LINK" | xclip -selection clipboard
+
+# Generate QR code with link displayed under it
+{
+  printf "%s\n" "$LINK"
+  qrencode -o "$QR_CODE_IMAGE" -s 10 "$LINK"
+  magick "$QR_CODE_IMAGE" -gravity South -splice 0x40 -pointsize 20 -annotate +0+10 "$LINK" "$QR_CODE_IMAGE"
+} || {
+  printf "Error: Failed to generate QR code.\n" >&2
+  rm -rf "$TEMP_DIR"
+  exit 1
+}
+
+# Open QR code with nsxiv in background
+nsxiv "$QR_CODE_IMAGE" &
+disown
+
+# Cleanup temporary directory after a delay to ensure user has time to view QR code
+(
+  sleep 10
+  rm -rf "$TEMP_DIR"
+) &
+disown

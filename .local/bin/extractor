@@ -1,0 +1,114 @@
+#!/bin/bash
+
+# Function to create an appropriate extraction directory based on archive name
+create_extraction_dir() {
+  local archive_path="$1"
+  local archive_name="${archive_path##*/}"
+  local dir_name="${archive_name%.*}"
+  local ext="${archive_name##*.}"
+
+  # Strip additional extensions (tar.gz, tar.bz2, etc.)
+  case "$ext" in
+  gz | bz2 | xz | zip | 7z | rar) dir_name="${dir_name%.*}" ;;
+  esac
+
+  # Check if a folder with the same name already exists in the current directory
+  if [[ -d "$dir_name" ]]; then
+    printf "%s\n" "${dir_name}_extracted"
+  else
+    printf "%s\n" "$dir_name"
+  fi
+}
+
+# Function to move the extracted content to the final directory without redundant subfolders
+move_to_final_dir() {
+  local temp_dir="$1"
+  local final_dir="$2"
+
+  local item_count
+  item_count=$(find "$temp_dir" -mindepth 1 -maxdepth 1 | wc -l)
+
+  if [[ "$item_count" -eq 1 ]]; then
+    # Single item case: file or folder
+    local first_item
+    first_item=$(find "$temp_dir" -mindepth 1 -maxdepth 1)
+
+    if [[ -d "$first_item" ]]; then
+      # Move contents of the only folder if it doesn't collide
+      if [[ -d "$final_dir" ]]; then
+        mv "$first_item"/* "$final_dir" || return 1
+      else
+        mv "$first_item" "$final_dir" || return 1
+      fi
+    else
+      # Single file, move it directly
+      mv "$first_item" "$final_dir" || return 1
+    fi
+  else
+    # Multiple items case, move everything into final directory
+    mv "$temp_dir"/* "$final_dir" || return 1
+  fi
+
+  rm -rf "$temp_dir"
+}
+
+# Function to extract various archive types
+extract_archive() {
+  local archive_path="$1"
+  local temp_dir="$2"
+
+  case "$archive_path" in
+  *.tar.gz | *.tgz) tar -xzvf "$archive_path" -C "$temp_dir" || return 1 ;;
+  *.tar.bz2 | *.tbz2) tar -xjvf "$archive_path" -C "$temp_dir" || return 1 ;;
+  *.tar.xz | *.txz) tar -xJvf "$archive_path" -C "$temp_dir" || return 1 ;;
+  *.tar) tar -xvf "$archive_path" -C "$temp_dir" || return 1 ;;
+  *.zip) 7z x "$archive_path" -o"$temp_dir" || return 1 ;;
+  *.7z) 7z x "$archive_path" -o"$temp_dir" || return 1 ;;
+  *.rar) unrar x "$archive_path" "$temp_dir" || return 1 ;;
+  *)
+    printf "Unsupported file type: %s\n" "$archive_path" >&2
+    return 1
+    ;;
+  esac
+}
+
+# Main script execution
+main() {
+  for archive in "$@"; do
+    if [[ ! -f "$archive" ]]; then
+      printf "File not found: %s\n" "$archive" >&2
+      continue
+    fi
+
+    # Set up extraction directories
+    local final_dir temp_dir
+    final_dir=$(create_extraction_dir "$archive")
+    mkdir -p "$final_dir" || {
+      printf "Error creating directory %s\n" "$final_dir" >&2
+      continue
+    }
+    temp_dir=$(mktemp -d) || {
+      printf "Failed to create temp directory\n" >&2
+      continue
+    }
+
+    # Extract archive to temp directory
+    if ! extract_archive "$archive" "$temp_dir"; then
+      printf "Failed to extract: %s\n" "$archive" >&2
+      rm -rf "$temp_dir"
+      continue
+    fi
+
+    # Move files to the final directory intelligently, avoiding redundant subfolders
+    if ! move_to_final_dir "$temp_dir" "$final_dir"; then
+      printf "Error organizing files for %s\n" "$archive" >&2
+      rm -rf "$temp_dir" "$final_dir"
+      continue
+    fi
+
+    printf "Extracted %s to %s\n" "$archive" "$final_dir"
+  done
+}
+
+# Execute main function with all arguments
+main "$@"

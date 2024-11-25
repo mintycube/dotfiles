@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+
+# Check if fzf is installed
+if ! command -v fzf &>/dev/null; then
+  printf "Error: fzf is required but not installed.\n" >&2
+  exit 1
+fi
+
+# Check if 7z from p7zip is installed
+if ! command -v 7z &>/dev/null; then
+  printf "Error: 7z (from p7zip) is required but not installed.\n" >&2
+  exit 1
+fi
+
+# Check if dmenupass is in PATH
+if ! command -v dmenupass &>/dev/null; then
+  printf "Error: dmenupass external script is required but not installed in PATH.\n" >&2
+  exit 1
+fi
+
+# Function to select archive format using fzf
+select_archive_format() {
+  local format
+  format=$(printf "zip\n7z" | fzf --ansi --border=rounded --margin=0,35% --no-info --height=7 --prompt="Select archive format: ")
+  if [[ -z $format ]]; then
+    printf "No format selected.\n" >&2
+    return 1
+  fi
+  printf "%s" "$format"
+}
+
+# Prompt for filename
+prompt_filename() {
+  local filename
+  filename=$(: | fzf --disabled --print-query --border=rounded --margin=0,25% --no-info --height=2 --prompt="Archive Filename (without extension): ")
+  if [[ -z $filename ]]; then
+    printf "Filename cannot be empty.\n" >&2
+    return 1
+  fi
+  printf "%s" "$filename"
+}
+
+# Function to prompt for encryption password twice and verify
+get_password() {
+  local password1 password2
+  password1=$(dmenupass "Enter encryption password:")
+  password2=$(dmenupass "Confirm encryption password:")
+
+  if [[ "$password1" != "$password2" ]]; then
+    printf "Passwords do not match. Try again.\n" >&2
+    return 1
+  fi
+
+  printf "%s" "$password1"
+}
+
+# Prompt for encryption option and get password if encryption is chosen
+prompt_encryption() {
+  local choice password encryption_opts
+  choice=$(printf "No\nYes" | fzf --ansi --border=rounded --margin=0,35% --no-info --height=7 --prompt="Encrypt archive with AES-256? ")
+  if [[ "$choice" == "Yes" ]]; then
+    password=$(get_password) || return 1
+    encryption_opts="-p${password}"
+  else
+    encryption_opts=""
+  fi
+  printf "%s" "$encryption_opts"
+}
+
+# Prompt for sharing option using fzf
+prompt_share() {
+  local choice
+  choice=$(printf "No\nYes" | fzf --ansi --border=rounded --margin=0,35% --no-info --height=7 --prompt="Share archive? ")
+  [[ "$choice" == "Yes" ]] && printf "Yes" || printf "No"
+}
+
+# Main function
+main() {
+  # Ensure at least one argument is provided
+  if [[ $# -eq 0 ]]; then
+    printf "Usage: %s <file/folder>...\n" "$(basename "$0")" >&2
+    exit 1
+  fi
+
+  # Prompt for archive format, filename, shareing_choice and encryption
+  local filename
+  filename=$(prompt_filename) || exit 1
+  local format
+  format=$(select_archive_format) || exit 1
+  local password_flag
+  password_flag=$(prompt_encryption) || exit 1
+  local share_choice
+  share_choice=$(prompt_share)
+
+  # Determine archive extension and encryption options
+  local extension archive_type encryption_opts
+  case "$format" in
+  zip)
+    extension="zip"
+    archive_type="-tzip"
+    encryption_opts="${password_flag} -mem=AES256"
+    ;;
+  7z)
+    extension="7z"
+    archive_type="-t7z"
+    encryption_opts="${password_flag} -mhe=on"
+    ;;
+  *)
+    printf "Invalid format selected.\n" >&2
+    return 1
+    ;;
+  esac
+
+  # Build and execute the archive command
+  local archive_name="${filename}.${extension}"
+  7z a "$archive_name" "$archive_type" $encryption_opts "$@" || {
+    printf "Error creating %s archive.\n" "$format" >&2
+    return 1
+  }
+
+  if [[ "$share_choice" == "Yes" ]]; then
+    fileshare "$archive_name" || {
+      printf "Error sharing archive.\n" >&2
+      return 1
+    }
+  fi
+
+  printf "Archive %s created successfully.\n" "$archive_name"
+}
+
+main "$@"
