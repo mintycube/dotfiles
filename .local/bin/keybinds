@@ -1,7 +1,7 @@
 #!/bin/bash
 
 keybinds_file="$HOME/.local/share/script-data/keybinds"
-dmenu_cmd="dmenu -bw 2 -i -W 340 -X 5 -Y 140 -l 29"
+dmenu_cmd="dmenu -bw 2 -i -W 340 -X 5 -Y 123 -l 30"
 selected=$(awk -F, '{
     gsub(/^ +| +$/,"",$1);
     gsub(/^ +| +$/,"",$2);

@@ -1,44 +1,39 @@
-#!/usr/bin/env python3
-import subprocess
+#!/usr/bin/env bash
 
-dmenu_command = "dmenu -i -l 16 -W 200 -Y 400 -X 5 -bw 2"
-apps = "dmenu_run -bw 2 -i -W 390 -X 8 -Y 420 -l 15 -g 3"
-camera = (
-    "mpv --untimed --no-cache --no-osc "
-    "--no-input-default-bindings --profile=low-latency "
-    "--input-conf=/dev/null --title=webcam "
-    "$(ls /dev/video[0,2,4,6,8] | tail -n 1)"
+# Define dmenu command
+dmenu_command="dmenu -i -l 17 -W 200 -Y 380 -X 5 -bw 2"
+
+# Define options and actions as a single block
+menu=$(
+  cat <<EOF
+󰀻  Apps            | dmenu_run -bw 2 -i -W 390 -X 8 -Y 420 -l 15 -g 3
+󰊖  Games           | game-launcher
+  Light/Dark Mode | themeflip
+󰉦  Bar colors      | [ -e "$HOME/.cache/bar_color" ] && { rm "$HOME/.cache/bar_color"; renew-dwm; } || { touch "$HOME/.cache/bar_color"; renew-dwm; }
+  Fix audio       | fix-audio
+  Edit Configs    | st -e confedit
+  Web Search      | dmenu_web
+󰌹  Handler         | dmenuhandler
+󰌌  Keybinds        | keybinds
+󰋊  Mount           | mounter
+󱁌  Unmount         | unmounter
+  Kill            | processkill
+  Pick Color      | xcolor-pick
+  Screenshot      | maimpick
+  Record          | dmenurecord
+󰄄  Camera          | mpv --untimed --no-cache --no-config --no-osc --no-input-default-bindings --profile=low-latency --input-conf=/dev/null --title=webcam \$(ls /dev/video[0,2,4,6,8] | tail -n 1)
+  NerdFont Icons  | dmenunerdsymbols
+EOF
 )
-bar_colors_toggle = '[ -e "$HOME/.cache/bar_color" ] && { rm "$HOME/.cache/bar_color"; renew-dwm; } || { touch "$HOME/.cache/bar_color"; renew-dwm; }'
 
-options = {
-    "󰀻  Apps": apps,
-    "  Light/Dark Mode": "themeflip",
-    "󰉦  Bar colors": bar_colors_toggle,
-    "  Fix audio": "fix-audio",
-    "  Edit Configs": "st -e confedit",
-    "  Web Search": "dmenu_web",
-    "󰌹  Handler": "dmenuhandler",
-    "󰌌  Keybinds": "keybinds",
-    "󰋊  Mount": "mounter",
-    "󱁌  Unmount": "unmounter",
-    "  Kill": "processkill",
-    "  Pick Color": "xcolor-pick",
-    "  Screenshot": "maimpick",
-    "  Record": "dmenurecord",
-    "󰄄  Camera": camera,
-    "  NerdFont Icons": "dmenunerdsymbols",
-}
-option_list = list(options.keys())
-try:
-    selected_option = (
-        subprocess.check_output(
-            dmenu_command.split(), input="\n".join(option_list).encode()
-        )
-        .decode()
-        .strip()
-    )
-    action = options[selected_option]
-    subprocess.run(action, shell=True)
-except subprocess.CalledProcessError:
-    pass
+# Extract only the menu options for dmenu
+options=$(printf "%s\n" "$(echo "$menu" | cut -d '|' -f1)")
+
+# Launch dmenu and capture the selected option
+selected_option=$(echo "$options" | $dmenu_command)
+
+# If an option was selected, execute the corresponding action
+if [[ -n $selected_option ]]; then
+  action=$(echo "$menu" | grep "^$selected_option|" | cut -d '|' -f2-)
+  eval "$action"
+fi
