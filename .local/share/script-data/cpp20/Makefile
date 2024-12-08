@@ -1,5 +1,5 @@
-CXX = clang++
-CXXFLAGS = -std=c++20 --debug
+CXX = g++
+CXXFLAGS = -std=c++23 --debug
 SRCDIR := .
 BUILDDIR := build
 INCDIR := include

@@ -1,9 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-# Define dmenu command
 dmenu_command="dmenu -i -l 17 -W 200 -Y 380 -X 5 -bw 2"
 
-# Define options and actions as a single block
 menu=$(
   cat <<EOF
 󰀻  Apps            | dmenu_run -bw 2 -i -W 390 -X 8 -Y 420 -l 15 -g 3
@@ -26,14 +24,9 @@ menu=$(
 EOF
 )
 
-# Extract only the menu options for dmenu
 options=$(printf "%s\n" "$(echo "$menu" | cut -d '|' -f1)")
-
-# Launch dmenu and capture the selected option
-selected_option=$(echo "$options" | $dmenu_command)
-
-# If an option was selected, execute the corresponding action
-if [[ -n $selected_option ]]; then
+selected_option=$(echo "$options" | eval "$dmenu_command")
+if [ -n "$selected_option" ]; then
   action=$(echo "$menu" | grep "^$selected_option|" | cut -d '|' -f2-)
   eval "$action"
 fi

@@ -1,64 +1,127 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-function check_keyring() {
-  echo -e "\e[34m::\e[0m Checking Arch Linux PGP Keyring..."
-  local installedver
-  installedver="$(LANG='' sudo pacman -Qi archlinux-keyring | grep -Po '(?<=Version         : ).*')"
-  local currentver
-  currentver="$(LANG='' sudo pacman -Si archlinux-keyring | grep -Po '(?<=Version         : ).*')"
-  if [ "$installedver" != "$currentver" ]; then
-    echo -e "\e[31m==> Arch Linux PGP Keyring is out of date.\e[0m"
-    return 1
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Global variables
+ARCH_KEYRING="archlinux-keyring"
+
+# Function to check and optionally update Arch Linux keyring
+update_keyring_prompt() {
+  printf ":: Checking if the Arch Linux keyring is up-to-date...\n"
+  if ! sudo pacman -Qi "$ARCH_KEYRING" &>/dev/null; then
+    printf ":: The %s package is not installed. It must be updated to proceed.\n" "$ARCH_KEYRING"
+    prompt_keyring_update || return 1
   else
-    echo -e "\e[32m==> Arch Linux PGP Keyring is up to date.\e[0m"
-    return 0
-  fi
-}
-
-function update_keyring() {
-  echo -e "\e[34m::\e[0m Updating Arch Linux PGP Keyring..."
-  sudo pacman -Sy --needed archlinux-keyring
-  # echo -e "keyring updating ..."
-  echo -e "\e[32m==> Keyring updated.\e[0m"
-}
-
-function perform_full_upgrade() {
-  local package_manager=$1
-  if [ "$package_manager" == "1" ]; then
-    echo -e "\e[34m::\e[0m Performing full system upgrade with pacman..."
-    sudo pacman -Syu
-    # echo -e "pacman updating ..."
-    echo -e "\e[32m==> System upgraded.\e[0m"
-  elif [ "$package_manager" == "2" ]; then
-    echo -e "\e[34m::\e[0m Performing full system upgrade with yay..."
-    yay -Syu
-    # echo -e "yay updating ..."
-    echo -e "\e[32m==> System upgraded.\e[0m"
-  else
-    echo "Invalid package manager selected. Exiting..."
-    exit 1
-  fi
-}
-
-function main() {
-  check_keyring
-  if [ $? -eq 1 ]; then
-    read -rp "Do you want to update the keyring? (y/n): " update_keyring
-    if [ "$update_keyring" != "y" ]; then
-      echo "Exiting..."
-      exit 0
+    local outdated
+    outdated=$(sudo pacman -Qu "$ARCH_KEYRING" 2>/dev/null | grep -o "$ARCH_KEYRING" || true)
+    if [[ -n "$outdated" ]]; then
+      printf ":: The %s package is out-of-date.\n" "$ARCH_KEYRING"
+      prompt_keyring_update || return 1
     else
-      update_keyring
-      read -rp "Do you want to perform a full system upgrade? (y/n): " full_upgrade
-      if [ "$full_upgrade" != "y" ]; then
-        echo "Exiting..."
-        exit 0
-      else
-        read -rp "Choose package manager (1:pacman/2:yay): " package_manager
-        perform_full_upgrade "$package_manager"
-      fi
+      printf ":: Keyring is up-to-date.\n"
     fi
   fi
+  return 0
 }
 
-main
+# Function to prompt the user for keyring update
+prompt_keyring_update() {
+  local response
+  response=$(printf "Yes\nNo" | fzf --ansi --border=rounded --margin=0,35% --no-info --height=7 --prompt="Update keyring now? ")
+  case "$response" in
+  "Yes")
+    printf ":: Updating keyring...\n"
+    if ! sudo pacman -Sy "$ARCH_KEYRING"; then
+      printf ":: Error updating the keyring. Exiting...\n" >&2
+      return 1
+    fi
+    ;;
+  "No")
+    printf ":: Cannot proceed without updating the keyring. Exiting...\n" >&2
+    return 1
+    ;;
+  *)
+    printf ":: Invalid choice. Exiting...\n" >&2
+    return 1
+    ;;
+  esac
+  return 0
+}
+
+# Function to update system packages
+update_system_packages() {
+  printf ":: Updating system packages...\n"
+  if ! sudo pacman -Syu; then
+    printf ":: Error updating system packages. Exiting...\n" >&2
+    return 1
+  fi
+  printf ":: System packages updated successfully.\n"
+  return 0
+}
+
+# Function to update AUR packages
+update_aur_packages() {
+  printf ":: Updating AUR packages...\n"
+  if ! yay -Syu --aur; then
+    printf ":: Error updating AUR packages. Exiting...\n" >&2
+    return 1
+  fi
+  printf ":: AUR packages updated successfully.\n"
+  return 0
+}
+
+# Function to update both system and AUR packages
+update_all_packages() {
+  printf ":: Updating all packages (system and AUR)...\n"
+  if ! sudo pacman -Syu; then
+    printf ":: Error updating system packages. Exiting...\n" >&2
+    return 1
+  fi
+  if ! yay -Syu --aur; then
+    printf ":: Error updating AUR packages. Exiting...\n" >&2
+    return 1
+  fi
+  printf ":: All packages updated successfully.\n"
+  return 0
+}
+
+# Function to display the update menu using fzf
+update_menu() {
+  local options
+  options=$(printf "System and AUR\nSystem only\nAUR only\nExit" |
+    fzf --ansi --border=rounded --margin=0,35% --no-info --height=8 --prompt="Packages to update: ")
+
+  case "$options" in
+  "System and AUR")
+    update_all_packages
+    ;;
+  "System only")
+    update_system_packages
+    ;;
+  "AUR only")
+    update_aur_packages
+    ;;
+  "Exit")
+    printf "Exiting script.\n"
+    return 0
+    ;;
+  *)
+    printf "Invalid choice. Please try again.\n"
+    update_menu
+    ;;
+  esac
+  return 0
+}
+
+main() {
+  if update_keyring_prompt; then
+    update_menu
+  else
+    printf ":: Failed to update the keyring. Cannot proceed.\n" >&2
+    return 1
+  fi
+}
+
+main "$@"

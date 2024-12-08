@@ -33,7 +33,7 @@ fzf_command="fzf --prompt '   Configs  ' \
 	--preview-window='bottom,60%,border-top' \
   --margin='5%,10%,5%,10%' --info=inline-right \
   --ansi --preview='fuz-preview {}' \
-  --color="$fzf_theme" \
+  --color=$fzf_theme \
 	--bind 'enter:become(nvim {})'"
 
 echo "$configs" | eval "$fzf_command"

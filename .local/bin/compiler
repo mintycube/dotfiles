@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 file="${1}"
 ext="${file##*.}"
@@ -39,7 +39,7 @@ md)
   [ -f "${dir}/references.bib" ] && bib_file="${dir}/references.bib"
   [ -f "${dir}/metadata.yaml" ] && yaml_file="${dir}/metadata.yaml"
   pandoc_cmd_pdf="pandoc \"${file}\" --output=\"${base}.pdf\" --highlight-style=tango --citeproc --template=\"${latex_template}\""
-  pandoc_cmd_docx="pandoc \"${file}\" --output=\"${base}.docx\" --highlight-style=tango --citeproc"
+  # pandoc_cmd_docx="pandoc \"${file}\" --output=\"${base}.docx\" --highlight-style=tango --citeproc"
   [ -n "${yaml_file}" ] && pandoc_cmd_pdf="${pandoc_cmd_pdf} --metadata-file=\"${yaml_file}\"" && pandoc_cmd_docx="${pandoc_cmd_docx} --metadata-file=\"${yaml_file}\""
   [ -n "${bib_file}" ] && pandoc_cmd_pdf="${pandoc_cmd_pdf} --bibliography=\"${bib_file}\" --csl=\"${csl_file}\"" && pandoc_cmd_docx="${pandoc_cmd_docx} --bibliography=\"${bib_file}\" --csl=\"${csl_file}\""
   eval "${pandoc_cmd_pdf}" || exit 1

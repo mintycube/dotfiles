@@ -18,7 +18,7 @@ elif needs_update; then
   fi
 fi
 
-selected=$(jq -r '. as $input | to_entries[] | select(.key != "METADATA") | "\(.value.char)  \(.key)"' "$local_file" | dmenu -bw 2 -i -W 290 -X 5 -Y 123 -l 30 | sed "s/ .*//")
+selected=$(jq -r '. as $input | to_entries[] | select(.key != "METADATA") | "\(.value.char) \t\(.key)"' "$local_file" | dmenu -fn 'Symbols Nerd Font' -bw 2 -i -W 500 -X 433 -Y 190 -l 8 -g 15 | sed "s/ .*//")
 [ -z "$selected" ] && exit
 if [ -n "$1" ]; then
   xdotool type "$selected"

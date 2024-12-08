@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 word=$(xclip -o -selection "clipboard")
 word=$(echo "$word" | sed 's/^[ \t]*//;s/[ \t]*$//')

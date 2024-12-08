@@ -2,7 +2,6 @@
 
 # Auto-organize files into categorized folders
 
-# Define folder names
 declare -A FOLDERS=(
   ["video"]="Videos"
   ["audio"]="Audios"
@@ -15,7 +14,6 @@ declare -A FOLDERS=(
   ["presentation"]="Presentations"
 )
 
-# Organize single file based on MIME type
 organize_file() {
   local file_type folder destination
   file_type=$(file -biL "$1") || return 1
@@ -34,7 +32,6 @@ organize_file() {
     fi
   done
 
-  # If no match found, move to "Others"
   [ ! -d "Others" ] && mkdir "Others"
   destination="Others/$1"
   if mv -- "$1" "$destination" 2>/dev/null; then
@@ -44,12 +41,10 @@ organize_file() {
   fi
 }
 
-# Main function to loop through files
 main() {
   for file in *; do
     [ -f "$file" ] && organize_file "$file"
   done
 }
 
-# Run main function
 main "$@"

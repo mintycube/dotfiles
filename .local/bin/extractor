@@ -9,7 +9,7 @@ create_extraction_dir() {
 
   # Strip additional extensions (tar.gz, tar.bz2, etc.)
   case "$ext" in
-  gz | bz2 | xz | zip | 7z | rar) dir_name="${dir_name%.*}" ;;
+  gz | bz2 | xz | zst | lz | lzo | zip | 7z | rar) dir_name="${dir_name%.*}" ;;
   esac
 
   # Check if a folder with the same name already exists in the current directory
@@ -61,6 +61,12 @@ extract_archive() {
   *.tar.gz | *.tgz) tar -xzvf "$archive_path" -C "$temp_dir" || return 1 ;;
   *.tar.bz2 | *.tbz2) tar -xjvf "$archive_path" -C "$temp_dir" || return 1 ;;
   *.tar.xz | *.txz) tar -xJvf "$archive_path" -C "$temp_dir" || return 1 ;;
+  *.tar.zst | *.tzst) tar --zstd -xvf "$archive_path" -C "$temp_dir" || return 1 ;;
+  *.tar.lz) tar --lzip -xvf "$archive_path" -C "$temp_dir" || return 1 ;;
+  *.tar.lzo) tar --lzop -xvf "$archive_path" -C "$temp_dir" || return 1 ;;
+  *.gz) gzip -d "$archive_path" -c >"$temp_dir/${archive_path##*/}" || return 1 ;;
+  *.bz2) bzip2 -d "$archive_path" -c >"$temp_dir/${archive_path##*/}" || return 1 ;;
+  *.xz) xz -d "$archive_path" -c >"$temp_dir/${archive_path##*/}" || return 1 ;;
   *.tar) tar -xvf "$archive_path" -C "$temp_dir" || return 1 ;;
   *.zip) 7z x "$archive_path" -o"$temp_dir" || return 1 ;;
   *.7z) 7z x "$archive_path" -o"$temp_dir" || return 1 ;;

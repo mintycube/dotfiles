@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Check if dmenu is running
 dunstctl close-all
 if pgrep "dmenu" >/dev/null; then
   killall dmenu

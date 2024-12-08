@@ -9,7 +9,7 @@ fi
 FILE_PATH="$1"
 TEMP_DIR=$(mktemp -d)
 QR_CODE_IMAGE="$TEMP_DIR/qrcode.png"
-LINK_FILE="$TEMP_DIR/link.txt"
+# LINK_FILE="$TEMP_DIR/link.txt"
 
 # Upload file and capture link
 if ! LINK=$(curl -sf -F "file=@${FILE_PATH}" -F "expires=2" https://0x0.st); then

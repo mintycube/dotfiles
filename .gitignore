@@ -1,3 +1,4 @@
 .stow-local-ignore
 .config/nvim/spell
 .uuid
+.local/share/script-data/chars/frecent_emojis.json
